@@ -19,6 +19,7 @@ public:
     virtual void SetSize(int width, int height);
     virtual void SetZoom(int level = 14);
     virtual wxString GetHtml();
+    virtual wxString GetMapName();
 
     static wxString cDataDirectory;
     wxString cHtmlString;

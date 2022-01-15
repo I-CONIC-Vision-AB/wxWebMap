@@ -1,4 +1,6 @@
 #include	<wxWebMapFrame.h>
+#include    <Defines.h>
+#include    <wxMapMarker.h>
 #include    <SourceViewDialog.h>
 #include    <wx/sizer.h>
 #include    <wx/panel.h>
@@ -14,6 +16,10 @@
 #include    <wx/webviewfshandler.h>
 
 using namespace iconic;
+
+wxBEGIN_EVENT_TABLE(WebFrame, wxFrame)
+    EVT_MENU(WX_WBMAP_STOCKHOLM, WebFrame::OnMarkStockholm)
+wxEND_EVENT_TABLE()
 
 WebFrame::WebFrame(const wxString& url) :
     wxFrame(NULL, wxID_ANY, "wxWebView Sample")
@@ -51,46 +57,6 @@ WebFrame::WebFrame(const wxString& url) :
 
     m_toolbar->Realize();
 
-    // Set find values.
-    m_findFlags = wxWEBVIEW_FIND_DEFAULT;
-    m_findCount = 0;
-
-    // Create panel for find toolbar.
-    wxPanel* panel = new wxPanel(this);
-    topsizer->Add(panel, wxSizerFlags().Expand());
-
-    // Create sizer for panel.
-    wxBoxSizer* panel_sizer = new wxBoxSizer(wxVERTICAL);
-    panel->SetSizer(panel_sizer);
-
-    // Create the find toolbar.
-    m_find_toolbar = new wxToolBar(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL | wxTB_TEXT | wxTB_HORZ_LAYOUT);
-    m_find_toolbar->Hide();
-    panel_sizer->Add(m_find_toolbar, wxSizerFlags().Expand());
-
-    // Create find control.
-    m_find_ctrl = new wxTextCtrl(m_find_toolbar, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(140, -1), wxTE_PROCESS_ENTER);
-
-
-    //Find options menu
-    wxMenu* findmenu = new wxMenu;
-    m_find_toolbar_wrap = findmenu->AppendCheckItem(wxID_ANY, "Wrap");
-    m_find_toolbar_matchcase = findmenu->AppendCheckItem(wxID_ANY, "Match Case");
-    m_find_toolbar_wholeword = findmenu->AppendCheckItem(wxID_ANY, "Entire Word");
-    m_find_toolbar_highlight = findmenu->AppendCheckItem(wxID_ANY, "Highlight");
-    // Add find toolbar tools.
-    m_find_toolbar->SetToolSeparation(7);
-    m_find_toolbar_done = m_find_toolbar->AddTool(wxID_ANY, "Close", wxArtProvider::GetBitmap(wxART_CROSS_MARK));
-    m_find_toolbar->AddSeparator();
-    m_find_toolbar->AddControl(m_find_ctrl, "Find");
-    m_find_toolbar->AddSeparator();
-    m_find_toolbar_next = m_find_toolbar->AddTool(wxID_ANY, "Next", wxArtProvider::GetBitmap(wxART_GO_DOWN, wxART_TOOLBAR, wxSize(16, 16)));
-    m_find_toolbar_previous = m_find_toolbar->AddTool(wxID_ANY, "Previous", wxArtProvider::GetBitmap(wxART_GO_UP, wxART_TOOLBAR, wxSize(16, 16)));
-    m_find_toolbar->AddSeparator();
-    m_find_toolbar_options = m_find_toolbar->AddTool(wxID_ANY, "Options", wxArtProvider::GetBitmap(wxART_PLUS, wxART_TOOLBAR, wxSize(16, 16)), "", wxITEM_DROPDOWN);
-    m_find_toolbar_options->SetDropdownMenu(findmenu);
-    m_find_toolbar->Realize();
-
     // Create the info panel
     m_info = new wxInfoBar(this);
     topsizer->Add(m_info, wxSizerFlags().Expand());
@@ -108,8 +74,10 @@ WebFrame::WebFrame(const wxString& url) :
         wxLogMessage("Edge backend not available");
     }
 #endif
-    m_browser = wxWebView::New(this, wxID_ANY, url, wxDefaultPosition, wxDefaultSize, backend);
-    topsizer->Add(m_browser, wxSizerFlags().Expand().Proportion(1));
+
+    m_webmap = iconic::wxWebMap::Create(this, wxID_ANY, url, wxEmptyString, url, wxDefaultPosition, wxDefaultSize, backend);
+    m_browser = m_webmap->GetWebView();// wxWebView::New(this, wxID_ANY, url, wxDefaultPosition, wxDefaultSize, backend);
+    topsizer->Add(m_webmap, wxSizerFlags().Expand().Proportion(1));
 
     //We register the wxfs:// protocol for testing purposes
     m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewArchiveHandler("wxfs")));
@@ -138,10 +106,6 @@ WebFrame::WebFrame(const wxString& url) :
     m_tools_menu->AppendSeparator();
     m_tools_handle_navigation = m_tools_menu->AppendCheckItem(wxID_ANY, _("Handle Navigation"));
     m_tools_handle_new_window = m_tools_menu->AppendCheckItem(wxID_ANY, _("Handle New Windows"));
-    m_tools_menu->AppendSeparator();
-
-    //Find
-    m_find = m_tools_menu->Append(wxID_ANY, _("Find"));
     m_tools_menu->AppendSeparator();
 
     //History menu
@@ -174,7 +138,7 @@ WebFrame::WebFrame(const wxString& url) :
     m_tools_menu->AppendSubMenu(scroll_menu, "Scroll");
 
     wxMenu* script_menu = new wxMenu;
-    m_script_stockholm = script_menu->Append(wxID_ANY, "Put marker on Stockholm");
+    script_menu->Append(WX_WBMAP_STOCKHOLM, "Put marker on Stockholm", _("Adds a marker at Stockholm"));
     m_script_string = script_menu->Append(wxID_ANY, "Return String");
     m_script_integer = script_menu->Append(wxID_ANY, "Return integer");
     m_script_double = script_menu->Append(wxID_ANY, "Return double");
@@ -231,15 +195,6 @@ WebFrame::WebFrame(const wxString& url) :
 
     Bind(wxEVT_TEXT_ENTER, &WebFrame::OnUrl, this, m_url->GetId());
 
-    // Connect find toolbar events.
-    Bind(wxEVT_TOOL, &WebFrame::OnFindDone, this, m_find_toolbar_done->GetId());
-    Bind(wxEVT_TOOL, &WebFrame::OnFindText, this, m_find_toolbar_next->GetId());
-    Bind(wxEVT_TOOL, &WebFrame::OnFindText, this, m_find_toolbar_previous->GetId());
-
-    // Connect find control events.
-    Bind(wxEVT_TEXT, &WebFrame::OnFindText, this, m_find_ctrl->GetId());
-    Bind(wxEVT_TEXT_ENTER, &WebFrame::OnFindText, this, m_find_ctrl->GetId());
-
     // Connect the webview events
     Bind(wxEVT_WEBVIEW_NAVIGATING, &WebFrame::OnNavigationRequest, this, m_browser->GetId());
     Bind(wxEVT_WEBVIEW_NAVIGATED, &WebFrame::OnNavigationComplete, this, m_browser->GetId());
@@ -272,7 +227,6 @@ WebFrame::WebFrame(const wxString& url) :
     Bind(wxEVT_MENU, &WebFrame::OnScrollLineDown, this, m_scroll_line_down->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnScrollPageUp, this, m_scroll_page_up->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnScrollPageDown, this, m_scroll_page_down->GetId());
-    Bind(wxEVT_MENU, &WebFrame::OnRunScriptStockholm, this, m_script_stockholm->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptString, this, m_script_string->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptInteger, this, m_script_integer->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptDouble, this, m_script_double->GetId());
@@ -296,7 +250,6 @@ WebFrame::WebFrame(const wxString& url) :
     Bind(wxEVT_MENU, &WebFrame::OnSelectAll, this, selectall->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnLoadScheme, this, loadscheme->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnUseMemoryFS, this, usememoryfs->GetId());
-    Bind(wxEVT_MENU, &WebFrame::OnFind, this, m_find->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnEnableContextMenu, this, m_context_menu->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnEnableDevTools, this, m_dev_tools->GetId());
 
@@ -314,6 +267,10 @@ wxWebView* WebFrame::GetBrowser()
     return m_browser;
 }
 
+iconic::wxWebMap* WebFrame::GetWebMap()
+{
+    return m_webmap;
+}
 
 /**
   * Method that retrieves the current state from the web control and updates the GUI
@@ -463,81 +420,6 @@ void WebFrame::OnEnableContextMenu(wxCommandEvent& evt)
 void WebFrame::OnEnableDevTools(wxCommandEvent& evt)
 {
     m_browser->EnableAccessToDevTools(evt.IsChecked());
-}
-
-//void WebFrame::OnNavigationLoaded(wxWebViewEvent& evt)
-//{
-//    wxLogMessage("%s", "Navigation complete; url='" + evt.GetURL() + "'");
-//
-//
-//    wxString js_code = wxT("document.getElementById('demo').innerHTML = 5 + 6;");
-//    m_browser->RunScript(js_code);
-//}
-
-
-void WebFrame::OnFind(wxCommandEvent& WXUNUSED(evt))
-{
-    wxString value = m_browser->GetSelectedText();
-    if (value.Len() > 150) {
-        value.Truncate(150);
-    }
-    m_find_ctrl->SetValue(value);
-    if (!m_find_toolbar->IsShown()) {
-        m_find_toolbar->Show(true);
-        SendSizeEvent();
-    }
-    m_find_ctrl->SelectAll();
-}
-
-void WebFrame::OnFindDone(wxCommandEvent& WXUNUSED(evt))
-{
-    m_browser->Find("");
-    m_find_toolbar->Show(false);
-    SendSizeEvent();
-}
-
-void WebFrame::OnFindText(wxCommandEvent& evt)
-{
-    int flags = 0;
-
-    if (m_find_toolbar_wrap->IsChecked()) {
-        flags |= wxWEBVIEW_FIND_WRAP;
-    }
-    if (m_find_toolbar_wholeword->IsChecked()) {
-        flags |= wxWEBVIEW_FIND_ENTIRE_WORD;
-    }
-    if (m_find_toolbar_matchcase->IsChecked()) {
-        flags |= wxWEBVIEW_FIND_MATCH_CASE;
-    }
-    if (m_find_toolbar_highlight->IsChecked()) {
-        flags |= wxWEBVIEW_FIND_HIGHLIGHT_RESULT;
-    }
-
-    if (m_find_toolbar_previous->GetId() == evt.GetId()) {
-        flags |= wxWEBVIEW_FIND_BACKWARDS;
-    }
-
-    wxString find_text = m_find_ctrl->GetValue();
-    long count = m_browser->Find(find_text, flags);
-
-    if (m_findText != find_text) {
-        m_findCount = count;
-        m_findText = find_text;
-    }
-
-    if (count != wxNOT_FOUND || find_text.IsEmpty()) {
-        m_find_ctrl->SetBackgroundColour(*wxWHITE);
-    } else {
-        m_find_ctrl->SetBackgroundColour(wxColour(255, 101, 101));
-    }
-
-    m_find_ctrl->Refresh();
-
-    //Log the result, note that count is zero indexed.
-    if (count != m_findCount) {
-        count++;
-    }
-    wxLogMessage("Searching for:%s  current match:%li/%i", m_findText, count, m_findCount);
 }
 
 /**
@@ -789,24 +671,12 @@ void WebFrame::RunScript(const wxString& javascript)
     }
 }
 
-void WebFrame::OnRunScriptStockholm(wxCommandEvent& WXUNUSED(evt))
+void WebFrame::OnMarkStockholm(wxCommandEvent& e)
 {
-    AddMarker(59.326180, 18.072263);
-}
-
-void WebFrame::AddMarker(double lat, double lon)
-{
-    static wxString sLeafletMarker("var marker = new L.Marker([%.9lf, %.9lf], {draggable:true});\
-        marker.addTo(map);\
-    markers[marker._leaflet_id] = marker;\
-    $('#overlay > ul').append('<li>Marker ' + marker._leaflet_id + ' - <a href=\"#\" class=\"remove\" id=\"' + marker._leaflet_id + '\">remove</a></li>');");
-
-    RunScript(wxString::Format(sLeafletMarker, lat, lon));
-    //("var marker = new L.Marker([59.326180, 18.072263], {draggable:true});\
-    //    marker.addTo(map);\
-    //markers[marker._leaflet_id] = marker;\
-    //$('#overlay > ul').append('<li>Marker ' + marker._leaflet_id + ' - <a href=\"#\" class=\"remove\" id=\"' + marker._leaflet_id + '\">remove</a></li>');"));
-//    ""L.marker([59.326180, 18.072263]).addTo(map)"));
+    wxMapMarker marker(59.326180, 18.072263, true, true);
+    wxString res;
+    m_webmap->AddMapObject(marker, &res);
+    wxLogMessage(_("Added leaflet object #%s"), res);
 }
 
 void WebFrame::OnRunScriptString(wxCommandEvent& WXUNUSED(evt))

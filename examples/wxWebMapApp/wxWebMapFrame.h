@@ -35,7 +35,6 @@
 
 #include "wxlogo.xpm"
 
-
 //We map menu items to their history items
 WX_DECLARE_HASH_MAP(int, wxSharedPtr<wxWebViewHistoryItem>,
                     wxIntegerHash, wxIntegerEqual, wxMenuHistoryMap);
@@ -62,6 +61,9 @@ public:
      * @return the web view
     */
     wxWebView* GetBrowser();
+    iconic::wxWebMap* GetWebMap();
+
+    void OnMarkStockholm(wxCommandEvent& e);
 
     void UpdateState();
     void OnIdle(wxIdleEvent& evt);
@@ -99,7 +101,6 @@ public:
     void OnScrollPageDown(wxCommandEvent&);
 
     void RunScript(const wxString& javascript);
-    void OnRunScriptStockholm(wxCommandEvent& evt);
     void OnRunScriptString(wxCommandEvent& evt);
     void OnRunScriptInteger(wxCommandEvent& evt);
     void OnRunScriptDouble(wxCommandEvent& evt);
@@ -127,10 +128,10 @@ public:
     void OnFindOptions(wxCommandEvent& evt);
     void OnEnableContextMenu(wxCommandEvent& evt);
     void OnEnableDevTools(wxCommandEvent& evt);
-    //    void OnNavigationLoaded(wxWebViewEvent& evt);
 
 private:
     wxTextCtrl* m_url;
+    iconic::wxWebMap* m_webmap;
     wxWebView* m_browser;
 
     wxToolBar* m_toolbar;
@@ -140,14 +141,6 @@ private:
     wxToolBarToolBase* m_toolbar_reload;
     wxToolBarToolBase* m_toolbar_tools;
 
-    wxToolBarToolBase* m_find_toolbar_done;
-    wxToolBarToolBase* m_find_toolbar_next;
-    wxToolBarToolBase* m_find_toolbar_previous;
-    wxToolBarToolBase* m_find_toolbar_options;
-    wxMenuItem* m_find_toolbar_wrap;
-    wxMenuItem* m_find_toolbar_highlight;
-    wxMenuItem* m_find_toolbar_matchcase;
-    wxMenuItem* m_find_toolbar_wholeword;
 
     wxMenu* m_tools_menu;
     wxMenu* m_tools_history_menu;
@@ -171,7 +164,6 @@ private:
     wxMenuItem* m_scroll_line_down;
     wxMenuItem* m_scroll_page_up;
     wxMenuItem* m_scroll_page_down;
-    wxMenuItem* m_script_stockholm;
     wxMenuItem* m_script_string;
     wxMenuItem* m_script_integer;
     wxMenuItem* m_script_double;
@@ -190,20 +182,17 @@ private:
     wxMenuItem* m_script_custom;
     wxMenuItem* m_selection_clear;
     wxMenuItem* m_selection_delete;
-    wxMenuItem* m_find;
     wxMenuItem* m_context_menu;
     wxMenuItem* m_dev_tools;
 
     wxInfoBar* m_info;
     wxStaticText* m_info_text;
-    wxTextCtrl* m_find_ctrl;
-    wxToolBar* m_find_toolbar;
 
     wxMenuHistoryMap m_histMenuItems;
-    wxString m_findText;
-    int m_findFlags, m_findCount;
     long m_zoomFactor;
 
     // Last executed JavaScript snippet, for convenience.
     wxString m_javascript;
+
+    wxDECLARE_EVENT_TABLE();
 };

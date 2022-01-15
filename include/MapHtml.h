@@ -77,6 +77,13 @@ public:
      * @param height
     */
     virtual void SetSize(int width, int height) = 0;
+
+    /**
+     * @brief Get name of map
+     * @return name of map
+     * @todo The map name is in the input html file. GetMapName always returns "map"
+    */
+    virtual wxString GetMapName() = 0;
 };
 typedef boost::shared_ptr<MapHtml> MapHtmlPtr; //!< Smart pointer to a web map
 }

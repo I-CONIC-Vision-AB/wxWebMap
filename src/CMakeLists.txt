@@ -20,6 +20,7 @@ cmake_minimum_required(VERSION 2.8.12)
 set(SRC_FILES
     MapHtml.cpp
     wxWebMap.cpp
+    wxMapMarker.cpp
     )
 
 if(WIN32)

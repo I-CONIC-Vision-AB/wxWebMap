@@ -35,3 +35,15 @@ wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& 
     p->SetSizerAndFit(bs);
     return p;
 }
+
+wxWebView* wxWebMapImpl::GetWebView()
+{
+    return cpWebView;
+}
+
+bool wxWebMapImpl::AddMapObject(wxMapObject const& o, wxString* result)
+{
+    cpWebView->RunScript(o.GetJavaScriptAdd(cpMap->GetMapName()), result);
+    return true;
+}
+

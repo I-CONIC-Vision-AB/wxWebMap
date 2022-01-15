@@ -2,6 +2,7 @@
 
 #include	<wxWebMap.h>
 #include    <MapHtml.h>
+#include    <list>
 
 namespace iconic {
 class wxWebMapImpl : public wxWebMap {
@@ -11,6 +12,10 @@ public:
 
 protected:
     wxWebMapImpl(wxString const &basemapHtmlFileName, wxString const& dataDirectory);
+
+    virtual wxWebView* GetWebView();
+
+    virtual bool AddMapObject(wxMapObject const& o, wxString* result);
 
     wxWebView* cpWebView;
     MapHtmlPtr cpMap;

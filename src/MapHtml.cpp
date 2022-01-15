@@ -158,3 +158,8 @@ void LeafletJs::SetSize(int width, int height)
     cWidth = width;
     cHeight = height;
 }
+
+wxString LeafletJs::GetMapName()
+{
+    return wxString("map");
+}

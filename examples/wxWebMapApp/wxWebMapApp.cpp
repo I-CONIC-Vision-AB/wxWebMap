@@ -14,13 +14,13 @@ wxWebMapApp::wxWebMapApp()
 {
     wxFileName fn;
     fn.SetPath(wxFileName::GetCwd());
-    fn.SetFullName(wxString("map.html"));
+    fn.SetFullName("map.html");
     m_url = fn.GetFullPath();
-    if (!wxFileName::Exists(m_url)) {
-        m_url = wxString("https://www.wxwidgets.org");
-    }
-    cpMap = MapHtml::Create(m_url);
-    cpMap->SetCenter(18.072263, 59.326180);
+    //if (!wxFileName::Exists(m_url)) {
+    //    m_url = wxString("https://www.wxwidgets.org");
+    //}
+    //cpMap = MapHtml::Create(m_url);
+    //cpMap->SetCenter(18.072263, 59.326180);
 }
 
 void wxWebMapApp::OnInitCmdLine(wxCmdLineParser& parser)

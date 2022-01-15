@@ -60,7 +60,6 @@ public:
 
 private:
     wxString m_url;
-    iconic::MapHtmlPtr cpMap;
 };
 
 }
