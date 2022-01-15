@@ -1,0 +1,82 @@
+ 
+    <!DOCTYPE html> 
+    <html> 
+    <head> 
+    <title>I-CONIC marker</title> 
+    <meta charset = "utf-8" /> 
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <link rel = "shortcut icon" type = "image/x-icon" href = "docs/images/favicon.ico" /> 
+    <link rel = "stylesheet" href = "https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity = "sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin = "" />
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src = "https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity = "sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin = ""></script>
+    <style>
+	html,body,
+#map {
+position:absolute;
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+	z-index:1;
+}
+
+#overlay {
+    position:absolute;
+    width:20%;
+    height:100%;
+    left:0;
+    top:0;
+    background-color:rgba(255,255,255,128);
+	z-index:10;
+}
+        </style>
+        </head>
+        <body>
+        <div id="map"></div>
+<div id="overlay"><ul id="ul1"></ul></div>
+        <script type = "text/javascript">
+         var map = L.map('map', {
+            center: [59.326180, 18.072263],
+    zoom: 6
+            });
+    var basemaps = {
+        'Map': L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+            layers: 'OSM-WMS'
+        }),
+        'Topography' : L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+            layers: 'TOPO-WMS,OSM-Overlay-WMS'
+        }),
+        'Imagery' : L.tileLayer.wms('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+           layers: 'Imagery'
+        })
+    };
+    L.control.layers(basemaps, {}, { collapsed: true }).addTo(map);
+    basemaps.Map.addTo(map);
+
+map.on('click', onMapClick);
+
+var markers = new Array();
+function onMapClick(e) {
+        
+        var marker = new L.Marker(e.latlng, {draggable:true});
+		marker.addTo(map);
+        markers[marker._leaflet_id] = marker;
+        $('#overlay > ul').append('<li>Marker '+ marker._leaflet_id + ' - <a href="#" class="remove" id="' + marker._leaflet_id + '">remove</a></li>');
+    
+    // Remove a marker
+    $('.remove').on("click", function() {
+        // Remove the marker
+        map.removeLayer(markers[$(this).attr('id')]);
+        
+        // Remove the link
+        $(this).parent('li').remove();
+        
+        // Remove the marker from the array
+        delete markers[$(this).attr('id')];         
+    });
+    
+};
+    </script>
+        </body>
+        </html>
+        

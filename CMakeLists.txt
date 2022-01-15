@@ -65,6 +65,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# Copy the template map.html file
+#message(STATUS "in dir: ${CMAKE_SOURCE_DIR}/data/map.html")
+#message(STATUS "out dir:${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/map.html")
+configure_file(${CMAKE_SOURCE_DIR}/data/map.html ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/map.html COPYONLY)
+
 add_subdirectory("src")
 #add_subdirectory("webview")
 add_subdirectory("examples")
