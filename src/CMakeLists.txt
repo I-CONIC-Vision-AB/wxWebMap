@@ -18,7 +18,6 @@ cmake_minimum_required(VERSION 2.8.12)
 
 # Define a variable containing a list of source files for the project
 set(SRC_FILES
-    MapHtml.cpp
     wxWebMap.cpp
     wxMapMarker.cpp
     )

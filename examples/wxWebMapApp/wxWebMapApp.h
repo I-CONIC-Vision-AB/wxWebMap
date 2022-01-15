@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include    <MapHtml.h>
-
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -30,7 +28,6 @@
 
 #include "wx/cmdline.h"
 
-namespace iconic {
 /**
  * @brief A web map view application
 */
@@ -61,5 +58,3 @@ public:
 private:
     wxString m_url;
 };
-
-}

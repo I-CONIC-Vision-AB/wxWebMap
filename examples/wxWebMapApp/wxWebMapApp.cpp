@@ -6,8 +6,6 @@
 #include    <wx/fs_arc.h>
 #include    <wx/fs_mem.h>
 
-using namespace iconic;
-
 wxIMPLEMENT_APP(wxWebMapApp);
 
 wxWebMapApp::wxWebMapApp()

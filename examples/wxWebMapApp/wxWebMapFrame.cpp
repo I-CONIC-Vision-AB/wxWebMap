@@ -15,8 +15,6 @@
 #include    <wx/webviewarchivehandler.h>
 #include    <wx/webviewfshandler.h>
 
-using namespace iconic;
-
 wxBEGIN_EVENT_TABLE(WebFrame, wxFrame)
     EVT_MENU(WX_WBMAP_STOCKHOLM, WebFrame::OnMarkStockholm)
 wxEND_EVENT_TABLE()
@@ -75,7 +73,7 @@ WebFrame::WebFrame(const wxString& url) :
     }
 #endif
 
-    m_webmap = iconic::wxWebMap::Create(this, wxID_ANY, url, wxEmptyString, url, wxDefaultPosition, wxDefaultSize, backend);
+    m_webmap = wxWebMap::Create(this, wxID_ANY, url, wxDefaultPosition, wxDefaultSize, backend);
     m_browser = m_webmap->GetWebView();// wxWebView::New(this, wxID_ANY, url, wxDefaultPosition, wxDefaultSize, backend);
     topsizer->Add(m_webmap, wxSizerFlags().Expand().Proportion(1));
 
@@ -262,12 +260,12 @@ WebFrame::~WebFrame()
     delete m_tools_menu;
 }
 
-wxWebView* WebFrame::GetBrowser()
-{
-    return m_browser;
-}
-
-iconic::wxWebMap* WebFrame::GetWebMap()
+//wxWebView* WebFrame::GetBrowser()
+//{
+//    return m_browser;
+//}
+//
+wxWebMap* WebFrame::GetWebMap()
 {
     return m_webmap;
 }

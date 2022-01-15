@@ -2,8 +2,7 @@
 #include    <wx/log.h>
 #include    <wx/intl.h>
 #include    <wx/sizer.h>
-
-using namespace iconic;
+#include    <wx/filename.h>
 
 wxWebMap::wxWebMap() :
     wxWindow()
@@ -11,25 +10,23 @@ wxWebMap::wxWebMap() :
 
 }
 
-wxWebMap* wxWebMap::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, wxString const& dataDirectory, const wxString& url, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
+wxWebMap* wxWebMap::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, /*wxString const& dataDirectory, const wxString& url, */const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
 {
-    return wxWebMapImpl::Create(parent, id, basemapHtmlFileName, dataDirectory, url, pos, size, backend, style, name);
+    return wxWebMapImpl::Create(parent, id, basemapHtmlFileName, /*dataDirectory, url, */pos, size, backend, style, name);
 }
 
 wxWebMapImpl::wxWebMapImpl(wxString const& basemapHtmlFileName, wxString const& dataDirectory) :
-    wxWebMap()
+    wxWebMap(),
+    cMapName("map")
 {
-    if (!dataDirectory.IsEmpty()) {
-        MapHtml::SetDataDirectory(dataDirectory);
-    }
-    cpMap = MapHtml::Create(basemapHtmlFileName);
 }
 
-wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, wxString const& dataDirectory, const wxString& url, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
+wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, /*wxString const& dataDirectory, const wxString& url, */const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
 {
-    wxWebMapImpl* p = new wxWebMapImpl(basemapHtmlFileName, dataDirectory);
+    wxFileName fn(basemapHtmlFileName);
+    wxWebMapImpl* p = new wxWebMapImpl(fn.GetFullName(), fn.GetPath());
     p->wxWindow::Create(parent, id, pos, size, style, name);
-    p->cpWebView = wxWebView::New(p, wxID_ANY, url, pos, size, backend, style, name);
+    p->cpWebView = wxWebView::New(p, wxID_ANY, basemapHtmlFileName, pos, size, backend, style, name);
     wxBoxSizer* bs = new wxBoxSizer(wxHORIZONTAL);
     bs->Add(p->cpWebView, 1, wxEXPAND);
     p->SetSizerAndFit(bs);
@@ -43,7 +40,13 @@ wxWebView* wxWebMapImpl::GetWebView()
 
 bool wxWebMapImpl::AddMapObject(wxMapObject const& o, wxString* result)
 {
-    cpWebView->RunScript(o.GetJavaScriptAdd(cpMap->GetMapName()), result);
+    cpWebView->RunScript(o.GetJavaScriptAdd(cMapName), result);
     return true;
 }
+
+void wxWebMapImpl::SetMapName(wxString const& name)
+{
+    cMapName = name;
+}
+
 

@@ -57,11 +57,10 @@ public:
     void AddMarker(double lat, double lon);
 
     /**
-     * @brief Get the web view
-     * @return the web view
+     * @brief Get the web map
+     * @return the web map
     */
-    wxWebView* GetBrowser();
-    iconic::wxWebMap* GetWebMap();
+    wxWebMap* GetWebMap();
 
     void OnMarkStockholm(wxCommandEvent& e);
 
@@ -131,7 +130,7 @@ public:
 
 private:
     wxTextCtrl* m_url;
-    iconic::wxWebMap* m_webmap;
+    wxWebMap* m_webmap;
     wxWebView* m_browser;
 
     wxToolBar* m_toolbar;
