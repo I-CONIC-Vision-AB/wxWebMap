@@ -42,7 +42,8 @@ WX_DECLARE_HASH_MAP(int, wxSharedPtr<wxWebViewHistoryItem>,
 /**
  * @brief Main frame for the application.
  *
- * Containts a wxWebView
+ * Containts a wxWebMap.
+ * @todo Includes most of the wxWebView sample application, which just makes it unnecessarily complex. Remove everything except map stuff!
 */
 class WebFrame : public wxFrame {
 public:
@@ -50,18 +51,15 @@ public:
     virtual ~WebFrame();
 
     /**
-     * @brief Add leaflet marker
-     * @param lat Latitude
-     * @param lon Longitude
-    */
-    void AddMarker(double lat, double lon);
-
-    /**
      * @brief Get the web map
      * @return the web map
     */
     wxWebMap* GetWebMap();
 
+    /**
+     * @brief Progammatically add a marker on Stockholm
+     * @param e Unused
+    */
     void OnMarkStockholm(wxCommandEvent& e);
 
     void UpdateState();

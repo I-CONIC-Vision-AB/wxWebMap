@@ -671,7 +671,8 @@ void WebFrame::RunScript(const wxString& javascript)
 
 void WebFrame::OnMarkStockholm(wxCommandEvent& e)
 {
-    wxMapMarker marker(59.326180, 18.072263, true, true);
+    // Neither draggable nor removable
+    wxMapMarker marker(59.326180, 18.072263);
     wxString res;
     m_webmap->AddMapObject(marker, &res);
     wxLogMessage(_("Added leaflet object #%s"), res);

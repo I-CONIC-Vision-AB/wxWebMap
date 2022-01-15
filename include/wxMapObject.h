@@ -1,3 +1,10 @@
+/////////////////////////////////////////////////////////////////////////////
+// Name:        wxMapObject
+// Purpose:     Base class for map objects
+// Author:      Håkan Wiman
+// Copyright:   (c) 2022 I-CONIC Vision AB, Sweden
+// Licence:     wxWindows licence
+/////////////////////////////////////////////////////////////////////////////
 #pragma once
 
 #include    <exports.h>
