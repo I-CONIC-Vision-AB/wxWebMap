@@ -4,16 +4,14 @@
 #include    <wx/panel.h>
 #include    <wx/menu.h>
 #include    <wx/filename.h>
-#include "wx/numdlg.h"
-#include "wx/textdlg.h"
-
-#include "wx/webview.h"
+#include    <wx/numdlg.h>
+#include    <wx/textdlg.h>
+#include    <wx/webview.h>
 #if wxUSE_WEBVIEW_IE
-#include "wx/msw/webview_ie.h"
+#include    <wx/msw/webview_ie.h>
 #endif
-#include "wx/webviewarchivehandler.h"
-#include "wx/webviewfshandler.h"
-
+#include    <wx/webviewarchivehandler.h>
+#include    <wx/webviewfshandler.h>
 
 using namespace iconic;
 
@@ -310,6 +308,12 @@ WebFrame::~WebFrame()
 {
     delete m_tools_menu;
 }
+
+wxWebView* WebFrame::GetBrowser()
+{
+    return m_browser;
+}
+
 
 /**
   * Method that retrieves the current state from the web control and updates the GUI
@@ -953,4 +957,21 @@ void WebFrame::OnError(wxWebViewEvent& evt)
 void WebFrame::OnPrint(wxCommandEvent& WXUNUSED(evt))
 {
     m_browser->Print();
+}
+
+void WebFrame::OnScrollLineUp(wxCommandEvent&)
+{
+    m_browser->LineUp();
+}
+void WebFrame::OnScrollLineDown(wxCommandEvent&)
+{
+    m_browser->LineDown();
+}
+void WebFrame::OnScrollPageUp(wxCommandEvent&)
+{
+    m_browser->PageUp();
+}
+void WebFrame::OnScrollPageDown(wxCommandEvent&)
+{
+    m_browser->PageDown();
 }
