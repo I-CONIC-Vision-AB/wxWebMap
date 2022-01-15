@@ -23,6 +23,6 @@ You can progammatically add a marker from ```menu->Run Script->Put marker on Sto
     * If you run into problems when compiling wxWidgets or even if compilation works but you get messages like "wx*.dll not found" when running sample applications. Replace the ```./vcpkg/ports/wxwidgets/portfile.cmake``` with the one in ```wxWebMap/cmake/portfile.cmake``` and rebuild wxWidgets (```vcpkg install wxwidgets:x64-windows```).
 * Open VisualStudio and choose the ```Open a local folder``` option.
 * This will trigger CMake to parse the project. 
-    * You may get warnings, but in the Output tab you should see 'CMake finished'
+    * You may get warnings, but in the Output tab you should see ```CMake generation finished```.
 * Now Build->Build all
 * Set target to e.g. bin/wxWebMapApp.exe and run the application

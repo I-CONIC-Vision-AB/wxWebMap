@@ -8,14 +8,8 @@ set(SOURCES
 
 add_executable(IconicWebMapTest ${SOURCES})
 
-target_include_directories(IconicWebMapTest PUBLIC "../test")
-#target_compile_definitions(IconicGpuTest PUBLIC CL_TARGET_OPENCL_VERSION=220)
+target_include_directories(IconicWebMapTest PUBLIC "../test" "../include")
 target_compile_definitions(IconicWebMapTest PUBLIC BOOST_TEST_DYN_LINK)
-
-#target_include_directories(IconicWebMapTest PUBLIC ${Boost_INCLUDE_DIRS})
-#target_include_directories(IconicWebMapTest PUBLIC ${EIGEN3_INCLUDE_DIRS})
-#target_include_directories(IconicWebMapTest PUBLIC ${GLFW_INCLUDE_DIRS})
-target_include_directories(IconicWebMapTest PUBLIC "../include")
 
 target_link_libraries(IconicWebMapTest 
 # ${INSTALL_BIN_DIR}

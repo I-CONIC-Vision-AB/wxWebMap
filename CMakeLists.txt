@@ -49,7 +49,6 @@ endif()
 
 # Request the required wxWidgets libs
 find_path(BOOST_SHARED_PTR_INCLUDE_DIRS "boost/shared_ptr.hpp") # Make sure we have boost::shared_ptr for smart pointer handling
-find_package(Eigen3 REQUIRED)
 find_package(wxWidgets 3.1 COMPONENTS net core base html xml webview REQUIRED)
 
 # Include the wxWidgets use file to initialize various settings
