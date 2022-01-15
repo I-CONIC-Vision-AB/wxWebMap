@@ -7,7 +7,6 @@
 #include    <wx/string.h>
 
 namespace iconic {
-namespace sensor {
 /**
  * @brief Basic class for showing a web map with features.
  *
@@ -80,5 +79,4 @@ public:
     virtual void SetSize(int width, int height) = 0;
 };
 typedef boost::shared_ptr<MapHtml> MapHtmlPtr; //!< Smart pointer to a web map
-}
 }

@@ -20,9 +20,9 @@ BOOST_AUTO_TEST_CASE(photo_plan)
     fn.SetPath(dir);
     fn.RemoveLastDir(); // The install_dir
     dir = fn.GetPath();
-    BOOST_TEST(iconic::sensor::MapHtml::SetDataDirectory(dir));
+    BOOST_TEST(iconic::MapHtml::SetDataDirectory(dir));
 
-    iconic::sensor::MapHtmlPtr pMap = iconic::sensor::MapHtml::Create(wxString("map.html"));
+    iconic::MapHtmlPtr pMap = iconic::MapHtml::Create(wxString("map.html"));
     wxString filename("C:/Data/marker.html");
     if (wxFileExists(filename)) {
         wxRemoveFile(filename);
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(photo_plan)
     wxLaunchDefaultBrowser(filename);
 
     // Cleanup
-    pMap = iconic::sensor::MapHtmlPtr();
+    pMap = iconic::MapHtmlPtr();
     delete wxLog::SetActiveTarget(nullptr);
 }
 
@@ -101,6 +101,6 @@ BOOST_AUTO_TEST_CASE(pinpoint_image)
     wxLog::SetActiveTarget(new wxLogStderr);
     wxLog::SetVerbose(true);
 
-    iconic::sensor::MapHtmlPtr pMap = iconic::sensor::MapHtml::Create();
+    iconic::MapHtmlPtr pMap = iconic::MapHtml::Create();
 
 }

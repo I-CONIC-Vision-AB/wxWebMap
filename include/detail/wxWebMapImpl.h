@@ -13,6 +13,6 @@ protected:
     wxWebMapImpl(wxString const &basemapHtmlFileName, wxString const& dataDirectory);
 
     wxWebView* cpWebView;
-    sensor::MapHtmlPtr cpMap;
+    MapHtmlPtr cpMap;
 };
 }

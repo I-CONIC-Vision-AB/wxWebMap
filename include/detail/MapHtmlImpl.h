@@ -3,7 +3,6 @@
 #include    <vector>
 
 namespace iconic {
-namespace sensor {
 class LeafletJs : public MapHtml {
 public:
     LeafletJs(wxString sHtmlBaseMapFileName);
@@ -31,5 +30,4 @@ public:
     int cWidth, cHeight;
     int cZoom;
 };
-}
 }

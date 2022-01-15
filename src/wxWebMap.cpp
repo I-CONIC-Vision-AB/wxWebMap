@@ -20,9 +20,9 @@ wxWebMapImpl::wxWebMapImpl(wxString const& basemapHtmlFileName, wxString const& 
     wxWebMap()
 {
     if (!dataDirectory.IsEmpty()) {
-        sensor::MapHtml::SetDataDirectory(dataDirectory);
+        MapHtml::SetDataDirectory(dataDirectory);
     }
-    cpMap = sensor::MapHtml::Create(basemapHtmlFileName);
+    cpMap = MapHtml::Create(basemapHtmlFileName);
 }
 
 wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, wxString const& dataDirectory, const wxString& url, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)

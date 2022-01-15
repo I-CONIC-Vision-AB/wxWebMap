@@ -5,7 +5,7 @@
 #include    <wx/intl.h>
 #include    <wx/ffile.h>
 
-using namespace iconic::sensor;
+using namespace iconic;
 
 wxString LeafletJs::cDataDirectory = wxEmptyString;
 

@@ -73,7 +73,7 @@ public:
         fn.SetPath(wxFileName::GetCwd());
         fn.SetFullName(wxString("map.html"));
         m_url = fn.GetFullPath();
-        cpMap = iconic::sensor::MapHtml::Create(m_url);
+        cpMap = iconic::MapHtml::Create(m_url);
         cpMap->SetCenter(18.072263, 59.326180);
         //wxFileName fn;
         //fn.SetPath(wxFileName::GetCwd());
@@ -109,7 +109,7 @@ public:
 
 private:
     wxString m_url;
-    iconic::sensor::MapHtmlPtr cpMap;
+    iconic::MapHtmlPtr cpMap;
 };
 
 class WebFrame : public wxFrame {
