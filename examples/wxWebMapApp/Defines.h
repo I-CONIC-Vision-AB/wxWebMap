@@ -1,3 +1,6 @@
 #pragma once
 
-#define WX_WBMAP_STOCKHOLM 5000
+enum {
+    WX_WEBMAP_ADD_MARKER=5000,
+    WX_WEBMAP_DRAGGABLE
+};

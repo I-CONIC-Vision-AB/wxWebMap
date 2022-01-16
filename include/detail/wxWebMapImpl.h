@@ -9,13 +9,15 @@ public:
                             const wxString& url, */const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name);
 
 protected:
-    wxWebMapImpl(wxString const &basemapHtmlFileName, wxString const& dataDirectory);
+    wxWebMapImpl();
 
     virtual wxWebView* GetWebView();
 
-    virtual bool AddMapObject(wxMapObject const& o, wxString* result);
+    virtual bool AddMapObject(pwxMapObject const o, wxString* result);
     virtual void SetMapName(wxString const& name);
+    virtual std::list<pwxMapObject>& GetMapObjects();
 
     wxWebView* cpWebView;
     wxString cMapName;
+    std::list<pwxMapObject> clMapObjects;
 };

@@ -19,19 +19,30 @@ public:
      * @param lat Latitude
      * @param lon Longitude
      * @param bDraggable Draggable
-     * @param bRemovable Removable (Adds marker to a visible html list with a remove link)
     */
-    wxMapMarker(double lat, double lon, bool bDraggable = false, bool bRemovable = false);
+    wxMapMarker(double lat, double lon, bool bDraggable = false);
 
     /**
-     * @brief Returns script to run to add this object
+     * @brief Returns script to run to add this object.
+     *
+     * See \c js/wxMapMarker.js.
      * @param map Map name
      * @return script to run to add this object
     */
     virtual wxString GetJavaScriptAdd(wxString map) const;
 
+    /**
+     * @brief Create a marker
+     * @param lat Latitude
+     * @param lon Longitude
+     * @param bDraggable Draggable
+     * @return a marker
+    */
+    static boost::shared_ptr<wxMapMarker> Create(double lat, double lon, bool bDraggable = false);
+
     double cLat;
     double cLon;
     bool cbDraggable;
-    bool cbRemovable;
 };
+
+typedef boost::shared_ptr<wxMapMarker> pwxMapMarker; //!< Smart pointer to a map marker.

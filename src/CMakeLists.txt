@@ -20,6 +20,7 @@ cmake_minimum_required(VERSION 2.8.12)
 set(SRC_FILES
     wxWebMap.cpp
     wxMapMarker.cpp
+    wxMapHtml.cpp
     )
 
 if(WIN32)
@@ -67,6 +68,6 @@ install(
     DIRECTORY 
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" 
     DESTINATION ${CMAKE_INSTALL_PREFIX}
-    FILES_MATCHING PATTERN "*.dll" PATTERN "*.html" PATTERN "*.exe"
+    FILES_MATCHING PATTERN "*.dll" PATTERN "*.html" PATTERN "*.exe" PATTERN "*.js"
 )
 

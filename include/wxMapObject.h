@@ -9,6 +9,16 @@
 
 #include    <exports.h>
 #include    <wx/string.h>
+#include    <boost/shared_ptr.hpp>
+#include    <boost/make_shared.hpp>
+
+/**
+ * @brief Map object type.
+ * @sa wxMapObject
+*/
+enum class ICONIC_WEBMAP_EXPORT EMapObjectType {
+    MARKER  //!< wxMapMarker
+};
 
 /**
  * @brief A generic map object.
@@ -24,4 +34,18 @@ public:
      * @sa wxWebMap::AddMapObject
     */
     virtual wxString GetJavaScriptAdd(wxString map) const = 0;
+
+    /**
+     * @brief Returns type of map object
+     * @return type of map object
+    */
+    virtual EMapObjectType GetType() const {
+        return cType;
+    }
+protected:
+    EMapObjectType cType;
 };
+
+typedef boost::shared_ptr<wxMapObject> pwxMapObject; //!< Smart pointer to a map object.
+
+

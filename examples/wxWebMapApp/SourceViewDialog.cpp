@@ -8,7 +8,7 @@ SourceViewDialog::SourceViewDialog(wxWindow* parent, wxString source) :
              wxDefaultPosition, wxSize(700, 500),
              wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
-#if 1 //wxUSE_STC
+#if wxUSE_STC
     wxStyledTextCtrl* text = new wxStyledTextCtrl(this, wxID_ANY);
     text->SetMarginWidth(1, 30);
     text->SetMarginType(1, wxSTC_MARGIN_NUMBER);

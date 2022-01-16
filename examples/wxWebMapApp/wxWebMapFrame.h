@@ -57,10 +57,12 @@ public:
     wxWebMap* GetWebMap();
 
     /**
-     * @brief Progammatically add a marker on Stockholm
+     * @brief Progammatically add a marker to the map
      * @param e Unused
     */
-    void OnMarkStockholm(wxCommandEvent& e);
+    void OnAddMarker(wxCommandEvent& e);
+    void OnToggleDraggable(wxCommandEvent& e);
+    void OnUpdateDraggable(wxUpdateUIEvent& e);
 
     void UpdateState();
     void OnIdle(wxIdleEvent& evt);
@@ -190,6 +192,8 @@ private:
 
     // Last executed JavaScript snippet, for convenience.
     wxString m_javascript;
+
+    bool cbDraggable;
 
     wxDECLARE_EVENT_TABLE();
 };

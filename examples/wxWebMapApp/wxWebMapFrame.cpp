@@ -16,11 +16,14 @@
 #include    <wx/webviewfshandler.h>
 
 wxBEGIN_EVENT_TABLE(WebFrame, wxFrame)
-    EVT_MENU(WX_WBMAP_STOCKHOLM, WebFrame::OnMarkStockholm)
+    EVT_MENU(WX_WEBMAP_ADD_MARKER, WebFrame::OnAddMarker)
+    EVT_MENU(WX_WEBMAP_DRAGGABLE, WebFrame::OnToggleDraggable)
+    EVT_UPDATE_UI(WX_WEBMAP_DRAGGABLE, WebFrame::OnUpdateDraggable)
 wxEND_EVENT_TABLE()
 
 WebFrame::WebFrame(const wxString& url) :
-    wxFrame(NULL, wxID_ANY, "wxWebView Sample")
+    wxFrame(NULL, wxID_ANY, "wxWebView Sample"),
+    cbDraggable(false)
 {
     // set the frame icon
     SetIcon(wxICON(sample));
@@ -74,7 +77,7 @@ WebFrame::WebFrame(const wxString& url) :
 #endif
 
     m_webmap = wxWebMap::Create(this, wxID_ANY, url, wxDefaultPosition, wxDefaultSize, backend);
-    m_browser = m_webmap->GetWebView();// wxWebView::New(this, wxID_ANY, url, wxDefaultPosition, wxDefaultSize, backend);
+    m_browser = m_webmap->GetWebView();
     topsizer->Add(m_webmap, wxSizerFlags().Expand().Proportion(1));
 
     //We register the wxfs:// protocol for testing purposes
@@ -93,6 +96,14 @@ WebFrame::WebFrame(const wxString& url) :
     wxMenuItem* setPage = m_tools_menu->Append(wxID_ANY, _("Set page text"));
     wxMenuItem* viewSource = m_tools_menu->Append(wxID_ANY, _("View Source"));
     wxMenuItem* viewText = m_tools_menu->Append(wxID_ANY, _("View Text"));
+    m_tools_menu->AppendSeparator();
+
+    // Add map menu
+    wxMenu* map_menu = new wxMenu;
+    map_menu->AppendCheckItem(WX_WEBMAP_DRAGGABLE, "Toggle draggable marker", _("Make the marker (set before 'Add marker...')"));
+    map_menu->Append(WX_WEBMAP_ADD_MARKER, "Add marker...", _("Adds a marker to the map"));
+    m_tools_menu->AppendSubMenu(map_menu, "Map");
+
     m_tools_menu->AppendSeparator();
     m_tools_layout = m_tools_menu->AppendRadioItem(wxID_ANY, _("Use Layout Zoom"));
     m_tools_tiny = m_tools_menu->AppendRadioItem(wxID_ANY, _("Tiny"));
@@ -136,7 +147,6 @@ WebFrame::WebFrame(const wxString& url) :
     m_tools_menu->AppendSubMenu(scroll_menu, "Scroll");
 
     wxMenu* script_menu = new wxMenu;
-    script_menu->Append(WX_WBMAP_STOCKHOLM, "Put marker on Stockholm", _("Adds a marker at Stockholm"));
     m_script_string = script_menu->Append(wxID_ANY, "Return String");
     m_script_integer = script_menu->Append(wxID_ANY, "Return integer");
     m_script_double = script_menu->Append(wxID_ANY, "Return double");
@@ -260,11 +270,6 @@ WebFrame::~WebFrame()
     delete m_tools_menu;
 }
 
-//wxWebView* WebFrame::GetBrowser()
-//{
-//    return m_browser;
-//}
-//
 wxWebMap* WebFrame::GetWebMap()
 {
     return m_webmap;
@@ -669,13 +674,34 @@ void WebFrame::RunScript(const wxString& javascript)
     }
 }
 
-void WebFrame::OnMarkStockholm(wxCommandEvent& e)
+void WebFrame::OnAddMarker(wxCommandEvent& e)
 {
-    // Neither draggable nor removable
-    wxMapMarker marker(59.326180, 18.072263);
+    wxString sLatLon = wxGetTextFromUser(_("Enter latitude longitude"), _("Add marker"), _("59.326180, 18.072263"), this);
+    if (sLatLon.IsEmpty()) {
+        return;
+    }
+    double lat, lon;
+    if (!sLatLon.BeforeFirst(',').ToDouble(&lat)) {
+        return;
+    }
+    if (!sLatLon.AfterFirst(',').ToDouble(&lon)) {
+        return;
+    }
+
+    pwxMapMarker marker = wxMapMarker::Create(lat, lon, cbDraggable);
     wxString res;
     m_webmap->AddMapObject(marker, &res);
-    wxLogMessage(_("Added leaflet object #%s"), res);
+    wxLogMessage(_("Added leaflet object %s"), res); // Todo, save the leaflet id, so the marker can be referenced later
+}
+
+void WebFrame::OnToggleDraggable(wxCommandEvent& e)
+{
+    cbDraggable = !cbDraggable;
+}
+
+void WebFrame::OnUpdateDraggable(wxUpdateUIEvent& e)
+{
+    e.Check(cbDraggable);
 }
 
 void WebFrame::OnRunScriptString(wxCommandEvent& WXUNUSED(evt))

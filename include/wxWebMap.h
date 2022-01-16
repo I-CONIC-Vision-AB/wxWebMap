@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include	<wx/webview.h>
 #include    <exports.h>
+#include	<wx/webview.h>
 #include    <wxMapMarker.h>
+#include    <list>
 
 /**
  * @brief A window displaying a map from a map source, such as WMS.
@@ -58,7 +59,7 @@ public:
      * @param result If not null, it will contain the Leafletjs identity number as a astring
      * @return True on success
     */
-    virtual bool AddMapObject(wxMapObject const& o, wxString *result=nullptr) = 0;
+    virtual bool AddMapObject(pwxMapObject const o, wxString *result=nullptr) = 0;
 
     /**
      * @brief Set name of map.
@@ -68,6 +69,12 @@ public:
      * @todo Enable multiple map names
     */
     virtual void SetMapName(wxString const& name) = 0;
+
+    /**
+     * @brief Return list with map objects
+     * @return list with map objects
+    */
+    virtual std::list<pwxMapObject>& GetMapObjects() = 0;
 
 protected:
     /**
