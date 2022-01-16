@@ -26,6 +26,7 @@ position:absolute;
         <body>
         <div id="map"><!-- Empty div body --></div>
         <script type = "text/javascript">
+            // ToDo: Move all javascript code to js/*.js directory and add them with wxMapHtml!
             var map = L.map('map', {
             center: [59.326180, 18.072263],
     zoom: 6
@@ -49,7 +50,7 @@ position:absolute;
 
 map.on('click', onMapClick);
 
-//var markers = new Array();
+//var markers = new Array(); // The markers are added from wxMapMarker.js!!! 
 function onMapClick(e) {
     var marker = new L.Marker(e.latlng, {draggable:true});
 	marker.addTo(map);
