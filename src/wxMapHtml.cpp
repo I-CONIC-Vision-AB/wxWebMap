@@ -1,6 +1,4 @@
 #include	<wxMapHtml.h>
-#include    <wx/html/htmlpars.h>
-#include    <wx/xml/xml.h>
 #include    <wx/log.h>
 #include    <wx/FFile.h>
 #include    <wx/sstream.h>

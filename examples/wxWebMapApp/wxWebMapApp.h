@@ -44,13 +44,16 @@ public:
     virtual bool OnInit() wxOVERRIDE;
 
 #if wxUSE_CMDLINE_PARSER
+
     /**
      * @brief Set up command line parser
+     * @parser Parser
     */
     virtual void OnInitCmdLine(wxCmdLineParser& parser) wxOVERRIDE;
 
     /**
      * @brief Command line handler
+     * @parser Parser
     */
     virtual bool OnCmdLineParsed(wxCmdLineParser& parser) wxOVERRIDE;
 #endif // wxUSE_CMDLINE_PARSER

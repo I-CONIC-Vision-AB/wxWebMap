@@ -6,6 +6,8 @@
 
 /**
  * @brief Utility to add e.g. javascripts to an HTML page.
+ *
+ * This is typically only done once to create an HTML file with desired javascripts so that a wxMapObject can be added and edited.
 */
 class ICONIC_WEBMAP_EXPORT wxMapHtml : public wxXmlDocument {
 public:
@@ -13,12 +15,19 @@ public:
      * @brief Constructor.
      *
      * wxMemoryFileSystem must have been added to file system handlers before call!
-     * @param baseMapHtmlFileName HTML template file to edit
+     * @param baseMapHtmlFileName HTML template file to edit. This is typically an HTML file in the \c wxWebMap/data directory, e.g. wxWebMap/data/map.html (which is copied to binary directory).
+     * @todo Remove more javascript code from data/map.html and add programatically from javscripts instead so that we can use C++ to create a map, change tile layer etcetera.
     */
     wxMapHtml(wxString const& baseMapHtmlFileName);
 
     /**
-     * @brief Get the name of the file in the memory file system
+     * @brief Get the name of the file in the memory file system.
+     *
+     * This file can be loaded like this:
+     * \code
+     * wxString memoryFileName = wxString("memory:")+html.GetMemoryFileName();
+     * wxWebView* pWebView = pWebMap->GetWebView()->LoadURL(memoryFileName);
+     * \endcode
      * @return the name of the file in the memory file system
     */
     wxString GetMemoryFileName() const;
@@ -34,8 +43,8 @@ protected:
     wxXmlNode* Find(wxString const& s, wxXmlNode* startNode, bool bIncludeChildren = true, wxXmlAttribute* attr = nullptr);
 
     /**
-     * @brief Get \c <body>
-     * @return \c <body> or null
+     * @brief Get \c "body" node
+     * @return \c "body" or null
     */
     wxXmlNode* GetBodyNode();
 
