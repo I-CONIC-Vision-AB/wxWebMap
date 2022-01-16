@@ -30,9 +30,13 @@ wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& 
     wxMapHtml html(basemapHtmlFileName);
     wxWebMapImpl* p = new wxWebMapImpl();
     p->wxWindow::Create(parent, id, pos, size, style, name);
-    p->cpWebView = wxWebView::New(p, wxID_ANY, url, pos, size, backend, style, name);
     wxBoxSizer* bs = new wxBoxSizer(wxHORIZONTAL);
-    bs->Add(p->cpWebView, 1, wxEXPAND);
+    p->cpWebView = wxWebView::New(p, wxID_ANY, url, pos, size, backend, style, name);
+    if (!p->cpWebView) {
+        wxLogError(_("Web view could not be created"));
+    } else {
+        bs->Add(p->cpWebView, 1, wxEXPAND);
+    }
     p->SetSizerAndFit(bs);
     p->cpWebView->LoadURL("memory:"+ html.GetMemoryFileName()); // It is strange that this url can not be given in the wxWebView construction above... There, LoadURL is called also, so it should work
     return p;
