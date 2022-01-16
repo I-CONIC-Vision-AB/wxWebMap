@@ -41,7 +41,7 @@ position:absolute;
         }),
         'Imagery' : L.tileLayer.wms('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             layers: 'Imagery',
-            attribution: 'Esri, USGS | Esri, FAO, NOAA | Earthstar Geographics'
+            attribution: 'Esri, USGS|Esri, FAO, NOAA|Earthstar Geographics'
         })
     };
     L.control.layers(basemaps, {}, { collapsed: true }).addTo(map);
@@ -49,7 +49,7 @@ position:absolute;
 
 map.on('click', onMapClick);
 
-var markers = new Array();
+//var markers = new Array();
 function onMapClick(e) {
     var marker = new L.Marker(e.latlng, {draggable:true});
 	marker.addTo(map);

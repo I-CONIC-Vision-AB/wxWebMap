@@ -47,10 +47,25 @@ wxWebView* wxWebMapImpl::GetWebView()
     return cpWebView;
 }
 
-bool wxWebMapImpl::AddMapObject(pwxMapObject const o, wxString* result)
+bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* result)
 {
     cpWebView->RunScript(o->GetJavaScriptAdd(cMapName), result);
+    if (result && !result->IsEmpty()) {
+        int id;
+        EMapObjectType type;
+        wxMapObject::ParseResult(*result, type, id);
+        o->SetLeafletId(id);
+    }
     clMapObjects.push_back(o);
+
+    return true;
+}
+
+bool wxWebMapImpl::DeleteMapObject(pwxMapObject o)
+{
+    cpWebView->RunScript(o->GetRemoveString(cMapName));
+    GetMapObjects().remove(o);
+
     return true;
 }
 

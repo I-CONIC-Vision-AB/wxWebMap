@@ -59,7 +59,9 @@ public:
      * @param result If not null, it will contain the Leafletjs identity number as a astring
      * @return True on success
     */
-    virtual bool AddMapObject(pwxMapObject const o, wxString *result=nullptr) = 0;
+    virtual bool AddMapObject(pwxMapObject o, wxString *result=nullptr) = 0;
+
+    virtual bool DeleteMapObject(pwxMapObject o) = 0;
 
     /**
      * @brief Set name of map.

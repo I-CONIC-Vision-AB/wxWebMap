@@ -13,7 +13,8 @@ protected:
 
     virtual wxWebView* GetWebView();
 
-    virtual bool AddMapObject(pwxMapObject const o, wxString* result);
+    virtual bool AddMapObject(pwxMapObject o, wxString* result);
+    virtual bool DeleteMapObject(pwxMapObject o);
     virtual void SetMapName(wxString const& name);
     virtual std::list<pwxMapObject>& GetMapObjects();
 

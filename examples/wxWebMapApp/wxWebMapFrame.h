@@ -61,6 +61,14 @@ public:
      * @param e Unused
     */
     void OnAddMarker(wxCommandEvent& e);
+
+    /**
+     * @brief Remove last added marker
+     * @param e Unused
+     * @todo The list of map objects is not updated onMouseClick, only when adding through wxWebMap::OnAddMarker. Fix it.
+    */
+    void OnRemoveLastMarker(wxCommandEvent& e);
+    void OnUpdateRemoveLastMarker(wxUpdateUIEvent& e);
     void OnToggleDraggable(wxCommandEvent& e);
     void OnUpdateDraggable(wxUpdateUIEvent& e);
 

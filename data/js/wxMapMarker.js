@@ -1,7 +1,17 @@
 
+var markers = new Array();
 function marker_add(lat, lon, map) {
-    var marker = new L.marker([lat, lon]); marker.addTo(map); return "MARKER," + marker._leaflet_id + "," + lat + "," + lon;
+    var marker = new L.marker([lat, lon]); marker.addTo(map); 
+    markers[marker._leaflet_id] = marker;
+    return "MARKER," + marker._leaflet_id + "," + lat + "," + lon;
 };
 function marker_add_drag(lat, lon, map) {
-    var marker = new L.marker([lat, lon], { draggable: true }); marker.addTo(map); return "MARKER," + marker._leaflet_id + "," + lat + "," + lon;
+    var marker = new L.marker([lat, lon], { draggable: true }); marker.addTo(map); 
+    markers[marker._leaflet_id] = marker;
+    return "MARKER," + marker._leaflet_id + "," + lat + "," + lon;
 };
+function mapobject_remove(id, map) {
+    map.removeLayer(markers[id]);
+    delete markers[id];
+};
+

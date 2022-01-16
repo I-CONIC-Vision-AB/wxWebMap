@@ -42,8 +42,17 @@ public:
     virtual EMapObjectType GetType() const {
         return cType;
     }
+
+    virtual void SetLeafletId(int id) {
+        cLeafletId = id;
+    }
+
+    virtual wxString GetRemoveString(wxString const& map);
+
+    static bool ParseResult(wxString const& result, EMapObjectType& type, int& id);
 protected:
     EMapObjectType cType;
+    int cLeafletId;
 };
 
 typedef boost::shared_ptr<wxMapObject> pwxMapObject; //!< Smart pointer to a map object.

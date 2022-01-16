@@ -17,6 +17,8 @@
 
 wxBEGIN_EVENT_TABLE(WebFrame, wxFrame)
     EVT_MENU(WX_WEBMAP_ADD_MARKER, WebFrame::OnAddMarker)
+    EVT_MENU(WX_WEBMAP_REMOVE_LAST, WebFrame::OnRemoveLastMarker)
+    EVT_UPDATE_UI(WX_WEBMAP_REMOVE_LAST, WebFrame::OnUpdateRemoveLastMarker)
     EVT_MENU(WX_WEBMAP_DRAGGABLE, WebFrame::OnToggleDraggable)
     EVT_UPDATE_UI(WX_WEBMAP_DRAGGABLE, WebFrame::OnUpdateDraggable)
 wxEND_EVENT_TABLE()
@@ -102,6 +104,7 @@ WebFrame::WebFrame(const wxString& url) :
     wxMenu* map_menu = new wxMenu;
     map_menu->AppendCheckItem(WX_WEBMAP_DRAGGABLE, "Toggle draggable marker", _("Make the marker (set before 'Add marker...')"));
     map_menu->Append(WX_WEBMAP_ADD_MARKER, "Add marker...", _("Adds a marker to the map"));
+    map_menu->Append(WX_WEBMAP_REMOVE_LAST, _("Remove last marker"));
     m_tools_menu->AppendSubMenu(map_menu, "Map");
 
     m_tools_menu->AppendSeparator();
@@ -674,6 +677,16 @@ void WebFrame::RunScript(const wxString& javascript)
     }
 }
 
+void WebFrame::OnRemoveLastMarker(wxCommandEvent& e)
+{
+    if (!m_webmap->GetMapObjects().size()) {
+        return;
+    }
+    std::list<pwxMapObject>::iterator it = m_webmap->GetMapObjects().end();
+    --it;
+    m_webmap->DeleteMapObject(*it);
+}
+
 void WebFrame::OnAddMarker(wxCommandEvent& e)
 {
     wxString sLatLon = wxGetTextFromUser(_("Enter latitude longitude"), _("Add marker"), _("59.326180, 18.072263"), this);
@@ -701,7 +714,14 @@ void WebFrame::OnToggleDraggable(wxCommandEvent& e)
 
 void WebFrame::OnUpdateDraggable(wxUpdateUIEvent& e)
 {
+    // Mark menu item as checked if draggable is active
     e.Check(cbDraggable);
+}
+
+void WebFrame::OnUpdateRemoveLastMarker(wxUpdateUIEvent& e)
+{
+    // Enable only if there are objects to delete
+    e.Enable(m_webmap->GetMapObjects().size() != 0);
 }
 
 void WebFrame::OnRunScriptString(wxCommandEvent& WXUNUSED(evt))
