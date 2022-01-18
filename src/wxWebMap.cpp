@@ -26,9 +26,10 @@ wxWebMapImpl::wxWebMapImpl() :
 
 wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
 {
+    bool bUseMemoryFS = (backend != wxWebViewBackendEdge);
     wxString url = basemapHtmlFileName;
-    wxMapHtml html(basemapHtmlFileName);
     wxWebMapImpl* p = new wxWebMapImpl();
+    p->cpMapHtml = boost::make_shared<wxMapHtml>(basemapHtmlFileName, bUseMemoryFS);
     p->wxWindow::Create(parent, id, pos, size, style, name);
     wxBoxSizer* bs = new wxBoxSizer(wxHORIZONTAL);
     p->cpWebView = wxWebView::New(p, wxID_ANY, url, pos, size, backend, style, name);
@@ -38,7 +39,12 @@ wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& 
         bs->Add(p->cpWebView, 1, wxEXPAND);
     }
     p->SetSizerAndFit(bs);
-    p->cpWebView->LoadURL("memory:"+ html.GetMemoryFileName()); // It is strange that this url can not be given in the wxWebView construction above... There, LoadURL is called also, so it should work
+    if (bUseMemoryFS) {
+        p->cpWebView->LoadURL("memory:" + p->cpMapHtml->GetMemoryFileName()); // It is strange that this url can not be given in the wxWebView construction above... There, LoadURL is called also, so it should work
+    } else {
+        wxString filename = p->cpMapHtml->GetLocalFileName().GetFullPath();
+        p->cpWebView->LoadURL(filename); // It is strange that this url can not be given in the wxWebView construction above... There, LoadURL is called also, so it should work
+    }
     return p;
 }
 

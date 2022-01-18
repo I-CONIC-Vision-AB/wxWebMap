@@ -1,11 +1,12 @@
 # wxWebMap
 A C++ library enabling web maps in desktop applications (Windows, Linux, MacOS). 
+A wxWebMap is a wxWindow that can be added to your wxWidgets application to show maps and add and edit features on the map.
 
 ## wxWidgets
-The library is based on ```wxWidgets``` and the web map is displayed using a ```wxWebView``` window.
+The library is based on [```wxWidgets```](http://www.wxwidgets.org) and the web map is displayed using a [```wxWebView```](https://docs.wxwidgets.org/3.0/classwx_web_view.html) window.
 
 ## leafletjs
-The map functionality is implemented using ```leafletjs```. ```Leafletjs javascript``` snippets to e.g. add a marker to a map are executed by calling e.g. ```wxWebMap::AddMapObject```. 
+The map functionality is implemented using [```leafletjs```](https://leafletjs.com/). ```Leafletjs javascript``` snippets to e.g. add a marker to a map are executed by calling e.g. ```wxWebMap::AddMapObject```. 
 
 ## Sample application
 In examples/wxWebMapApplication there is a sample application with GUI. It is based on the wxWidgets wxWebView sample. However, it opens a map in the web view. 

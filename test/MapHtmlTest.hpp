@@ -9,8 +9,6 @@ namespace buf = boost::unit_test::framework;
 #include    <wx/frame.h>
 #include    <wx/fs_mem.h>
 
-
-
 BOOST_AUTO_TEST_CASE(webmap)
 {
     std::cerr << "Running test case: " << buf::current_test_case().p_name << std::endl;
@@ -18,7 +16,7 @@ BOOST_AUTO_TEST_CASE(webmap)
     wxLog::SetVerbose(true);
     wxFileSystem::AddHandler(new wxMemoryFSHandler);
 
-    wxFrame *f = new wxFrame(nullptr, wxID_ANY, "Hej");
+    wxFrame *f = new wxFrame(nullptr, wxID_ANY, "Dummy frame");
 
     // Create the webview
     wxString backend = wxWebViewBackendDefault;

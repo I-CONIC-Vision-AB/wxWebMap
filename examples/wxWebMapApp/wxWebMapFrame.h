@@ -40,7 +40,7 @@ WX_DECLARE_HASH_MAP(int, wxSharedPtr<wxWebViewHistoryItem>,
                     wxIntegerHash, wxIntegerEqual, wxMenuHistoryMap);
 
 /**
- * @brief Main frame for the application.
+ * @brief A main frame for the example application wxWebMapApp.
  *
  * Containts a wxWebMap.
  * @todo Includes most of the wxWebView sample application, which just makes it unnecessarily complex. Remove everything except map stuff!

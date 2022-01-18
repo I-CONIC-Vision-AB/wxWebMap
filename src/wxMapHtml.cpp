@@ -4,9 +4,10 @@
 #include    <wx/sstream.h>
 #include    <wx/fs_mem.h>
 
-wxMapHtml::wxMapHtml(wxString const& baseMapHtmlFileName) :
+wxMapHtml::wxMapHtml(wxString const& baseMapHtmlFileName, bool bUseMemoryFS) :
     wxXmlDocument(baseMapHtmlFileName),
-    cFileName(baseMapHtmlFileName)
+    cFileName(baseMapHtmlFileName),
+    cbUseMemoryFS(bUseMemoryFS)
 {
     if (!IsOk()) {
         wxLogError(_("Could not parse %s"), baseMapHtmlFileName);
@@ -14,6 +15,16 @@ wxMapHtml::wxMapHtml(wxString const& baseMapHtmlFileName) :
     }
 
     AddLeafletJavaScripts();
+}
+
+wxMapHtml::~wxMapHtml()
+{
+    if (cOutputFileName.Exists() && cOutputFileName.GetPath().IsSameAs(wxFileName::GetTempDir())) {
+        // Delete temporary file
+        if (!wxRemoveFile(cOutputFileName.GetFullPath())) {
+            wxLogError(_("Could not remove temporary file %s"), cOutputFileName.GetFullPath());
+        }
+    }
 }
 
 wxXmlNode* wxMapHtml::GetBodyNode()
@@ -66,7 +77,18 @@ bool wxMapHtml::AddLeafletJavaScripts()
     if (s.StartsWith("<!DOC")) {
         s = s.AfterFirst('\n'); // Delete the <!DOCUMENT html> tag - not desired for HTML
     }
-    wxMemoryFSHandler::AddFileWithMimeType(htmlName, s, "text/html");
+    if (cbUseMemoryFS) {
+        wxMemoryFSHandler::AddFileWithMimeType(htmlName, s, "text/html");
+    } else {
+        wxFileName fn;
+        fn.SetPath(wxFileName::GetTempDir());
+        fn.SetFullName(htmlName);
+        cOutputFileName = fn;
+        wxString filename = cOutputFileName.GetFullPath();
+        wxFFile outFile(filename, "w");
+        outFile.Write(s);
+        outFile.Close();
+    }
 
 #if 0
     // Save to file for debugging
@@ -84,6 +106,11 @@ bool wxMapHtml::AddLeafletJavaScripts()
 wxString wxMapHtml::GetMemoryFileName() const
 {
     return cMemoryFileName;
+}
+
+wxFileName wxMapHtml::GetLocalFileName() const
+{
+    return cOutputFileName;
 }
 
 wxXmlNode* wxMapHtml::Find(wxString const& s, wxXmlNode* startNode, bool bIncludeChildren, wxXmlAttribute* attr)

@@ -1,5 +1,3 @@
-vcpkg_fail_port_install(ON_TARGET "uwp")
-
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO wxWidgets/wxWidgets
@@ -24,10 +22,14 @@ if(VCPKG_TARGET_ARCHITECTURE STREQUAL arm64 OR VCPKG_TARGET_ARCHITECTURE STREQUA
 endif()
 
 # This may be set to ON by users in a custom triplet.
-# wxUSE_STL=ON and wxUSE_STL=OFF are not API compatible which is why this must be set
-# in a custom triplet rather than a port feature.
+# The use of 'wxUSE_STL' and 'WXWIDGETS_USE_STD_CONTAINERS' (ON or OFF) are not API compatible
+# which is why they must be set in a custom triplet rather than a port feature.
 if(NOT DEFINED WXWIDGETS_USE_STL)
     set(WXWIDGETS_USE_STL OFF)
+endif()
+
+if(NOT DEFINED WXWIDGETS_USE_STD_CONTAINERS)
+    set(WXWIDGETS_USE_STD_CONTAINERS OFF)
 endif()
 
 if (VCPKG_TARGET_IS_WINDOWS)
@@ -35,12 +37,12 @@ if (VCPKG_TARGET_IS_WINDOWS)
 	# https://developer.microsoft.com/en-us/microsoft-edge/webview2/
 	set(OPTIONS
 		-DwxUSE_WEBVIEW_EDGE=ON
+		${OPTIONS}
 	)
 endif()
 
-vcpkg_configure_cmake(
+vcpkg_cmake_configure(
     SOURCE_PATH ${SOURCE_PATH}
-    PREFER_NINJA
     OPTIONS
         -DwxUSE_REGEX=builtin
         -DwxUSE_ZLIB=sys
@@ -53,7 +55,7 @@ vcpkg_configure_cmake(
         ${OPTIONS}
 )
 
-vcpkg_install_cmake()
+vcpkg_cmake_install()
 
 file(GLOB DLLS "${CURRENT_PACKAGES_DIR}/lib/*.dll")
 if(DLLS)
@@ -109,13 +111,18 @@ endforeach()
 if(NOT EXISTS ${CURRENT_PACKAGES_DIR}/include/wx/setup.h)
     file(GLOB_RECURSE WX_SETUP_H_FILES_DBG ${CURRENT_PACKAGES_DIR}/debug/lib/*.h)
     file(GLOB_RECURSE WX_SETUP_H_FILES_REL ${CURRENT_PACKAGES_DIR}/lib/*.h)
-    
-    string(REPLACE "${CURRENT_PACKAGES_DIR}/debug/lib/" "" WX_SETUP_H_FILES_DBG "${WX_SETUP_H_FILES_DBG}")
-    string(REPLACE "/setup.h" "" WX_SETUP_H_DBG_RELATIVE "${WX_SETUP_H_FILES_DBG}")
-    
-    string(REPLACE "${CURRENT_PACKAGES_DIR}/lib/" "" WX_SETUP_H_FILES_REL "${WX_SETUP_H_FILES_REL}")
-    string(REPLACE "/setup.h" "" WX_SETUP_H_REL_RELATIVE "${WX_SETUP_H_FILES_REL}")
-    
+
+    if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "release")
+  #      vcpkg_replace_string("${WX_SETUP_H_FILES_REL}" "${CURRENT_PACKAGES_DIR}" "")
+        string(REPLACE "${CURRENT_PACKAGES_DIR}/lib/" "" WX_SETUP_H_FILES_REL "${WX_SETUP_H_FILES_REL}")
+        string(REPLACE "/setup.h" "" WX_SETUP_H_REL_RELATIVE "${WX_SETUP_H_FILES_REL}")
+    endif()
+    if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "debug")
+  #      vcpkg_replace_string("${WX_SETUP_H_FILES_DBG}" "${CURRENT_PACKAGES_DIR}" "")
+        string(REPLACE "${CURRENT_PACKAGES_DIR}/debug/lib/" "" WX_SETUP_H_FILES_DBG "${WX_SETUP_H_FILES_DBG}")
+        string(REPLACE "/setup.h" "" WX_SETUP_H_DBG_RELATIVE "${WX_SETUP_H_FILES_DBG}")
+    endif()
+
     configure_file(${CMAKE_CURRENT_LIST_DIR}/setup.h.in ${CURRENT_PACKAGES_DIR}/include/wx/setup.h @ONLY)
 endif()
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/vcpkg-cmake-wrapper.cmake DESTINATION ${CURRENT_PACKAGES_DIR}/share/wxwidgets)

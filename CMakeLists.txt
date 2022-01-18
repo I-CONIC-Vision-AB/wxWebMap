@@ -68,6 +68,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 #message(STATUS "in dir: ${CMAKE_SOURCE_DIR}/data/map.html")
 #message(STATUS "out dir:${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/map.html")
 configure_file(${CMAKE_SOURCE_DIR}/data/map.html ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/map.html COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/data/map.html ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/iconic.ico COPYONLY)
 configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapMarker.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapMarker.js COPYONLY)
 
 add_subdirectory("src")

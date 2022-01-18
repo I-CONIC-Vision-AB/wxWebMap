@@ -43,6 +43,8 @@ public:
     */
     virtual bool OnInit() wxOVERRIDE;
 
+    virtual int OnExit() wxOVERRIDE;
+
 #if wxUSE_CMDLINE_PARSER
 
     /**

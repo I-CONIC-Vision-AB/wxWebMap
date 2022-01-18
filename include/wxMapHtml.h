@@ -3,6 +3,7 @@
 #include	<exports.h>
 #include    <wx/string.h>
 #include    <wx/xml/xml.h>
+#include    <wx/filename.h>
 
 /**
  * @brief Utility to add e.g. javascripts to an HTML page.
@@ -19,7 +20,9 @@ public:
      * @param baseMapHtmlFileName HTML template file to edit. This is typically an HTML file in the \c wxWebMap/data directory, e.g. wxWebMap/data/map.html (which is copied to binary directory).
      * @todo Remove more javascript code from data/map.html and add programatically from javscripts instead so that we can use C++ to create a map, change tile layer etcetera.
     */
-    wxMapHtml(wxString const& baseMapHtmlFileName);
+    wxMapHtml(wxString const& baseMapHtmlFileName, bool bUseMemoryFS = true);
+
+    virtual ~wxMapHtml();
 
     /**
      * @brief Get the name of the file in the memory file system.
@@ -32,6 +35,8 @@ public:
      * @return the name of the file in the memory file system
     */
     wxString GetMemoryFileName() const;
+
+    wxFileName GetLocalFileName() const;
 protected:
     /**
      * @brief Find node in XML/HTML tree
@@ -57,4 +62,6 @@ protected:
 
     wxString cFileName;
     wxString cMemoryFileName;
+    bool cbUseMemoryFS;
+    wxFileName cOutputFileName;
 };

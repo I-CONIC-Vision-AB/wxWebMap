@@ -70,3 +70,11 @@ bool wxWebMapApp::OnInit()
 
     return true;
 }
+
+int wxWebMapApp::OnExit()
+{
+    wxFileSystem::CleanUpHandlers();
+    wxImage::CleanUpHandlers();
+    int val = wxApp::OnExit();
+    return val;
+}

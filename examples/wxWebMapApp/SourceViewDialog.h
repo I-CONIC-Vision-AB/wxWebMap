@@ -14,7 +14,7 @@
 /**
  * @brief Shows web page text source.
  *
- * In styled format if wxWidgets STC library has been compiled
+ * Used in sample wxWebMapApp application only. In styled format if wxWidgets STC library has been compiled
 */
 class SourceViewDialog : public wxDialog {
 public:
