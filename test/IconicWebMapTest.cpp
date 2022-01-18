@@ -2,7 +2,7 @@
 
 #include    <iostream>
 #include    <boost/test/unit_test.hpp>
-#include	<exports.h>
+#include	<webmap_exports.h>
 
 namespace buf = boost::unit_test::framework;
 

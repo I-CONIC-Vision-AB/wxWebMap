@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include    <exports.h>
+#include    <webmap_exports.h>
 #include    <wx/string.h>
 #include    <boost/shared_ptr.hpp>
 #include    <boost/make_shared.hpp>

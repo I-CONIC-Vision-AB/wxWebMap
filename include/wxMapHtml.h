@@ -1,6 +1,6 @@
 #pragma once
 
-#include	<exports.h>
+#include	<webmap_exports.h>
 #include    <wx/string.h>
 #include    <wx/xml/xml.h>
 #include    <wx/filename.h>
