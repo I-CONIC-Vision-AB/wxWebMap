@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include    <exports.h>
+#include    <webmap_exports.h>
 #include	<wx/webview.h>
 #include    <wxMapMarker.h>
 #include    <list>

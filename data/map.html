@@ -52,8 +52,7 @@
         basemaps.Map.addTo(map);
 
         map.on('click', onMapClick);
-
-        //var markers = new Array(); // The markers are added from wxMapMarker.js!!!
+        // Add marker on map click 
         function onMapClick(e) {
             var marker = new L.Marker(e.latlng, { draggable: true });
             marker.addTo(map);

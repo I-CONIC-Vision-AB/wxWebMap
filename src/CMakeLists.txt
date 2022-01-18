@@ -36,7 +36,7 @@ add_library(IconicWebMap SHARED ${SRC_FILES} "wxWebMap.cpp")
 
 generate_export_header(IconicWebMap
     BASE_NAME iconic_webmap
-    EXPORT_FILE_NAME "${ICONIC_EXPORTS_DIR}/exports.h"
+    EXPORT_FILE_NAME "${ICONIC_EXPORTS_DIR}/webmap_exports.h"
 )
 
 target_include_directories(IconicWebMap
@@ -69,5 +69,16 @@ install(
         "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" 
     DESTINATION ${CMAKE_INSTALL_PREFIX}
     FILES_MATCHING PATTERN "*.dll" PATTERN "*.html" PATTERN "*.exe" PATTERN "*.js"
+)
+
+install(
+    DIRECTORY "../include" 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}
+    PATTERN "../include/detail" EXCLUDE
+)
+
+install(
+    FILES "${ICONIC_EXPORTS_DIR}/webmap_exports.h"
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include
 )
 
