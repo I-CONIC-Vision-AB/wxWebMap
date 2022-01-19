@@ -87,6 +87,14 @@ public:
     */
     void OnUpdateDraggable(wxUpdateUIEvent& e);
 
+    /**
+    * @brief Create menu with map features.
+    *
+    * Binds menu items with event handlers.
+    * @return menu with map features
+    */
+    wxMenu* CreateMapMenu();
+
     void UpdateState();
     void OnIdle(wxIdleEvent& evt);
     void OnUrl(wxCommandEvent& evt);
@@ -217,6 +225,4 @@ private:
     wxString m_javascript;
 
     bool cbDraggable;
-
-    wxDECLARE_EVENT_TABLE();
 };

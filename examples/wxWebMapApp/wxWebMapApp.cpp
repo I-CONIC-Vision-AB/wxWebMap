@@ -11,8 +11,9 @@ wxIMPLEMENT_APP(wxWebMapApp);
 wxWebMapApp::wxWebMapApp()
 {
     wxFileName fn;
-    fn.SetPath(wxFileName::GetCwd());
-    fn.SetFullName("map.html");
+    fn.SetPath(wxFileName::GetCwd());   // Executable directory
+    fn.AppendDir("html");               // html folder in executable directory
+    fn.SetFullName("map.html");         // Template html file
     m_url = fn.GetFullPath();
 }
 

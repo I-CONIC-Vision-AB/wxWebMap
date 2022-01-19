@@ -56,11 +56,18 @@ bool wxMapHtml::AddLeafletJavaScripts()
 
     wxFileName fn(cFileName);
     wxString htmlName = fn.GetFullName();
-    fn.AppendDir("js");
-    fn.SetFullName("wxMapMarker.js"); // One example, ore to be added
+    fn.RemoveLastDir();                 // Go to parent of current html folder
+    fn.AppendDir("js");                 // js folder (same level as html folder)
+
+    // "wxMapMarker.js" is one example, more to be added.
+    // These examples should be read only templates.
+    // User should be able to configure own versions, e.g.add 'map.setView([lat,lon]);' in add_marker so that the map centers on the added marker
+    // Owner configured templates do not require recompilation of wxWebMap or any other C++ code.
+    fn.SetFullName("wxMapMarker.js");
     wxString filename = fn.GetFullPath();
     wxFFile jsFile(filename, "r");
     if (!jsFile.IsOpened()) {
+        wxLogError(_("Could not open wxMapMarker in the expected path %s"), filename);
         return false;
     }
     wxString jsCodeString;

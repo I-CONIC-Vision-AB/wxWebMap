@@ -1,5 +1,4 @@
 #include	<wxWebMapFrame.h>
-#include    <Defines.h>
 #include    <wxMapMarker.h>
 #include    <SourceViewDialog.h>
 #include    <wx/sizer.h>
@@ -14,14 +13,6 @@
 #endif
 #include    <wx/webviewarchivehandler.h>
 #include    <wx/webviewfshandler.h>
-
-wxBEGIN_EVENT_TABLE(WebFrame, wxFrame)
-    EVT_MENU(WX_WEBMAP_ADD_MARKER, WebFrame::OnAddMarker)
-    EVT_MENU(WX_WEBMAP_REMOVE_LAST, WebFrame::OnRemoveLastMarker)
-    EVT_UPDATE_UI(WX_WEBMAP_REMOVE_LAST, WebFrame::OnUpdateRemoveLastMarker)
-    EVT_MENU(WX_WEBMAP_DRAGGABLE, WebFrame::OnToggleDraggable)
-    EVT_UPDATE_UI(WX_WEBMAP_DRAGGABLE, WebFrame::OnUpdateDraggable)
-wxEND_EVENT_TABLE()
 
 WebFrame::WebFrame(const wxString& url) :
     wxFrame(NULL, wxID_ANY, "wxWebView Sample"),
@@ -100,12 +91,7 @@ WebFrame::WebFrame(const wxString& url) :
     wxMenuItem* viewText = m_tools_menu->Append(wxID_ANY, _("View Text"));
     m_tools_menu->AppendSeparator();
 
-    // Add map menu
-    wxMenu* map_menu = new wxMenu;
-    map_menu->AppendCheckItem(WX_WEBMAP_DRAGGABLE, "Toggle draggable marker", _("Make the marker (set before 'Add marker...')"));
-    map_menu->Append(WX_WEBMAP_ADD_MARKER, "Add marker...", _("Adds a marker to the map"));
-    map_menu->Append(WX_WEBMAP_REMOVE_LAST, _("Remove last marker"));
-    m_tools_menu->AppendSubMenu(map_menu, "Map");
+    m_tools_menu->AppendSubMenu(CreateMapMenu(), "Map");
 
     m_tools_menu->AppendSeparator();
     m_tools_layout = m_tools_menu->AppendRadioItem(wxID_ANY, _("Use Layout Zoom"));
@@ -271,6 +257,25 @@ WebFrame::WebFrame(const wxString& url) :
 WebFrame::~WebFrame()
 {
     delete m_tools_menu;
+}
+
+wxMenu* WebFrame::CreateMapMenu()
+{
+    // Add map menu
+    wxMenu* map_menu = new wxMenu;
+    wxMenuItem* pMenuItem;
+    pMenuItem = map_menu->AppendCheckItem(wxID_ANY, "Toggle draggable marker", _("Make the marker (set before 'Add marker...')"));
+    Bind(wxEVT_MENU, &WebFrame::OnToggleDraggable, this, pMenuItem->GetId());
+    Bind(wxEVT_UPDATE_UI, &WebFrame::OnUpdateDraggable, this, pMenuItem->GetId());
+
+    pMenuItem = map_menu->Append(wxID_ANY, "Add marker...", _("Adds a marker to the map"));
+    Bind(wxEVT_MENU, &WebFrame::OnAddMarker, this, pMenuItem->GetId());
+
+    pMenuItem = map_menu->Append(wxID_ANY, _("Remove last marker"));
+    Bind(wxEVT_MENU, &WebFrame::OnRemoveLastMarker, this, pMenuItem->GetId());
+    Bind(wxEVT_UPDATE_UI, &WebFrame::OnUpdateRemoveLastMarker, this, pMenuItem->GetId());
+
+    return map_menu;
 }
 
 wxWebMap* WebFrame::GetWebMap()
