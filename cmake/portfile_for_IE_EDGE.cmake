@@ -25,11 +25,11 @@ endif()
 # The use of 'wxUSE_STL' and 'WXWIDGETS_USE_STD_CONTAINERS' (ON or OFF) are not API compatible
 # which is why they must be set in a custom triplet rather than a port feature.
 if(NOT DEFINED WXWIDGETS_USE_STL)
-    set(WXWIDGETS_USE_STL OFF)
+    set(WXWIDGETS_USE_STL ON) # I-CONIC, set to on by default!
 endif()
 
 if(NOT DEFINED WXWIDGETS_USE_STD_CONTAINERS)
-    set(WXWIDGETS_USE_STD_CONTAINERS OFF)
+    set(WXWIDGETS_USE_STD_CONTAINERS ON) # I-CONIC, set to on by default!
 endif()
 
 if (VCPKG_TARGET_IS_WINDOWS)
@@ -37,6 +37,12 @@ if (VCPKG_TARGET_IS_WINDOWS)
 	# https://developer.microsoft.com/en-us/microsoft-edge/webview2/
 	set(OPTIONS
 		-DwxUSE_WEBVIEW_EDGE=ON
+		${OPTIONS}
+	)
+else()
+	set(OPTIONS
+    # Requires gtk webkit
+		-DwxUSE_WEBVIEW_WEBKIT=ON
 		${OPTIONS}
 	)
 endif()

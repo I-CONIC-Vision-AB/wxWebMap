@@ -22,6 +22,9 @@ WebFrame::WebFrame(const wxString& url) :
     SetIcon(wxICON(sample));
     SetTitle("wxWebView Sample");
 
+    CreateStatusBar(2);
+    wxLogStatus(GetTitle());
+
     wxBoxSizer* topsizer = new wxBoxSizer(wxVERTICAL);
 
     // Create the toolbar
@@ -165,7 +168,6 @@ WebFrame::WebFrame(const wxString& url) :
     editmenu->AppendSubMenu(selection, "Selection");
 
     wxMenuItem* loadscheme = m_tools_menu->Append(wxID_ANY, _("Custom Scheme Example"));
-    wxMenuItem* usememoryfs = m_tools_menu->Append(wxID_ANY, _("Memory File System Example"));
 
     m_context_menu = m_tools_menu->AppendCheckItem(wxID_ANY, _("Enable Context Menu"));
     m_dev_tools = m_tools_menu->AppendCheckItem(wxID_ANY, _("Enable Dev Tools"));
@@ -246,7 +248,6 @@ WebFrame::WebFrame(const wxString& url) :
     Bind(wxEVT_MENU, &WebFrame::OnDeleteSelection, this, m_selection_delete->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnSelectAll, this, selectall->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnLoadScheme, this, loadscheme->GetId());
-    Bind(wxEVT_MENU, &WebFrame::OnUseMemoryFS, this, usememoryfs->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnEnableContextMenu, this, m_context_menu->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnEnableDevTools, this, m_dev_tools->GetId());
 
@@ -264,7 +265,7 @@ wxMenu* WebFrame::CreateMapMenu()
     // Add map menu
     wxMenu* map_menu = new wxMenu;
     wxMenuItem* pMenuItem;
-    pMenuItem = map_menu->AppendCheckItem(wxID_ANY, "Toggle draggable marker", _("Make the marker (set before 'Add marker...')"));
+    pMenuItem = map_menu->AppendCheckItem(wxID_ANY, "Toggle draggable marker", _("Make the marker draggable (set before 'Add marker...')"));
     Bind(wxEVT_MENU, &WebFrame::OnToggleDraggable, this, pMenuItem->GetId());
     Bind(wxEVT_UPDATE_UI, &WebFrame::OnUpdateDraggable, this, pMenuItem->GetId());
 
@@ -416,11 +417,6 @@ void WebFrame::OnLoadScheme(wxCommandEvent& WXUNUSED(evt))
     path.Replace("\\", "/");
     path = "wxfs:///" + path + ";protocol=zip/doc.htm";
     m_browser->LoadURL(path);
-}
-
-void WebFrame::OnUseMemoryFS(wxCommandEvent& WXUNUSED(evt))
-{
-    m_browser->LoadURL("memory:page1.htm");
 }
 
 void WebFrame::OnEnableContextMenu(wxCommandEvent& evt)
@@ -840,9 +836,6 @@ void WebFrame::OnSelectAll(wxCommandEvent& WXUNUSED(evt))
     m_browser->SelectAll();
 }
 
-/**
-  * Callback invoked when a loading error occurs
-  */
 void WebFrame::OnError(wxWebViewEvent& evt)
 {
 #define WX_ERROR_CASE(type) \
@@ -865,8 +858,7 @@ void WebFrame::OnError(wxWebViewEvent& evt)
     wxLogMessage("%s", "Error; url='" + evt.GetURL() + "', error='" + category + " (" + evt.GetString() + ")'");
 
     //Show the info bar with an error
-    m_info->ShowMessage(_("An error occurred loading ") + evt.GetURL() + "\n" +
-                        "'" + category + "'", wxICON_ERROR);
+    m_info->ShowMessage(_("An error occurred loading ") + evt.GetURL() + "\n" + "'" + category + "'", wxICON_ERROR);
 
     UpdateState();
 }

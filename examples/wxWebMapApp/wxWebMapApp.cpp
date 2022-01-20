@@ -48,24 +48,6 @@ bool wxWebMapApp::OnInit()
     //Required for virtual file system archive and memory support
     wxFileSystem::AddHandler(new wxArchiveFSHandler);
     wxFileSystem::AddHandler(new wxMemoryFSHandler);
-
-    // Create the memory files
-    wxImage::AddHandler(new wxPNGHandler);
-    wxMemoryFSHandler::AddFile("logo.png",
-                               wxBitmap(wxlogo_xpm), wxBITMAP_TYPE_PNG);
-    wxMemoryFSHandler::AddFile("page1.htm",
-                               "<html><head><title>File System Example</title>"
-                               "<link rel='stylesheet' type='text/css' href='memory:test.css'>"
-                               "</head><body><h1>Page 1</h1>"
-                               "<p><img src='memory:logo.png'></p>"
-                               "<p>Some text about <a href='memory:page2.htm'>Page 2</a>.</p></body>");
-    wxMemoryFSHandler::AddFile("page2.htm",
-                               "<html><head><title>File System Example</title>"
-                               "<link rel='stylesheet' type='text/css' href='memory:test.css'>"
-                               "</head><body><h1>Page 2</h1>"
-                               "<p><a href='memory:page1.htm'>Page 1</a> was better.</p></body>");
-    wxMemoryFSHandler::AddFile("test.css", "h1 {color: red;}");
-
     WebFrame *frame = new WebFrame(m_url);
     frame->Show();
 
