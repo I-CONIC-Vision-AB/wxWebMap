@@ -23,7 +23,7 @@ To demonstrate the C++ binding to the map, you can add a marker using ```menu->M
 * Install the wxWidgets and boost libraries: ```.\vcpkg.exe install wxwidgets:x64-windows boost:x64-windows``` in e.g. powershell (Admin mode)
     * If you run into problems when compiling wxWidgets or even if compilation works but you get messages like "wx*.dll not found" when running sample applications. Replace the ```./vcpkg/ports/wxwidgets/portfile.cmake``` with the one in ```wxWebMap/cmake/portfile.cmake``` and rebuild wxWidgets (```vcpkg install wxwidgets:x64-windows```).
 * Open VisualStudio and choose the ```Open a local folder``` option and select your wxWebMap disrectory.
-* This will trigger CMake to parse the project. 
+* This will trigger [CMake](https://cmake.org/) to parse the project. 
     * You may get warnings, but in the Output tab you should see ```CMake generation finished```.
 * Now Build->Build all
 * Set target to e.g. bin/wxWebMapApp.exe and run the application
