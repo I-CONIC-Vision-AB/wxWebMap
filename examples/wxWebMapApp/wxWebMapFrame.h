@@ -151,7 +151,6 @@ public:
     void OnDeleteSelection(wxCommandEvent& evt);
     void OnSelectAll(wxCommandEvent& evt);
     void OnLoadScheme(wxCommandEvent& evt);
-    void OnUseMemoryFS(wxCommandEvent& evt);
     void OnFind(wxCommandEvent& evt);
     void OnFindDone(wxCommandEvent& evt);
     void OnFindText(wxCommandEvent& evt);
