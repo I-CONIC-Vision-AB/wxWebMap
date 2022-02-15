@@ -11,7 +11,9 @@
 #include    <webmap_exports.h>
 #include	<wx/webview.h>
 #include    <wxMapMarker.h>
+#include    <wxMapUtil.h>
 #include    <list>
+
 
 /**
  * @brief A window displaying a map from a map source, such as WMS.
@@ -77,6 +79,36 @@ public:
      * @return list with map objects
     */
     virtual std::list<pwxMapObject>& GetMapObjects() = 0;
+
+    /**
+     * @brief Use case 3.1
+     * Handle mouse clicks to draw polygon in when in draw mode.
+     * @param e Mouse event
+     * @todo Bind() OnLeftMouseClick with this event handler. Not likely to work directly since clicks are in aggregated web view, not in this window. Use wxOverlay?
+    */
+    virtual void OnLeftMouseClick(wxMouseEvent &e) {}
+
+    /**
+     * @brief Use case 4.2. Handle map object selected.
+     * @param e Map event
+     * @todo Implement
+     * @sa wxMapEvent
+    */
+    virtual void OnMapObjectSelected(wxMapEvent &e) {}
+
+    /**
+     * @brief Use case 4.1. Set action on mouse events
+     * @param mode Action mode
+     * @todo Implement
+    */
+    virtual void SetAction(EActionMode mode) {}
+
+    /**
+     * @brief Use case 4.1. Add action. Probably multiple actions can be active simultaneously, e.g. draw and select
+     * @param mode Action mode
+     * @todo Implement. Perhaps add argument for which kind of event (e.g. wxEVT_LEFT_DOWN) the action is connected to.
+    */
+    virtual void AddAction(EActionMode mode) {}
 
 protected:
     /**
