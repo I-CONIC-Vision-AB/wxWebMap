@@ -9,6 +9,7 @@
 
 #include    <webmap_exports.h>
 #include    <wx/string.h>
+#include    <wx/event.h>
 #include    <boost/shared_ptr.hpp>
 #include    <boost/make_shared.hpp>
 
@@ -17,7 +18,9 @@
  * @sa wxMapObject
 */
 enum class ICONIC_WEBMAP_EXPORT EMapObjectType {
-    MARKER  //!< wxMapMarker
+    MARKER,     //!< wxMapMarker
+    POLYGON,    //!< wxMapPolygon
+    IMAGE       //!< wxMapImage
 };
 
 /**
@@ -56,5 +59,26 @@ protected:
 };
 
 typedef boost::shared_ptr<wxMapObject> pwxMapObject; //!< Smart pointer to a map object.
+
+/**
+ * @brief Specialized event for wxWebMap
+ *
+ * @todo Implement. Not sure if wxMapEvent is needed?
+ * @sa wxWebMap::OnMapObjectSelected
+*/
+class ICONIC_WEBMAP_EXPORT wxMapEvent : public wxEvent {
+public:
+    /**
+     * @brief Constructor
+     * @param winid Window id
+     * @param commandType Command type
+     * @param pObject wxMapObject
+    */
+    wxMapEvent(int winid = 0, wxEventType commandType = wxEVT_NULL, pwxMapObject pObject = pwxMapObject()) : wxEvent(winid, commandType), cpObject(pObject) {}
+    virtual ~wxMapEvent() {}
+
+    pwxMapObject cpObject;
+};
+
 
 

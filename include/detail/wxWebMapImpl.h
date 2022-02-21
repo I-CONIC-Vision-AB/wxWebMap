@@ -19,6 +19,7 @@ protected:
     virtual void SetMapName(wxString const& name);
     virtual std::list<pwxMapObject>& GetMapObjects();
 
+
     wxWebView* cpWebView;
     wxString cMapName;
     std::list<pwxMapObject> clMapObjects;

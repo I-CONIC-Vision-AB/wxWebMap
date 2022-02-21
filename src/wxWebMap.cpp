@@ -31,6 +31,7 @@ wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& 
     wxWebMapImpl* p = new wxWebMapImpl();
     p->cpMapHtml = boost::make_shared<wxMapHtml>(basemapHtmlFileName, bUseMemoryFS);
     p->wxWindow::Create(parent, id, pos, size, style, name);
+
     wxBoxSizer* bs = new wxBoxSizer(wxHORIZONTAL);
     p->cpWebView = wxWebView::New(p, wxID_ANY, url, pos, size, backend, style, name);
     if (!p->cpWebView) {
