@@ -58,6 +58,7 @@ vcpkg_cmake_configure(
         -DwxUSE_LIBTIFF=sys
         -DwxBUILD_DISABLE_PLATFORM_LIB_DIR=ON
         -DwxUSE_STL=${WXWIDGETS_USE_STL}
+        -DwxUSE_STD_CONTAINERS=${WXWIDGETS_USE_STD_CONTAINERS}
         ${OPTIONS}
 )
 

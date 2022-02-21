@@ -25,17 +25,31 @@ public:
     virtual ~wxMapHtml();
 
     /**
-     * @brief Get the name of the file in the memory file system.
+     * @brief Get the name of the HTML file in the memory file system.
      *
      * This file can be loaded like this:
      * \code
      * wxString memoryFileName = wxString("memory:")+html.GetMemoryFileName();
-     * wxWebView* pWebView = pWebMap->GetWebView()->LoadURL(memoryFileName);
+     * pWebMap->GetWebView()->LoadURL(memoryFileName);
      * \endcode
      * @return the name of the file in the memory file system
+     * @sa GetLocalFileName
     */
     wxString GetMemoryFileName() const;
 
+    /**
+     * @brief Get name of local temporary HTML file.
+     *
+     * Memory files can not be used with the Edge backend, so we write a temporary file
+     * and read it instead if Edge backend is active.
+     * This file can be loaded like this:
+     * \code
+     * wxString filename = html.GetLocalFileName().GetFullPath();
+     * pWebMap->GetWebView()->LoadURL(filename);
+     * \endcode
+     * @sa GetMemoryFileName
+     * @return name of local temporary file
+    */
     wxFileName GetLocalFileName() const;
 protected:
     /**
