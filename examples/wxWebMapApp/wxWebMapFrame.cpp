@@ -236,6 +236,14 @@ WebFrame::WebFrame(const wxString& url) :
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptUndefined, this, m_script_undefined->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptNull, this, m_script_null->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptDate, this, m_script_date->GetId());
+	
+	// Install message handler with the name wx_msg
+    m_browser->AddScriptMessageHandler("wx_msg");
+    // Bind handler
+    m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, [](wxWebViewEvent& evt) {
+        wxLogMessage("Script message received; value = %s, handler = %s", evt.GetString(), evt.GetMessageHandler());
+        });
+		
 #if wxUSE_WEBVIEW_IE
     if (!wxWebView::IsBackendAvailable(wxWebViewBackendEdge)) {
         Bind(wxEVT_MENU, &WebFrame::OnRunScriptObjectWithEmulationLevel, this, m_script_object_el->GetId());

@@ -14,7 +14,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"><!-- Empty script body --></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""><!-- Empty script body --></script>
-    <style>
+    
+	<link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.11.4/dist/leaflet-geoman.css" />
+    <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.11.4/dist/leaflet-geoman.min.js">
+            <!-- Empty script body -->
+    </script>
+	
+	<style>
         html, body,
         #map {
             position: absolute;
@@ -51,13 +57,68 @@
         L.control.layers(basemaps, {}, { collapsed: true }).addTo(map);
         basemaps.Map.addTo(map);
 
-        map.on('click', onMapClick);
-        // Add marker on map click 
-        function onMapClick(e) {
-            var marker = new L.Marker(e.latlng, { draggable: true });
-            marker.addTo(map);
-            markers[marker._leaflet_id] = marker;
-        };
+        //map.on('click', onMapClick);
+        //// Add marker on map click 
+        //function onMapClick(e) {
+        //    var marker = new L.Marker(e.latlng, { draggable: true });
+        //    marker.addTo(map);
+        //    markers[marker._leaflet_id] = marker;
+        //};
+
+
+        // add leaflet.pm controls to the map
+        map.pm.addControls({
+            position: 'topleft',
+            positions: {
+                draw: '',
+                edit: '',
+                custom: ''
+            },
+            drawMarker: false,
+            drawCircleMarker: false,
+            drawPolyline: false,
+            drawRectangle: false,       // maybe yes
+            drawPolygon: true,
+            drawCircle: false,           // maybe yes
+            editMode: true,
+            dragMode: true,
+            cutPolygon: false,
+            removalMode: true,
+            rotateMode: true,
+            oneBlock: true,
+            drawControls: true,
+            editControls: true,
+            customControls: true
+        });
+
+        map.pm.Toolbar.changeControlOrder([
+            'drawPolygon',
+            'editMode',
+            'dragMode',
+            'rotateMode',
+            'removalMode'
+        ]);
+
+        map.on('pm:create', function (e) {
+            var latlngs = e.layer.getLatLngs();
+            //alert(latlngs);
+            function f() {
+                window.wx_msg.postMessage(latlngs);
+            } f();
+            e.layer.on('pm:update', function (e) {
+                alert("edited layer");
+            });
+        });
+
+        //map.on('pm:globaleditmodetoggled', function (e) {
+        //    //var latlngs = e.layer.getLatLngs();
+        //    //alert(latlngs);
+        //    alert("tester2");
+        //});
+
+        //layer.on('pm:update', function (e) {
+        //    alert("edited layer");
+        //});
     </script>
 </body>
 </html>
