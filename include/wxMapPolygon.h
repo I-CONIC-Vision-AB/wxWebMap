@@ -28,7 +28,7 @@ public:
      * @brief Use case 1.2
      * @param vPoints
     */
-    wxMapPolygon(std::vector<wxMapPoint>& vPoints);
+    wxMapPolygon(std::vector<wxMapPoint> const &vPoints);
 
     /**
      * @brief Returns the script to add this object to a map
@@ -42,7 +42,7 @@ public:
     * @brief Create a polygon
     * @return a marker
     */
-    static boost::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> &vPoints);
+    static boost::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> const &vPoints);
 
 };
 

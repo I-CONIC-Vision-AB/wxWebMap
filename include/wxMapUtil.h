@@ -11,15 +11,13 @@ public:
     wxMapPoint() : x(0.0f), y(0.0f) {}
     wxMapPoint(float lat, float lon) : x(lat), y(lon) {}
 
-    float operator[](int idx) {
+    float& operator[](int idx) {
         switch (idx) {
+        default: // Return x on any index other than allowed 0 or 1
         case 0:
             return x;
-            break;
         case 1:
             return y;
-        default:
-            return 0.0f;
         }
     }
 

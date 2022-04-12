@@ -5,6 +5,7 @@ set(SOURCES
     "wxWebMapApp.cpp"
     "wxWebMapFrame.cpp"
     "SourceViewDialog.cpp"
+    "PolygonReader.cpp"
 )
 
 if(WIN32)

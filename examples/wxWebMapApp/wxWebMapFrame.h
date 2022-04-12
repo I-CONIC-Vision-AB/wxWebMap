@@ -63,6 +63,12 @@ public:
     void OnAddMarker(wxCommandEvent& e);
 
     /**
+     * @brief Read a file with polygons and show on map
+     * @param  Unused
+    */
+    void OnAddPolygons(wxCommandEvent& WXUNUSED(e));
+
+    /**
      * @brief Remove last added marker
      * @param e Unused
      * @todo The list of map objects is not updated onMouseClick, only when adding through wxWebMap::OnAddMarker. Fix it.
@@ -94,6 +100,10 @@ public:
     * @return menu with map features
     */
     wxMenu* CreateMapMenu();
+
+    bool AddPolygons(wxString const& filename);
+
+    bool AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons, std::vector<wxString> const& vPolygonName);
 
     void UpdateState();
     void OnIdle(wxIdleEvent& evt);
