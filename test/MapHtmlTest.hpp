@@ -3,11 +3,29 @@
 #include    <boost/test/unit_test.hpp>
 namespace buf = boost::unit_test::framework;
 #include    <wxWebMap.h>
+#include    <wxMapUtil.h>
 #include	<wx/filename.h>
 #include	<wx/utils.h>
 #include    <wx/log.h>
 #include    <wx/frame.h>
 #include    <wx/fs_mem.h>
+
+BOOST_AUTO_TEST_CASE(maprect)
+{
+    std::cerr << "Running test case: " << buf::current_test_case().p_name << std::endl;
+    float x0 = 58.0f;
+    float y0 = 18.0f;
+    float x1 = 58.001f;
+    float y1 = 18.00025f;
+    wxMapRect r(x0, y0, x1-x0, y1-y0);
+
+    BOOST_TEST(r[0] == 58.0f);
+    BOOST_TEST(r[1] == 18.0f);
+    BOOST_TEST(r[2] == x1-x0);
+    BOOST_TEST(r[3] == y1-y0);
+    BOOST_TEST(r[2] == r.w);
+    BOOST_TEST(r[3] == r.h);
+}
 
 BOOST_AUTO_TEST_CASE(webmap)
 {
