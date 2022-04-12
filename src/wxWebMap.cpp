@@ -85,3 +85,8 @@ std::list<pwxMapObject>& wxWebMapImpl::GetMapObjects()
 {
     return clMapObjects;
 }
+//
+//std::list<pwxMapObject>& wxWebMapImpl::GetMapPolygon()
+//{
+//    return clMapObjects;
+//}

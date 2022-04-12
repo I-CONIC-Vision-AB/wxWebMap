@@ -9,6 +9,8 @@
 #include    <wxMapObject.h>
 #include	<wxMapUtil.h>
 
+vector<wxMapPoint> coordinates;
+
 /**
  * @brief Polygon
  *

@@ -50,6 +50,8 @@ public:
     WebFrame(const wxString& url);
     virtual ~WebFrame();
 
+    void StorePolygon(wxString polygon);
+
     /**
      * @brief Get the web map
      * @return the web map
@@ -159,6 +161,8 @@ public:
     void OnEnableDevTools(wxCommandEvent& evt);
 
 private:
+    wxString polygon;
+    
     wxTextCtrl* m_url;
     wxWebMap* m_webmap;
     wxWebView* m_browser;

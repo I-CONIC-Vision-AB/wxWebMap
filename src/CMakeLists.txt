@@ -32,7 +32,7 @@ elseif(APPLE)
 endif()
 
 # Define the build target for the executable
-add_library(IconicWebMap SHARED ${SRC_FILES} "wxWebMap.cpp")
+add_library(IconicWebMap SHARED ${SRC_FILES} "wxWebMap.cpp" "wxMapPolygon.cpp")
 
 generate_export_header(IconicWebMap
     BASE_NAME iconic_webmap

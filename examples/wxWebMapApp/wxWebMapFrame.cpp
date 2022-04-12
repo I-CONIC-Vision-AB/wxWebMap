@@ -236,6 +236,16 @@ WebFrame::WebFrame(const wxString& url) :
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptUndefined, this, m_script_undefined->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptNull, this, m_script_null->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptDate, this, m_script_date->GetId());
+
+    // Install message handler with the name wx_msg
+    m_browser->AddScriptMessageHandler("wx_msg");
+    // Bind handler
+    m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, [&](wxWebViewEvent& evt) {
+        wxLogMessage("value = %s", evt.GetString(), evt.GetMessageHandler());
+        StorePolygon(evt.GetString());
+        });
+
+
 #if wxUSE_WEBVIEW_IE
     if (!wxWebView::IsBackendAvailable(wxWebViewBackendEdge)) {
         Bind(wxEVT_MENU, &WebFrame::OnRunScriptObjectWithEmulationLevel, this, m_script_object_el->GetId());
@@ -258,6 +268,12 @@ WebFrame::WebFrame(const wxString& url) :
 WebFrame::~WebFrame()
 {
     delete m_tools_menu;
+}
+
+void WebFrame::StorePolygon(wxString newpolygon)
+{
+    polygon += newpolygon;
+    wxLogMessage(polygon);
 }
 
 wxMenu* WebFrame::CreateMapMenu()
@@ -766,17 +782,34 @@ void WebFrame::OnRunScriptUndefined(wxCommandEvent& WXUNUSED(evt))
     RunScript("function f(){var person = new Object();}f();");
 }
 
+
 void WebFrame::OnRunScriptNull(wxCommandEvent& WXUNUSED(evt))
 {
-    RunScript("function f(){return null;}f();");
+    // Install message handler with the name wx_msg
+    m_browser->AddScriptMessageHandler("wx_msg");
+    // Bind handler
+    m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, [](wxWebViewEvent& evt) {
+        wxLogMessage("Script message received; value = %s, handler = %s", evt.GetString(), evt.GetMessageHandler());
+        });
+    RunScript("function f(){setTimeout(() => {window.wx_msg.postMessage('WHOA IS THIS EVEN POSSIBLE');},3000);} f();");
 }
 
 void WebFrame::OnRunScriptDate(wxCommandEvent& WXUNUSED(evt))
 {
-    RunScript("function f(){var d = new Date('10/08/2017 21:30:40'); \
-        var tzoffset = d.getTimezoneOffset() * 60000; \
-        return new Date(d.getTime() - tzoffset);}f();");
+    RunScript("function resolveAfter2Seconds() {return new Promise(resolve => {setTimeout(() => {resolve('resolved');}, 2000)});}async function asyncCall() {document.write('CALLING'); const result = await resolveAfter2Seconds();window.wx_msg.postMessage(result);}asyncCall();");
 }
+
+//void WebFrame::OnRunScriptNull(wxCommandEvent& WXUNUSED(evt))
+//{
+//    RunScript("function f(){return null;}f();");
+//}
+//
+//void WebFrame::OnRunScriptDate(wxCommandEvent& WXUNUSED(evt))
+//{
+//    RunScript("function f(){var d = new Date('10/08/2017 21:30:40'); \
+//        var tzoffset = d.getTimezoneOffset() * 60000; \
+//        return new Date(d.getTime() - tzoffset);}f();");
+//}
 
 #if wxUSE_WEBVIEW_IE
 void WebFrame::OnRunScriptObjectWithEmulationLevel(wxCommandEvent& WXUNUSED(evt))
