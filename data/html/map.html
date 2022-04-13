@@ -98,18 +98,14 @@
         ]);
 
         map.on('pm:create', function (e) {
-            var latlngs = e.layer.getLatLngs();
             function f() {
-                window.wx_msg.postMessage(latlngs);
-                //window.wx_msg.postMessage(e.layer._leaflet_id);
+                window.wx_msg.postMessage("Create: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
             } f();
             e.layer.on('pm:update', function (e) {
-                window.wx_msg.postMessage(e.layer.getLatLngs());
-                window.wx_msg.postMessage(e.layer._leaflet_id);
+                window.wx_msg.postMessage("Update: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
             });
             e.layer.on('pm:remove', function (e) {
-                window.wx_msg.postMessage(e.layer._leaflet_id);
-                alert("removed")
+                window.wx_msg.postMessage("Remove: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
             });
         });
 

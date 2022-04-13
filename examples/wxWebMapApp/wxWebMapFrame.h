@@ -50,8 +50,8 @@ public:
     WebFrame(const wxString& url);
     virtual ~WebFrame();
 
-    void StorePolygon(wxString polygon);
-
+    void StorePolygon(int id, wxString polygon);
+    void WebFrame::RemovePolygon(int id, wxString newpolygon);
     /**
      * @brief Get the web map
      * @return the web map
@@ -161,7 +161,7 @@ public:
     void OnEnableDevTools(wxCommandEvent& evt);
 
 private:
-    wxString polygon;
+    std::vector<wxMapPolygon> polygons;
     
     wxTextCtrl* m_url;
     wxWebMap* m_webmap;

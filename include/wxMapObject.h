@@ -50,6 +50,10 @@ public:
         cLeafletId = id;
     }
 
+    virtual int GetLeafletID() {
+        return cLeafletId;
+    }
+
     virtual wxString GetRemoveString(wxString const& map);
 
     static bool ParseResult(wxString const& result, EMapObjectType& type, int& id);
