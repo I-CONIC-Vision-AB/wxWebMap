@@ -9,8 +9,6 @@
 #include    <wxMapObject.h>
 #include	<wxMapUtil.h>
 
-vector<wxMapPoint> coordinates;
-
 /**
  * @brief Polygon
  *
@@ -26,19 +24,24 @@ vector<wxMapPoint> coordinates;
 */
 class ICONIC_WEBMAP_EXPORT wxMapPolygon : public wxMapObject {
 public:
+
+    std::vector<wxMapPoint> coordinates;
+
     /**
      * @brief Use case 1.2
      * @param vPoints
     */
     wxMapPolygon(std::vector<wxMapPoint>& vPoints);
+    bool wxMapPolygon::ParseResult(wxString const& result, EMapObjectType& type, int& id);
 
+    wxString wxMapPolygon::GetRemoveString(wxString const& map);
     /**
      * @brief Returns the script to add this object to a map
      * @param map Map to add to
      * @return Java script to execute
      * @sa wxWebMap::AddMapObject
     */
-    virtual wxString GetJavaScriptAdd(wxString map) const = 0;
+    virtual wxString GetJavaScriptAdd(wxString map) const;
 
     /**
     * @brief Create a polygon
