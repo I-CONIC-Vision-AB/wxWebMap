@@ -98,6 +98,9 @@ public:
     */
     static boost::shared_ptr<wxMapImage> Create(wxImage const& image, float latitude, float longitude);
 
+    // Test
+    static boost::shared_ptr<wxMapImage> Create(float latitude, float longitude);
+
 
 };
 
