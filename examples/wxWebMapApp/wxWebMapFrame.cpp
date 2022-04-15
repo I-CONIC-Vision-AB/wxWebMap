@@ -1,6 +1,7 @@
 #include	<wxWebMapFrame.h>
 #include    <wxMapMarker.h>
 #include    <wxMapPolygon.h>
+#include    <wxMapImageS.h>
 #include    <SourceViewDialog.h>
 #include    <PolygonReader.h>
 #include    <wx/sizer.h>
@@ -16,6 +17,7 @@
 #endif
 #include    <wx/webviewarchivehandler.h>
 #include    <wx/webviewfshandler.h>
+
 
 WebFrame::WebFrame(const wxString& url) :
     wxFrame(NULL, wxID_ANY, "wxWebView Sample"),
@@ -278,6 +280,10 @@ wxMenu* WebFrame::CreateMapMenu()
     pMenuItem = map_menu->Append(wxID_ANY, "Add polygons...", _("Show polygons from file"));
     Bind(wxEVT_MENU, &WebFrame::OnAddPolygons, this, pMenuItem->GetId());
     map_menu->AppendSeparator();
+
+    //Test add image
+    pMenuItem = map_menu->Append(wxID_ANY, "Add image...", _("Adds a image to the map"));
+    Bind(wxEVT_MENU, &WebFrame::OnAddImageS, this, pMenuItem->GetId());
 
     pMenuItem = map_menu->Append(wxID_ANY, _("Remove last marker"));
     Bind(wxEVT_MENU, &WebFrame::OnRemoveLastMarker, this, pMenuItem->GetId());
@@ -728,6 +734,27 @@ void WebFrame::OnAddPolygons(wxCommandEvent& WXUNUSED(e))
         wxLogError(_("Could not add polygons to map"));
         return;
     }
+}
+
+//Test
+void WebFrame::OnAddImageS(wxCommandEvent& e)
+{
+    wxString sLatLon = wxGetTextFromUser(_("Enter latitude longitude"), _("Add image"), _("59.326180, 18.072263"), this);
+    if (sLatLon.IsEmpty()) {
+        return;
+    }
+    double lat, lon;
+    if (!sLatLon.BeforeFirst(',').ToDouble(&lat)) {
+        return;
+    }
+    if (!sLatLon.AfterFirst(',').ToDouble(&lon)) {
+        return;
+    }
+
+    //pwxMapImageS image = wxMapImageS::Create(lat, lon, cbDraggable);
+    //wxString res;
+    //m_webmap->AddMapObject(image, &res);
+    //wxLogMessage(_("Added leaflet object %s"), res);
 }
 
 bool WebFrame::AddPolygons(wxString const &filename)
