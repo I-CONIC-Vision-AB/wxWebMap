@@ -62,6 +62,9 @@ public:
     */
     void OnAddMarker(wxCommandEvent& e);
 
+    //Test
+    void OnAddImageS(wxCommandEvent& e);
+
     /**
      * @brief Read a file with polygons and show on map
      * @param  Unused
