@@ -16,14 +16,3 @@ function mapobject_remove(id, map) {
     map.removeLayer(markers[id]);
     delete markers[id];
 };
-//Test
-function image_add(lat, lon, map) { / image add! !!!!
-    imageUrl = "https://www.pngitem.com/pimgs/m/35-359831_open-eye-crying-laughing-discord-emoji-crying-laughing.png";
-    var center = [59.426180, 18.472263]; // fixa
-    imageBounds = [center, [lat, lon]];
-    var image = L.imageOverlay(imageUrl, imageBounds);
-    image.addTo(map);
-    //markers[marker._leaflet_id] = marker;
-    return "IMAGE," + image._leaflet_id + "," + lat + "," + lon;
-};
-
