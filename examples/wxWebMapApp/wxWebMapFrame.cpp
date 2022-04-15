@@ -281,7 +281,7 @@ wxMenu* WebFrame::CreateMapMenu()
     Bind(wxEVT_MENU, &WebFrame::OnAddPolygons, this, pMenuItem->GetId());
     map_menu->AppendSeparator();
 
-    //Test add image
+    //TEST add image
     pMenuItem = map_menu->Append(wxID_ANY, "Add image...", _("Adds a image to the map"));
     Bind(wxEVT_MENU, &WebFrame::OnAddImageS, this, pMenuItem->GetId());
 
