@@ -16,14 +16,12 @@ function mapobject_remove(id, map) {
     map.removeLayer(markers[id]);
     delete markers[id];
 };
-//Test
+//Image add
 function image_add(lat, lon, map) {
-    // image add! !!!!
-    imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg";
-    var center = [59.426180, 18.472263]; // fixa
+    imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg"; // Example drone picture
+    var center = [lat + (59.426180 - 59.326180), lon + (18.472263 - 18.072263)]; //Calculation for bounds
     imageBounds = [center, [lat, lon]];
     var image = L.imageOverlay(imageUrl, imageBounds);
     image.addTo(map);
-    //markers[marker._leaflet_id] = marker;
     return "IMAGE," + image._leaflet_id + "," + lat + "," + lon;
 };
