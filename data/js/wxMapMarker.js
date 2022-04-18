@@ -18,8 +18,8 @@ function mapobject_remove(id, map) {
 };
 //Test
 function image_add(lat, lon, map) {
-    / image add! !!!!
-    imageUrl = "https://www.pngitem.com/pimgs/m/35-359831_open-eye-crying-laughing-discord-emoji-crying-laughing.png";
+    // image add! !!!!
+    imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg";
     var center = [59.426180, 18.472263]; // fixa
     imageBounds = [center, [lat, lon]];
     var image = L.imageOverlay(imageUrl, imageBounds);

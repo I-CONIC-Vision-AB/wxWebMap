@@ -279,11 +279,11 @@ wxMenu* WebFrame::CreateMapMenu()
 
     pMenuItem = map_menu->Append(wxID_ANY, "Add polygons...", _("Show polygons from file"));
     Bind(wxEVT_MENU, &WebFrame::OnAddPolygons, this, pMenuItem->GetId());
-    map_menu->AppendSeparator();
 
     //TEST add image
     pMenuItem = map_menu->Append(wxID_ANY, "Add image...", _("Adds a image to the map"));
     Bind(wxEVT_MENU, &WebFrame::OnAddImageS, this, pMenuItem->GetId());
+    map_menu->AppendSeparator();
 
     pMenuItem = map_menu->Append(wxID_ANY, _("Remove last marker"));
     Bind(wxEVT_MENU, &WebFrame::OnRemoveLastMarker, this, pMenuItem->GetId());
