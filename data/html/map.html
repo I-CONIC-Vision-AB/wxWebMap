@@ -31,7 +31,7 @@
     <script type="text/javascript">
         // ToDo: Move all javascript code to js/*.js directory and add them with wxMapHtml!
         var map = L.map('map', {
-            center: [59.326180, 18.072263],
+            center: [42, 69],
             zoom: 6
         });
         var basemaps = {
@@ -53,12 +53,29 @@
 
         map.on('click', onMapClick);
         // Add marker on map click 
+        //function onMapClick(e) {
+        //    var marker = new L.Marker(e.latlng, { draggable: true });
+        //    marker.addTo(map);
+        //    markers[marker._leaflet_id] = marker;
+        //};
+        
+        var polygons = [];
+        var nextPolygon = [];
         function onMapClick(e) {
-            var marker = new L.Marker(e.latlng, { draggable: true });
-            marker.addTo(map);
-            markers[marker._leaflet_id] = marker;
+            nextPolygon.push(e.latlng);
+            if (nextPolygon.length === 5) {
+                polygonAdd();
+            };
+        };
+        function polygonAdd() {
+            var polygon = new L.polygon(nextPolygon);
+            polygon.addTo(map);
+            polygons[polygon._leaflet_id] = polygon;
+            nextPolygon = [];
         };
     </script>
 </body>
 </html>
+
+
 

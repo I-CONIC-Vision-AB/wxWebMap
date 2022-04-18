@@ -44,6 +44,8 @@ public:
     */
     static boost::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> const &vPoints);
 
+
+    vector<wxMapPoint> coordinates;
 };
 
 typedef boost::shared_ptr<wxMapPolygon> pwxMapPolygon; //!< Smart pointer to a map polygon.
