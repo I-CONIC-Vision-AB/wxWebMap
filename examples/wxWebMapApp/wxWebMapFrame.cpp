@@ -751,10 +751,10 @@ void WebFrame::OnAddImageS(wxCommandEvent& e)
         return;
     }
 
-    //pwxMapImageS image = wxMapImageS::Create(lat, lon, cbDraggable);
-    //wxString res;
-    //m_webmap->AddMapObject(image, &res);
-    //wxLogMessage(_("Added leaflet object %s"), res);
+    pwxMapImageS image = wxMapImageS::Create(lat, lon, cbDraggable);
+    wxString res;
+    m_webmap->AddMapObject(image, &res);
+    wxLogMessage(_("Added leaflet object %s"), res);
 }
 
 bool WebFrame::AddPolygons(wxString const &filename)

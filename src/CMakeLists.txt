@@ -21,6 +21,7 @@ set(SRC_FILES
     wxWebMap.cpp
     wxMapMarker.cpp
     wxMapHtml.cpp
+    wxMapImageS.cpp
     )
 
 if(WIN32)
@@ -32,7 +33,7 @@ elseif(APPLE)
 endif()
 
 # Define the build target for the executable
-add_library(IconicWebMap SHARED ${SRC_FILES} "wxWebMap.cpp")
+add_library(IconicWebMap SHARED ${SRC_FILES})
 
 generate_export_header(IconicWebMap
     BASE_NAME iconic_webmap

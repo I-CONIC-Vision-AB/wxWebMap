@@ -51,7 +51,7 @@ wxMapMarker::wxMapMarker(double lat, double lon, bool bDraggable) :
 wxString wxMapMarker::GetJavaScriptAdd(wxString map) const
 {
     if (!cbDraggable) {
-        return wxString::Format("image_add(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
+        return wxString::Format("marker_add(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
     } else {
         return wxString::Format("marker_add_drag(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
     }

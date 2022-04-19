@@ -4,12 +4,12 @@
 #include    <wx/log.h>
 #include    <wx/intl.h>
 
-wxString wxMapObject::GetRemoveString(wxString const& map)
+wxString wxMapObject::GetRemoveStringS(wxString const& map)
 {
     return wxString::Format("mapobject_remove(%d, %s); \n", cLeafletId, map);
 }
 
-bool wxMapObject::ParseResult(wxString const& result, EMapObjectType& type, int& id)
+bool wxMapObject::ParseResultS(wxString const& result, EMapObjectType& type, int& id)
 {
     wxStringTokenizer parse(result, ",");
     int i = 0;
@@ -64,3 +64,4 @@ pwxMapImageS wxMapImageS::Create(double lat, double lon, bool bDraggable)
 {
     return boost::make_shared<wxMapImageS>(lat, lon, bDraggable);
 }
+
