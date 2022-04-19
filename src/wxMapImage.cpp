@@ -1,5 +1,4 @@
-//#include	<wxMapMarker.h>
-#include	<wxMapImageS.h>
+#include	<wxMapImage.h>
 #include    <wx/tokenzr.h>
 #include    <wx/log.h>
 #include    <wx/intl.h>
@@ -41,27 +40,25 @@ bool wxMapObject::ParseResultS(wxString const& result, EMapObjectType& type, int
     return bOk;
 }
 
-wxMapImageS::wxMapImageS(double lat, double lon, bool bDraggable) :
+wxMapImage::wxMapImage(double lat, double lon):
     cLat(lat),
-    cLon(lon),
-    cbDraggable(bDraggable)
+    cLon(lon)
 {
     cType = EMapObjectType::IMAGE;
 }
 
-wxString wxMapImageS::GetJavaScriptAdd(wxString map) const
+wxString wxMapImage::GetJavaScriptAdd(wxString map) const
 {
-    if (!cbDraggable) {
-        return wxString::Format("image_add(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
-    }
-    else {
-        return wxString::Format("marker_add_drag(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
-    }
+    
+
+ 
+    return wxString::Format("image_add(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
+    
     return wxEmptyString;
 }
 
-pwxMapImageS wxMapImageS::Create(double lat, double lon, bool bDraggable)
+pwxMapImage wxMapImage::Create(double lat, double lon)
 {
-    return boost::make_shared<wxMapImageS>(lat, lon, bDraggable);
+    return boost::make_shared<wxMapImage>(lat, lon);
 }
 

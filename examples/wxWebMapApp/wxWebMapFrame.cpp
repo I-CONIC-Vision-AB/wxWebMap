@@ -1,7 +1,7 @@
 #include	<wxWebMapFrame.h>
 #include    <wxMapMarker.h>
 #include    <wxMapPolygon.h>
-#include    <wxMapImageS.h>
+#include    <wxMapImage.h>
 #include    <SourceViewDialog.h>
 #include    <PolygonReader.h>
 #include    <wx/sizer.h>
@@ -282,7 +282,7 @@ wxMenu* WebFrame::CreateMapMenu()
 
     //TEST add image
     pMenuItem = map_menu->Append(wxID_ANY, "Add image...", _("Adds a image to the map"));
-    Bind(wxEVT_MENU, &WebFrame::OnAddImageS, this, pMenuItem->GetId());
+    Bind(wxEVT_MENU, &WebFrame::OnAddImage, this, pMenuItem->GetId());
     map_menu->AppendSeparator();
 
     pMenuItem = map_menu->Append(wxID_ANY, _("Remove last marker"));
@@ -737,7 +737,7 @@ void WebFrame::OnAddPolygons(wxCommandEvent& WXUNUSED(e))
 }
 
 //Test
-void WebFrame::OnAddImageS(wxCommandEvent& e)
+void WebFrame::OnAddImage(wxCommandEvent& e)
 {
     wxString sLatLon = wxGetTextFromUser(_("Enter latitude longitude"), _("Add image"), _("59.326180, 18.072263"), this);
     if (sLatLon.IsEmpty()) {
@@ -751,7 +751,7 @@ void WebFrame::OnAddImageS(wxCommandEvent& e)
         return;
     }
 
-    pwxMapImageS image = wxMapImageS::Create(lat, lon, cbDraggable);
+    pwxMapImage image = wxMapImage::Create(lat, lon);
     wxString res;
     m_webmap->AddMapObject(image, &res);
     wxLogMessage(_("Added leaflet object %s"), res);

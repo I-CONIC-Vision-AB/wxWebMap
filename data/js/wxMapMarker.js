@@ -16,7 +16,7 @@ function mapobject_remove(id, map) {
     map.removeLayer(markers[id]);
     delete markers[id];
 };
-//Image add
+//Developing- Function to add image.
 function image_add(lat, lon, map) {
     imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg"; // Example drone picture
     var center = [lat + (59.426180 - 59.326180), lon + (18.472263 - 18.072263)]; //Calculation for bounds

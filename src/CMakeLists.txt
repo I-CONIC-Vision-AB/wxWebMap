@@ -21,7 +21,7 @@ set(SRC_FILES
     wxWebMap.cpp
     wxMapMarker.cpp
     wxMapHtml.cpp
-    wxMapImageS.cpp
+    wxMapImage.cpp
     )
 
 if(WIN32)

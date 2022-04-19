@@ -7,8 +7,8 @@
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include    <wxMapObject.h>
-#include	<wxMapUtil.h>
-#include    <wx/image.h>
+//#include	<wxMapUtil.h>
+//#include    <wx/image.h>
 
 /**
  * @brief Image
@@ -22,7 +22,7 @@ public:
      * @param latLon
      * @todo Implement
     */
-    wxMapImage(wxString const& imageUrl, wxMapPoint const &latLon);
+    wxMapImage(double lat, double lon);
 
     /**
      * @brief Use case 2.3
@@ -31,7 +31,7 @@ public:
      * @param longitude
      * @todo Implement with lower prio
     */
-    wxMapImage(wxImage const& image, float latitude, float longitude);
+   // wxMapImage(wxImage const& image, float latitude, float longitude);
 
     /**
      * @brief Use case 2.6
@@ -44,7 +44,7 @@ public:
      * @param image Image
      * @param vPoints Polygon
     */
-    wxMapImage(wxImage const& image, std::vector<wxMapPoint>& vPoints);
+    //wxMapImage(wxImage const& image, std::vector<wxMapPoint>& vPoints);
 
     /**
      * @brief Use case 2.7
@@ -57,20 +57,20 @@ public:
      * @param image Image
      * @param bb Bounding box
     */
-    wxMapImage(wxImage const& image, wxMapRect& bb);
+    //wxMapImage(wxImage const& image, wxMapRect& bb);
 
     /**
      * @brief Use case 2.4 (low prio)
      * @param imageUrl
     */
-    wxMapImage(wxString const& imageUrl);
+    //wxMapImage(wxString const& imageUrl);
 
     /**
      * @brief Use case 2.5 (low prio)
      * @param imageUrl
      * @param polygon
     */
-    wxMapImage(wxString const& imageUrl, std::vector<wxMapPoint> const& polygon);
+    //wxMapImage(wxString const& imageUrl, std::vector<wxMapPoint> const& polygon);
 
     /**
      * @brief Returns the script to add this object to a map
@@ -79,14 +79,15 @@ public:
      * @sa wxWebMap::AddMapObject
      * @todo Implement
     */
-    virtual wxString GetJavaScriptAdd(wxString map) const = 0;
+    //virtual wxString GetJavaScriptAdd(wxString map) const = 0;
+    virtual wxString GetJavaScriptAdd(wxString map) const;
 
     /**
     * @brief Create an image
     * @return an image
     * @todo Implement
     */
-    static boost::shared_ptr<wxMapImage> Create(wxString const& imageUrl, wxMapPoint const& latLon);
+   // static boost::shared_ptr<wxMapImage> Create(wxString const& imageUrl, wxMapPoint const& latLon);
 
     /**
      * @brief Use case 2.3
@@ -96,11 +97,15 @@ public:
      * @return Image
      * @todo Implement
     */
-    static boost::shared_ptr<wxMapImage> Create(wxImage const& image, float latitude, float longitude);
+   
+    //static boost::shared_ptr<wxMapImage> Create(wxImage const& image, float latitude, float longitude);
 
-    // Test
-    static boost::shared_ptr<wxMapImage> Create(float latitude, float longitude);
 
+    // Test - include image at a later stage. 
+    static boost::shared_ptr<wxMapImage> Create(double lat, double lon);
+    double cLat;
+    double cLon;
+    
 
 };
 
