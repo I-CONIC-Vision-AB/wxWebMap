@@ -32,17 +32,20 @@ elseif(APPLE)
 endif()
 
 # Define the build target for the executable
-add_library(IconicWebMap SHARED ${SRC_FILES} "wxWebMap.cpp")
+add_library(IconicWebMap SHARED ${SRC_FILES})
 
 generate_export_header(IconicWebMap
     BASE_NAME iconic_webmap
     EXPORT_FILE_NAME "${ICONIC_EXPORTS_DIR}/webmap_exports.h"
 )
 
+target_compile_definitions(IconicWebMap PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
+
 target_include_directories(IconicWebMap
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         ${ICONIC_EXPORTS_DIR}
+        ${wxWidgets_INCLUDE_DIRS}
 )
 
 # Link required libraries to the executable
@@ -56,6 +59,10 @@ if(APPLE)
         MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxwidgets.webview"
         )
 endif()
+
+#if (VCPKG_TARGET_IS_WINDOWS)
+configure_file(${CMAKE_SOURCE_DIR}/cmake/WebView2Loader.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WebView2Loader.dll COPYONLY)
+#endif()
 
 install(TARGETS IconicWebMap  
     EXPORT iconicTargets
