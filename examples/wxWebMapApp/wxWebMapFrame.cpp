@@ -243,6 +243,7 @@ WebFrame::WebFrame(const wxString& url) :
     // Bind handler
     m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, [&](wxWebViewEvent& evt) {
         wxString s = evt.GetString();
+        wxLogMessage(s);
         std::string delimiter = ": ";
         size_t pos = 0;
         std::string function_token;

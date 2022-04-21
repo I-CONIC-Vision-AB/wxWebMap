@@ -162,7 +162,7 @@ public:
 
 private:
     std::vector<wxMapPolygon> polygons;
-    
+
     wxTextCtrl* m_url;
     wxWebMap* m_webmap;
     wxWebView* m_browser;
