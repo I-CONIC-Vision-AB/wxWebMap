@@ -107,6 +107,9 @@
             e.layer.on('pm:remove', function (e) {
                 window.wx_msg.postMessage("Remove: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
             });
+            e.layer.on('pm:rotateend', function (e) {
+                window.wx_msg.postMessage("Update: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
+            });
         });
 
 
