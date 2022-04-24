@@ -17,11 +17,25 @@ function mapobject_remove(id, map) {
     delete markers[id];
 };
 //Developing- Function to add image.
-function image_add(lat, lon, map) {
-    imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg"; // Example drone picture
+//function image_add(lat, lon,url, map ) {
+//    imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg"; // Example drone picture
+//    //imageUrl = url;
+//    var center = [lat + (59.426180 - 59.326180), lon + (18.472263 - 18.072263)]; //Calculation for bounds
+//    imageBounds = [center, [lat, lon]];
+//    var image = L.imageOverlay(imageUrl, imageBounds);
+//    image.addTo(map);
+//    return "IMAGE," + url + "," + lat + "," + lon;
+//};
+
+
+//Developing- Function to add image.
+function image_add( url, lat, lon, map) {
+    //imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg"; // Example drone picture
+    imageUrl = url;
     var center = [lat + (59.426180 - 59.326180), lon + (18.472263 - 18.072263)]; //Calculation for bounds
     imageBounds = [center, [lat, lon]];
     var image = L.imageOverlay(imageUrl, imageBounds);
     image.addTo(map);
-    return "IMAGE," + image._leaflet_id + "," + lat + "," + lon;
+    return "IMAGE," + url + "," + lat + "," + lon;
 };
+

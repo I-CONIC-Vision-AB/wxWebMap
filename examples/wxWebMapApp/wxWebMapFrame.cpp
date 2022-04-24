@@ -17,6 +17,10 @@
 #endif
 #include    <wx/webviewarchivehandler.h>
 #include    <wx/webviewfshandler.h>
+#include <string.h> 
+#include <list>
+#include <fstream>
+#include <iostream>
 
 
 WebFrame::WebFrame(const wxString& url) :
@@ -744,17 +748,52 @@ void WebFrame::OnAddImage(wxCommandEvent& e)
         return;
     }
     double lat, lon;
+   // wxString url; 
     if (!sLatLon.BeforeFirst(',').ToDouble(&lat)) {
         return;
     }
     if (!sLatLon.AfterFirst(',').ToDouble(&lon)) {
         return;
     }
+ 
 
-    pwxMapImage image = wxMapImage::Create(lat, lon);
-    wxString res;
-    m_webmap->AddMapObject(image, &res);
-    wxLogMessage(_("Added leaflet object %s"), res);
+    //test
+   /* std::ofstream myfile("\examples\wxWebMapApp\something.txt");
+    myfile << "Writing this to a file.\n";
+    myfile.close();*/
+    
+  
+
+    class MyClass {   
+        public:           
+            double latm;    
+            double lonm;  
+            wxString urlm; 
+    };
+
+    
+
+    MyClass myObj;  
+    MyClass myObj2;
+
+
+    myObj.latm = 59.326180;
+    myObj.lonm = 18.072263;
+    myObj.urlm = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg";
+
+    myObj2.latm = 59.006180;
+    myObj2.lonm = 18.772263;
+    myObj2.urlm = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg";
+  
+    std::list<MyClass> latlonurl_list = {myObj, myObj2 };
+
+
+    for (MyClass onum: latlonurl_list) {
+        pwxMapImage image = wxMapImage::Create(onum.latm, onum.lonm, onum.urlm);
+        wxString res;
+        m_webmap->AddMapObject(image, &res);
+        wxLogMessage(_("Added leaflet object %i %s"), onum.latm, res);
+    }
 }
 
 bool WebFrame::AddPolygons(wxString const &filename)

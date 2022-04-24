@@ -22,7 +22,7 @@ public:
      * @param latLon
      * @todo Implement
     */
-    wxMapImage(double lat, double lon);
+    wxMapImage(double lat, double lon, wxString url);
 
     /**
      * @brief Use case 2.3
@@ -102,9 +102,10 @@ public:
 
 
     // Test - include image at a later stage. 
-    static boost::shared_ptr<wxMapImage> Create(double lat, double lon);
+    static boost::shared_ptr<wxMapImage> Create(double lat, double lon, wxString url);
     double cLat;
     double cLon;
+    wxString cull;
     
 
 };
