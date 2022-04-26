@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <!-- Sample HTML file for wxWebMap.
@@ -12,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" type="image/x-icon" href="iconic.ico" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="C:\Users\zaina\Skrivbord\wxWebMap\data\js\wxMapPolygon.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"><!-- Empty script body --></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""><!-- Empty script body --></script>
     <style>
@@ -34,6 +37,7 @@
             center: [42, 69],
             zoom: 6
         });
+   
         var basemaps = {
             'Map': L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
                 layers: 'OSM-WMS',
@@ -63,7 +67,7 @@
         var nextPolygon = [];
         function onMapClick(e) {
             nextPolygon.push(e.latlng);
-            if (nextPolygon.length === 5) {
+            if (nextPolygon.length === 3) {
                 polygonAdd();
             };
         };

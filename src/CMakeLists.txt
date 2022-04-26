@@ -19,6 +19,7 @@ cmake_minimum_required(VERSION 2.8.12)
 # Define a variable containing a list of source files for the project
 set(SRC_FILES
     wxWebMap.cpp
+    wxMapPolygon.cpp
     wxMapMarker.cpp
     wxMapHtml.cpp
     )
@@ -32,7 +33,7 @@ elseif(APPLE)
 endif()
 
 # Define the build target for the executable
-add_library(IconicWebMap SHARED ${SRC_FILES} "wxWebMap.cpp")
+add_library(IconicWebMap SHARED ${SRC_FILES} "wxWebMap.cpp" "wxMapObject.cpp")
 
 generate_export_header(IconicWebMap
     BASE_NAME iconic_webmap
