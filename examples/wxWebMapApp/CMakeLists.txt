@@ -5,6 +5,7 @@ set(SOURCES
     "wxWebMapFrame.cpp"
     "SourceViewDialog.cpp"
     "PolygonReader.cpp"
+    "ImageReader.cpp"
 )
 
 if(WIN32)

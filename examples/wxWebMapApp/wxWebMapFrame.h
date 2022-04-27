@@ -72,6 +72,12 @@ public:
     void OnAddPolygons(wxCommandEvent& WXUNUSED(e));
 
     /**
+     * @brief Read a file with information about images and show on map
+     * @param  Unused
+    */
+    void OnAddImages(wxCommandEvent& WXUNUSED(e));
+
+    /**
      * @brief Remove last added marker
      * @param e Unused
      * @todo The list of map objects is not updated onMouseClick, only when adding through wxWebMap::OnAddMarker. Fix it.
@@ -107,6 +113,8 @@ public:
     bool AddPolygons(wxString const& filename);
 
     bool AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons, std::vector<wxString> const& vPolygonName);
+
+    bool AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& vPoints, std::vector<wxString> const& vPaths);
 
     void UpdateState();
     void OnIdle(wxIdleEvent& evt);

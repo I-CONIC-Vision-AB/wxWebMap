@@ -3,6 +3,7 @@
 #include    <wxMapPolygon.h>
 #include    <SourceViewDialog.h>
 #include    <PolygonReader.h>
+#include    <ImageReader.h>
 #include    <wx/sizer.h>
 #include    <wx/panel.h>
 #include    <wx/menu.h>
@@ -277,6 +278,9 @@ wxMenu* WebFrame::CreateMapMenu()
 
     pMenuItem = map_menu->Append(wxID_ANY, "Add polygons...", _("Show polygons from file"));
     Bind(wxEVT_MENU, &WebFrame::OnAddPolygons, this, pMenuItem->GetId());
+
+    pMenuItem = map_menu->Append(wxID_ANY, "Add images...", _("Show images from file"));
+    Bind(wxEVT_MENU, &WebFrame::OnAddImages, this, pMenuItem->GetId());
     map_menu->AppendSeparator();
 
     pMenuItem = map_menu->Append(wxID_ANY, _("Remove last marker"));
@@ -763,6 +767,42 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
     }
     return true;
 }
+
+
+void WebFrame::OnAddImages(wxCommandEvent& WXUNUSED(e))
+{
+    wxFileName fn;
+    fn.SetPath(wxFileName::GetCwd());
+    wxString filename = wxFileSelector(_("Select image txt file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("Image description file (*.txt)|*.txt"));
+    if (filename.empty()) {
+        return;
+    }
+    std::vector<std::pair<wxMapPoint, wxMapPoint>> vPoints;
+    std::vector<wxString> vPaths;
+    ImageReader reader(filename, vPoints, vPaths);
+    if (!vPoints.size()) {
+        wxLogError(_("Could not read images from %s"), filename);
+        return;
+    }
+    wxLogStatus(_("%d images read from %s"), (int)vPoints.size(), filename);
+    if (!AddImages(vPoints, vPaths)) {
+        wxLogError(_("Could not add polygons to map"));
+    }
+}
+
+bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& vPoints, std::vector<wxString> const& vPaths)
+{
+    for (int i = 0; i < vPoints.size(); i++) {
+        wxMapPoint upperLeft = vPoints[i].first;
+        wxMapPoint lowerRight = vPoints[i].second;
+        wxString filePath = vPaths[i];
+        // TODO add images to map instead of logging
+        // ...
+        wxLogMessage(_("- %s"), filePath);
+    }
+    return true;
+}
+
 
 void WebFrame::OnToggleDraggable(wxCommandEvent& e)
 {
