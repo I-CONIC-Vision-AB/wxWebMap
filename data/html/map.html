@@ -55,15 +55,6 @@
         L.control.layers(basemaps, {}, { collapsed: true }).addTo(map);
         basemaps.Map.addTo(map);
 
-        //map.on('click', onMapClick);
-        //// Add marker on map click 
-        //function onMapClick(e) {
-        //    var marker = new L.Marker(e.latlng, { draggable: true });
-        //    marker.addTo(map);
-        //    markers[marker._leaflet_id] = marker;
-        //};
-
-
         // add leaflet.pm controls to the map
         map.pm.addControls({
             position: 'topleft',
@@ -75,9 +66,9 @@
             drawMarker: false,
             drawCircleMarker: false,
             drawPolyline: false,
-            drawRectangle: false,       // maybe yes
+            drawRectangle: false,
             drawPolygon: true,
-            drawCircle: false,           // maybe yes
+            drawCircle: false,
             editMode: true,
             dragMode: true,
             cutPolygon: false,
@@ -110,21 +101,10 @@
             e.layer.on('pm:rotateend', function (e) {
                 window.wx_msg.postMessage("Update: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
             });
+            e.layer.on('pm:dragend', function (e) {
+                window.wx_msg.postMessage("Update: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
+            });
         });
-
-
-
-        //map.on('pm:globaleditmodetoggled', function (e) {
-        //    //var latlngs = e.layer.getLatLngs();
-        //    //alert(latlngs);
-        //    alert("tester2");
-        //});
-
-        //layer.on('pm:update', function (e) {
-        //    alert("edited layer");
-        //});
-
-        // Polygon.js code
 
     </script>
 </body>

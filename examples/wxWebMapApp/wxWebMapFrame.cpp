@@ -1,6 +1,8 @@
 #include	<wxWebMapFrame.h>
 #include    <wxMapMarker.h>
+#include    <wxMapPolygon.h>
 #include    <SourceViewDialog.h>
+#include    <PolygonReader.h>
 #include    <wx/sizer.h>
 #include    <wx/panel.h>
 #include    <wx/menu.h>
@@ -8,6 +10,7 @@
 #include    <wx/numdlg.h>
 #include    <wx/textdlg.h>
 #include    <wx/webview.h>
+#include    <wx/filedlg.h>
 #if wxUSE_WEBVIEW_IE
 #include    <wx/msw/webview_ie.h>
 #endif
@@ -363,6 +366,10 @@ wxMenu* WebFrame::CreateMapMenu()
 
     pMenuItem = map_menu->Append(wxID_ANY, "Add marker...", _("Adds a marker to the map"));
     Bind(wxEVT_MENU, &WebFrame::OnAddMarker, this, pMenuItem->GetId());
+
+    pMenuItem = map_menu->Append(wxID_ANY, "Add polygons...", _("Show polygons from file"));
+    Bind(wxEVT_MENU, &WebFrame::OnAddPolygons, this, pMenuItem->GetId());
+    map_menu->AppendSeparator();
 
     pMenuItem = map_menu->Append(wxID_ANY, _("Remove last marker"));
     Bind(wxEVT_MENU, &WebFrame::OnRemoveLastMarker, this, pMenuItem->GetId());
@@ -798,6 +805,55 @@ void WebFrame::OnAddMarker(wxCommandEvent& e)
     wxString res;
     m_webmap->AddMapObject(marker, &res);
     wxLogMessage(_("Added leaflet object %s"), res); // Todo, save the leaflet id, so the marker can be referenced later
+}
+
+
+void WebFrame::OnAddPolygons(wxCommandEvent& WXUNUSED(e))
+{
+    wxFileName fn;
+    fn.SetPath(wxFileName::GetCwd());
+    wxString filename = wxFileSelector(_("Select polygon file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("I-CONIC Footprint file (*.ifp)|*.ifp"));
+    if (filename.empty()) {
+        return;
+    }
+    if (!AddPolygons(filename)) {
+        wxLogError(_("Could not add polygons to map"));
+        return;
+    }
+}
+
+bool WebFrame::AddPolygons(wxString const &filename)
+{
+    std::vector<std::vector<wxMapPoint>> vPolygons;
+    std::vector<wxString> vPolygonMetaData;
+    PolygonReader reader(filename, vPolygons, vPolygonMetaData);
+    if (!vPolygons.size()) {
+        wxLogError(_("Could not read polygons from %s"), filename);
+        return false;
+    }
+    wxLogStatus(_("%d polygons read from %s"), (int)vPolygons.size(), filename);
+    if (!AddPolygons(vPolygons, vPolygonMetaData)) {
+        return false;
+    }
+    return true;
+}
+
+bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons, std::vector<wxString> const &vPolygonName)
+{
+    pwxMapPolygon pPolygon;
+    wxString result;
+    for (int i = 0; i < vPolygons.size(); ++i) {
+        std::vector<wxMapPoint> const& aPolygon = vPolygons[i];
+        // TODO: Create a wxMapPolygon instance and assign polygon
+//        pPolygon = wxMapPolygon::Create(aPolygon);
+//        m_webmap->AddMapObject(aPolygon, &result);
+        wxLogMessage(_("Added polygon object %s with result %s"), vPolygonName[i], result);
+
+        for (int j = 0; j < aPolygon.size(); ++j) {
+            wxLogMessage(_("lat=%.8f, lon=%.8f"), aPolygon[j].x, aPolygon[j].y);
+        }
+    }
+    return true;
 }
 
 void WebFrame::OnToggleDraggable(wxCommandEvent& e)

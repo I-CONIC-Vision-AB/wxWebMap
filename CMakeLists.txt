@@ -19,6 +19,10 @@ cmake_minimum_required(VERSION 2.8.12)
 # Name the project
 project(iconic-webmap)
 
+find_package(wxWidgets COMPONENTS net core base html xml webview stc REQUIRED)
+# message(STATUS "${wxWidgets_LIBRARIES}")
+include(${wxWidgets_USE_FILE})
+
 # --------------------------------------------------------------------------
 # On Visual Studio 8 MS deprecated C. This removes all 1.276E1265 security
 # warnings
@@ -50,11 +54,6 @@ endif()
 
 # Request the required wxWidgets libs
 find_path(BOOST_SHARED_PTR_INCLUDE_DIRS "boost/shared_ptr.hpp") # Make sure we have boost::shared_ptr for smart pointer handling
-find_package(wxWidgets 3.1 COMPONENTS net core base html xml webview REQUIRED)
-
-# Include the wxWidgets use file to initialize various settings
-include(${wxWidgets_USE_FILE})
-add_compile_definitions(WXUSINGDLL)
 
 set(CMAKE_CXX_STANDARD 11)
 

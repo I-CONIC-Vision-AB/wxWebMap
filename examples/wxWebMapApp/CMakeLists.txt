@@ -1,10 +1,10 @@
 
-find_package(wxWidgets 3.1 COMPONENTS stc REQUIRED)
 
 set(SOURCES
     "wxWebMapApp.cpp"
     "wxWebMapFrame.cpp"
     "SourceViewDialog.cpp"
+    "PolygonReader.cpp"
 )
 
 if(WIN32)
@@ -18,7 +18,9 @@ endif()
 # Define the build target for the executable
 add_executable(wxWebMapApp WIN32 MACOSX_BUNDLE ${SOURCES})
 
-target_include_directories(wxWebMapApp PUBLIC "../wxWebMApApp")
+target_compile_definitions(wxWebMapApp PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
+
+target_include_directories(wxWebMapApp PUBLIC "../wxWebMApApp" ${wxWidgets_INCLUDE_DIRS})
 #target_include_directories(IconicWebMapTest PUBLIC ${Boost_INCLUDE_DIRS})
 #target_include_directories(IconicWebMapTest PUBLIC ${EIGEN3_INCLUDE_DIRS})
 #target_include_directories(IconicWebMapTest PUBLIC ${GLFW_INCLUDE_DIRS})

@@ -1,5 +1,5 @@
 
-#find_package(Boost REQUIRED COMPONENTS thread timer unit_test_framework serialization filesystem iostreams)
+
 find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 
 set(SOURCES
@@ -8,7 +8,9 @@ set(SOURCES
 
 add_executable(IconicWebMapTest ${SOURCES})
 
-target_include_directories(IconicWebMapTest PUBLIC "../test" "../include")
+target_compile_definitions(IconicWebMapTest PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
+
+target_include_directories(IconicWebMapTest PUBLIC "../test" "../include" ${wxWidgets_INCLUDE_DIRS})
 target_compile_definitions(IconicWebMapTest PUBLIC BOOST_TEST_DYN_LINK)
 
 target_link_libraries(IconicWebMapTest 

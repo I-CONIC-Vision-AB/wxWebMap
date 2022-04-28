@@ -34,6 +34,32 @@ public:
     wxMapImage(wxImage const& image, float latitude, float longitude);
 
     /**
+     * @brief Use case 2.6
+     *
+     * Show image inside arbitrary clockwise polygon.
+     * - Top left corner of image is shown at position \c vPoints[0].
+     * - Top right corner of image is shown at position \c vPoints[1].
+     * - Bottom right corner of image is shown at position \c vPoints[2].
+     * - Bottom left corner of image is shown at position \c vPoints[3].
+     * @param image Image
+     * @param vPoints Polygon
+    */
+    wxMapImage(wxImage const& image, std::vector<wxMapPoint>& vPoints);
+
+    /**
+     * @brief Use case 2.7
+     *
+     * Show image in a rectangle.
+     * - Top left corner of image is shown at position \c (bb[0],bb[1])=(bb.x,bb.y)
+     * - Top right corner of image is shown at position \c (bb[0]+bb[2],bb[1])=(bb.x+bb.w,bb.y)
+     * - Bottom right corner of image is shown at position \c (bb[0]+bb[2],bb[1]+bb[3])=(bb.x+bb.w,bb.y+bb.h)
+     * - Bottom left corner of image is shown at position \c (bb[0],bb[1]+bb[3])=(bb.x,bb.y+bb.h)
+     * @param image Image
+     * @param bb Bounding box
+    */
+    wxMapImage(wxImage const& image, wxMapRect& bb);
+
+    /**
      * @brief Use case 2.4 (low prio)
      * @param imageUrl
     */
@@ -71,6 +97,9 @@ public:
      * @todo Implement
     */
     static boost::shared_ptr<wxMapImage> Create(wxImage const& image, float latitude, float longitude);
+
+    // Test
+    static boost::shared_ptr<wxMapImage> Create(float latitude, float longitude);
 
 
 };

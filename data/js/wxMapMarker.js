@@ -16,4 +16,3 @@ function mapobject_remove(id, map) {
     map.removeLayer(markers[id]);
     delete markers[id];
 };
-

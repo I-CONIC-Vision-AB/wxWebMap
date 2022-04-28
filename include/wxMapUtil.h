@@ -11,15 +11,13 @@ public:
     wxMapPoint() : x(0.0f), y(0.0f) {}
     wxMapPoint(float lat, float lon) : x(lat), y(lon) {}
 
-    float operator[](int idx) {
+    float& operator[](int idx) {
         switch (idx) {
+        default: // Return x on any index other than allowed 0 or 1
         case 0:
             return x;
-            break;
         case 1:
             return y;
-        default:
-            return 0.0f;
         }
     }
 
@@ -27,6 +25,60 @@ public:
     float y;
 };
 
+/**
+ * @brief A rectangular area.
+*/
+class ICONIC_WEBMAP_EXPORT wxMapRect {
+public:
+    /**
+     * @brief Empty constructor
+    */
+    wxMapRect() :
+        x(0.0f), y(0.0f), w(0.0f), h(0.0f) {}
+
+    /**
+     * @brief Constructor
+     * @param lat Latitude
+     * @param lon Longitude
+     * @param width Width (latitude right minus latitude left, so north-south really)
+     * @param height Height (longitude right minus longitude left, so east-west really)
+    */
+    wxMapRect(float lat, float lon, float width, float height) :
+        x(lat), y(lon), w(width), h(height) {}
+
+    float x; //!< Latitude
+    float y; //!< Longitude
+    float w; //!< Width (lat_max-x)
+    float h; //!< Height (lon_max-y)
+
+    /**
+     * @brief Enable indexed access.
+     *
+     * \code
+     * wxMapRect r(58.0f, 18.0f, 0.001f, 0.00025f);
+     * assert(r[0] == 58.0f);
+     * assert(r[1] == 18.0f);
+     * assert(r[2] == 0.001f);
+     * assert(r[3] == 0.00025f);
+     * \endcode
+     * @param idx Index
+     * @return result
+    */
+    float operator[](int idx) {
+        switch (idx) {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return w;
+        case 3:
+            return h;
+        default:
+            return 0.0f;
+        }
+    }
+};
 
 /**
  * @brief Use case 4.1. Defines action on mouse events.
