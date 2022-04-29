@@ -799,7 +799,7 @@ bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& v
         wxString filePath = vPaths[i];
         // TODO add images to map instead of logging
         // ...
-        pwxMapImage image = wxMapImage::Create(upperLeft[0], upperLeft[1]);
+        pwxMapImage image = wxMapImage::Create(upperLeft[0], upperLeft[1], lowerRight[0], lowerRight[1]);
         wxString res;
         m_webmap->AddMapObject(image, &res);
         wxLogMessage(_("- %s"), filePath);

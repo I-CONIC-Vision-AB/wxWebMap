@@ -16,11 +16,18 @@ function mapobject_remove(id, map) {
     map.removeLayer(markers[id]);
     delete markers[id];
 };
-function image_add(lat, lon, map) {
+function image_add(lLat, lLon, rLat, rLon, map) {
+    // Kvar att fixa:
+    // 1. Kolla vad koordinaterna innehåller och varför de inte fungerar när man använder dem som hörn
+    // 2. Fixa så att det går att ladda upp en bild från javaScript-funktionen (här) från en filePath
+    // 3. Lägg till pathen till wxMapImage så att den kommer från input
+    // 4. Gör så att alla bilder laddas upp (nu syns bara 1 av bilderna från textfilen)
+    //imageUrl = "file:///C:\Users\sandr\OneDrive\Desktop\DFG\Jyvaskyla\Jyvaskyla\images\004304-052412060557-CAM1.jpg"
+    // imageUrl = <img src='file:///C:\Users\sandr\OneDrive\Desktop\DFG\Jyvaskyla\Jyvaskyla\images\004304-052412060557-CAM1.jpg'>
     imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/20/Stockholm-Drone-010_%2828675114140%29.jpg"; // Example drone picture
-    var center = [lat + (59.426180 - 59.326180), lon + (18.472263 - 18.072263)]; //Calculation for bounds
-    imageBounds = [center, [lat, lon]];
+    var center = [lLat + (59.426180 - 59.326180), lLon + (18.472263 - 18.072263)]; //Calculation for bounds
+    imageBounds = [center, [lLat, lLon]];
     var image = L.imageOverlay(imageUrl, imageBounds);
     image.addTo(map);
-    return "IMAGE," + image._leaflet_id + "," + lat + "," + lon;
+    return "IMAGE," + image._leaflet_id + "," + lLat + "," + lLon + "," + rLat + "," + rLon;
 };

@@ -40,20 +40,23 @@ bool wxMapObject::ParseResultImage(wxString const& result, EMapObjectType& type,
     return bOk;
 }
 
-wxMapImage::wxMapImage(double lat, double lon) :
-    cLat(lat),
-    cLon(lon)
+wxMapImage::wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon) :
+    cLeftLat(upperLeftLat),
+    cLeftLon(upperLeftlon),
+    cRightLat(lowerRightLat),
+    cRightLon(lowerRightLon)
 {
     cType = EMapObjectType::IMAGE;
 }
 
 wxString wxMapImage::GetJavaScriptAdd(wxString map) const
 {
-    return wxString::Format("image_add(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
+    return wxString::Format("image_add(%.6lf,%.6lf,%.6lf,%.6lf,%s); \n", cLeftLat, cLeftLon, cRightLat, cRightLon, map);
+    //return "image_add('" + cull + wxString::Format("',%.6lf,%.6lf, %s", cLat, cLon, map) + "); \n";
     return wxEmptyString;
 }
 
-pwxMapImage wxMapImage::Create(double lat, double lon)
+pwxMapImage wxMapImage::Create(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon)
 {
-    return boost::make_shared<wxMapImage>(lat, lon);
+    return boost::make_shared<wxMapImage>(upperLeftLat, upperLeftlon, lowerRightLat, lowerRightLon);
 }

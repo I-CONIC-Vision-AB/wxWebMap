@@ -33,7 +33,7 @@ public:
     /**
      * @brief Returns the script to add this object to a map
      * @param map Map to add to
-     * @return Java script to execute
+     * @returuc2n Java script to execute
      * @sa wxWebMap::AddMapObject
     */
     virtual wxString GetJavaScriptAdd(wxString map) const = 0;
