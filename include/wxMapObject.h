@@ -51,8 +51,10 @@ public:
     }
 
     virtual wxString GetRemoveString(wxString const& map);
+    virtual wxString GetRemoveStringImage(wxString const& map); // <- Temporary solution (sync with UC1)
 
     static bool ParseResult(wxString const& result, EMapObjectType& type, int& id);
+    static bool ParseResultImage(wxString const& result, EMapObjectType& type, int& id); // <- Temporary solution (sync with UC1)
 protected:
     EMapObjectType cType;
     int cLeafletId;

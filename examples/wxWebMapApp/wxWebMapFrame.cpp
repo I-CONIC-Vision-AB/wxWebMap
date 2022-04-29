@@ -17,6 +17,7 @@
 #endif
 #include    <wx/webviewarchivehandler.h>
 #include    <wx/webviewfshandler.h>
+#include <wxMapImage.h>
 
 WebFrame::WebFrame(const wxString& url) :
     wxFrame(NULL, wxID_ANY, "wxWebView Sample"),
@@ -798,6 +799,9 @@ bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& v
         wxString filePath = vPaths[i];
         // TODO add images to map instead of logging
         // ...
+        pwxMapImage image = wxMapImage::Create(upperLeft[0], upperLeft[1]);
+        wxString res;
+        m_webmap->AddMapObject(image, &res);
         wxLogMessage(_("- %s"), filePath);
     }
     return true;

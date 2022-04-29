@@ -62,8 +62,11 @@ public:
     */
     void OnAddMarker(wxCommandEvent& e);
 
-    //Test
-    void OnAddImageS(wxCommandEvent& e);
+    /**
+    * @brief Progammatically add an image to the map
+    * @param e Unused
+    */
+    void OnAddImage(wxCommandEvent& e);
 
     /**
      * @brief Read a file with polygons and show on map
