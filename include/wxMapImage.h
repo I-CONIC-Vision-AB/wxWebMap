@@ -22,7 +22,7 @@ public:
      * @param latLon
      * @todo Implement
     */
-    wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon);
+    wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon, wxString imageUrl);
 
     /**
      * @brief Use case 2.3
@@ -99,11 +99,12 @@ public:
     //static boost::shared_ptr<wxMapImage> Create(wxImage const& image, float latitude, float longitude);
 
     // Test
-    static boost::shared_ptr<wxMapImage> Create(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon);
+    static boost::shared_ptr<wxMapImage> Create(double upperLeftLat, double upperLeftLon, double lowerRightLat, double lowerRightLon, wxString imageUrl);
     double cLeftLat;
     double cLeftLon;
     double cRightLat;
     double cRightLon;
+    wxString cUrl;
 
 
 };

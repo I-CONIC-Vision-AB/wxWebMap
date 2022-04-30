@@ -796,10 +796,12 @@ bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& v
     for (int i = 0; i < vPoints.size(); i++) {
         wxMapPoint upperLeft = vPoints[i].first;
         wxMapPoint lowerRight = vPoints[i].second;
-        wxString filePath = vPaths[i];
-        // TODO add images to map instead of logging
-        // ...
-        pwxMapImage image = wxMapImage::Create(upperLeft[0], upperLeft[1], lowerRight[0], lowerRight[1]);
+        wxString tFilePath = vPaths[i];
+
+        wxString& filePath = tFilePath;
+        filePath.Replace('\\', '/', true);
+
+        pwxMapImage image = wxMapImage::Create(upperLeft[0], upperLeft[1], lowerRight[0], lowerRight[1], filePath);
         wxString res;
         m_webmap->AddMapObject(image, &res);
         wxLogMessage(_("- %s"), filePath);

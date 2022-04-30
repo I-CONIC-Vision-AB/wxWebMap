@@ -40,23 +40,22 @@ bool wxMapObject::ParseResultImage(wxString const& result, EMapObjectType& type,
     return bOk;
 }
 
-wxMapImage::wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon) :
+wxMapImage::wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon, wxString imageUrl) :
     cLeftLat(upperLeftLat),
     cLeftLon(upperLeftlon),
     cRightLat(lowerRightLat),
-    cRightLon(lowerRightLon)
+    cRightLon(lowerRightLon),
+    cUrl(imageUrl)
 {
     cType = EMapObjectType::IMAGE;
 }
 
 wxString wxMapImage::GetJavaScriptAdd(wxString map) const
 {
-    return wxString::Format("image_add(%.6lf,%.6lf,%.6lf,%.6lf,%s); \n", cLeftLat, cLeftLon, cRightLat, cRightLon, map);
-    //return "image_add('" + cull + wxString::Format("',%.6lf,%.6lf, %s", cLat, cLon, map) + "); \n";
-    return wxEmptyString;
+    return "image_add('" + cUrl + wxString::Format("',%.6lf,%.6lf,%.6lf,%.6lf,%s", cLeftLat, cLeftLon, cRightLat, cRightLon, map) + "); \n";
 }
 
-pwxMapImage wxMapImage::Create(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon)
+pwxMapImage wxMapImage::Create(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon, wxString imageUrl)
 {
-    return boost::make_shared<wxMapImage>(upperLeftLat, upperLeftlon, lowerRightLat, lowerRightLon);
+    return boost::make_shared<wxMapImage>(upperLeftLat, upperLeftlon, lowerRightLat, lowerRightLon, imageUrl);
 }
