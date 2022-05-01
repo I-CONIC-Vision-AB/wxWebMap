@@ -20,5 +20,6 @@ function image_add(url, lLat, lLon, rLat, rLon, map) {
     imageBounds = [[lLat, lLon], [rLat, rLon]];
     var image = L.imageOverlay(url, imageBounds);
     image.addTo(map);
+    map.setView([lLat, lLon]); // ToDo: Should be center or image or center of all images added in a separate call
     return "IMAGE," + image._leaflet_id + "," + lLat + "," + lLon + "," + rLat + "," + rLon + "," + url;
 };
