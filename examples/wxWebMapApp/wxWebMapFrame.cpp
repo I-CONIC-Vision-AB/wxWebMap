@@ -68,23 +68,23 @@ WebFrame::WebFrame(const wxString& url) :
 
     // Create the webview
     wxString backend = wxWebViewBackendDefault;
-#ifdef __WXMSW__
+// #ifdef __WXMSW__ Don´t have to check for windows
     if (wxWebView::IsBackendAvailable(wxWebViewBackendEdge)) {
         wxLogMessage("Using Edge backend");
         backend = wxWebViewBackendEdge;
     } else {
         wxLogMessage("Edge backend not available");
+        // Edge does not support handlers, but the other webviews do
+        //We register the wxfs:// protocol for testing purposes
+        m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewArchiveHandler("wxfs")));
+        //And the memory: file system
+        m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler("memory")));
     }
-#endif
+//#endif
 
     m_webmap = wxWebMap::Create(this, wxID_ANY, url, wxDefaultPosition, wxDefaultSize, backend);
     m_browser = m_webmap->GetWebView();
     topsizer->Add(m_webmap, wxSizerFlags().Expand().Proportion(1));
-
-    //We register the wxfs:// protocol for testing purposes
-    m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewArchiveHandler("wxfs")));
-    //And the memory: file system
-    m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler("memory")));
 
     SetSizer(topsizer);
 
@@ -774,7 +774,7 @@ void WebFrame::OnAddImages(wxCommandEvent& WXUNUSED(e))
 {
     wxFileName fn;
     fn.SetPath(wxFileName::GetCwd());
-    wxString filename = wxFileSelector(_("Select image txt file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("Image description file (*.txt)|*.txt"));
+    wxString filename = wxFileSelector(_("Select image txt file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("Image description file (*.txt)|*.txt|I-CONIC Footprint file (*.ifp)|*.ifp"));
     if (filename.empty()) {
         return;
     }
@@ -804,6 +804,7 @@ bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& v
         pwxMapImage image = wxMapImage::Create(upperLeft[0], upperLeft[1], lowerRight[0], lowerRight[1], filePath);
         wxString res;
         m_webmap->AddMapObject(image, &res);
+        wxLogMessage(image->GetJavaScriptAdd(""));
         wxLogMessage(_("- %s"), filePath);
     }
     return true;

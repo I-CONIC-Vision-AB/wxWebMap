@@ -22,6 +22,12 @@ bool wxMapObject::ParseResult(wxString const& result, EMapObjectType& type, int&
             if (token.IsSameAs("MARKER")) {
                 type = EMapObjectType::MARKER;
             }
+            else if (token.IsSameAs("POLYGON")) {
+                type = EMapObjectType::POLYGON;
+            }
+            else if (token.IsSameAs("IMAGE")) {
+                type = EMapObjectType::IMAGE;
+            }
             break;
         case 1:
 
