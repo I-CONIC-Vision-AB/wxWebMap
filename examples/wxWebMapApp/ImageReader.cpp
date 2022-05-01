@@ -21,17 +21,33 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
     imgPath.AppendDir("images");
     imgPath.SetExt("jpg");
     std::pair<wxMapPoint, wxMapPoint> corners;
+    wxMapPoint pt;
 
-    for (str = file.GetFirstLine(); !file.Eof(); str = file.GetNextLine()) {
+    bool bEof = false;
+    for (str = file.GetFirstLine(); !bEof; str = file.GetNextLine()) {
         switch (c) {
         case 0:
             imgPath.SetName(str);
             break;
-        case 2:
-            corners.first = ReadPoint(str);
+        case 1:
+            corners.first = corners.second = ReadPoint(str);
             break;
+        case 2:
+        case 3:
         case 4:
-            corners.second = ReadPoint(str);
+            pt = ReadPoint(str);
+            if (pt.x < corners.first.x) {
+                corners.first.x = pt.x;
+            }
+            else if (pt.x > corners.second.x) {
+                corners.second.x = pt.x;
+            }
+            if (pt.y < corners.first.y) {
+                corners.first.y = pt.y;
+            }
+            else if (pt.y > corners.second.y) {
+                corners.second.y = pt.y;
+            }
             break;
         case 6:
             imagePoints.push_back(corners);
@@ -41,6 +57,10 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
             break;
         }
         c = (c + 1) % 7;
+        if (file.Eof()) {
+            bEof = true;
+            break;
+        }
     }
 }
 
