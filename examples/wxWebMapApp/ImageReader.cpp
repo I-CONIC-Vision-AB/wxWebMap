@@ -11,7 +11,7 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
     // wxFileName txtPath(filename);
     wxTextFile file(filename);
     if (!file.Open()) {
-        wxLogError(_("Couldnot open %s"), filename);
+        wxLogError(_("Could not open %s"), filename);
         return;
     }
 
@@ -19,6 +19,7 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
     int c = 0;
     wxFileName imgPath(filename);
     imgPath.AppendDir("images");
+    imgPath.AppendDir("thumbnails");
     imgPath.SetExt("jpg");
     std::pair<wxMapPoint, wxMapPoint> corners;
     wxMapPoint pt;
@@ -27,6 +28,7 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
     for (str = file.GetFirstLine(); !bEof; str = file.GetNextLine()) {
         switch (c) {
         case 0:
+            str = "thumb010_" + str;
             imgPath.SetName(str);
             break;
         case 1:
