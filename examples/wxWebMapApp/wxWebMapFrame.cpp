@@ -3,6 +3,7 @@
 #include    <wxMapPolygon.h>
 #include    <SourceViewDialog.h>
 #include    <PolygonReader.h>
+#include    <ImageReader.h>
 #include    <wx/sizer.h>
 #include    <wx/panel.h>
 #include    <wx/menu.h>
@@ -17,6 +18,7 @@
 #include    <wx/webviewarchivehandler.h>
 #include    <wx/webviewfshandler.h>
 #include    <boost/algorithm/string.hpp>
+#include    <wxMapImage.h>
 
 WebFrame::WebFrame(const wxString& url) :
     wxFrame(NULL, wxID_ANY, "wxWebView Sample"),
@@ -67,23 +69,23 @@ WebFrame::WebFrame(const wxString& url) :
 
     // Create the webview
     wxString backend = wxWebViewBackendDefault;
-#ifdef __WXMSW__
+// #ifdef __WXMSW__ Don´t have to check for windows
     if (wxWebView::IsBackendAvailable(wxWebViewBackendEdge)) {
         wxLogMessage("Using Edge backend");
         backend = wxWebViewBackendEdge;
     } else {
         wxLogMessage("Edge backend not available");
+        // Edge does not support handlers, but the other webviews do
+        //We register the wxfs:// protocol for testing purposes
+        m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewArchiveHandler("wxfs")));
+        //And the memory: file system
+        m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler("memory")));
     }
-#endif
+//#endif
 
     m_webmap = wxWebMap::Create(this, wxID_ANY, url, wxDefaultPosition, wxDefaultSize, backend);
     m_browser = m_webmap->GetWebView();
     topsizer->Add(m_webmap, wxSizerFlags().Expand().Proportion(1));
-
-    //We register the wxfs:// protocol for testing purposes
-    m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewArchiveHandler("wxfs")));
-    //And the memory: file system
-    m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler("memory")));
 
     SetSizer(topsizer);
 
@@ -369,6 +371,9 @@ wxMenu* WebFrame::CreateMapMenu()
 
     pMenuItem = map_menu->Append(wxID_ANY, "Add polygons...", _("Show polygons from file"));
     Bind(wxEVT_MENU, &WebFrame::OnAddPolygons, this, pMenuItem->GetId());
+
+    pMenuItem = map_menu->Append(wxID_ANY, "Add images...", _("Show images from file"));
+    Bind(wxEVT_MENU, &WebFrame::OnAddImages, this, pMenuItem->GetId());
     map_menu->AppendSeparator();
 
     pMenuItem = map_menu->Append(wxID_ANY, _("Remove last marker"));
@@ -855,6 +860,48 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
     }
     return true;
 }
+
+
+void WebFrame::OnAddImages(wxCommandEvent& WXUNUSED(e))
+{
+    wxFileName fn;
+    fn.SetPath(wxFileName::GetCwd());
+    wxString filename = wxFileSelector(_("Select image txt file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("Image description file (*.txt)|*.txt|I-CONIC Footprint file (*.ifp)|*.ifp"));
+    if (filename.empty()) {
+        return;
+    }
+    std::vector<std::pair<wxMapPoint, wxMapPoint>> vPoints;
+    std::vector<wxString> vPaths;
+    ImageReader reader(filename, vPoints, vPaths);
+    if (!vPoints.size()) {
+        wxLogError(_("Could not read images from %s"), filename);
+        return;
+    }
+    wxLogStatus(_("%d images read from %s"), (int)vPoints.size(), filename);
+    if (!AddImages(vPoints, vPaths)) {
+        wxLogError(_("Could not add polygons to map"));
+    }
+}
+
+bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& vPoints, std::vector<wxString> const& vPaths)
+{
+    for (int i = 0; i < vPoints.size(); i++) {
+        wxMapPoint upperLeft = vPoints[i].first;
+        wxMapPoint lowerRight = vPoints[i].second;
+        wxString tFilePath = vPaths[i];
+
+        wxString& filePath = tFilePath;
+        filePath.Replace('\\', '/', true);
+
+        pwxMapImage image = wxMapImage::Create(upperLeft[0], upperLeft[1], lowerRight[0], lowerRight[1], filePath);
+        wxString res;
+        m_webmap->AddMapObject(image, &res);
+        wxLogMessage(image->GetJavaScriptAdd(""));
+        wxLogMessage(_("- %s"), filePath);
+    }
+    return true;
+}
+
 
 void WebFrame::OnToggleDraggable(wxCommandEvent& e)
 {

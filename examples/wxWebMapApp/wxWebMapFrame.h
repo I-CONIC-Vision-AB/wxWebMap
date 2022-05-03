@@ -64,14 +64,23 @@ public:
     */
     void OnAddMarker(wxCommandEvent& e);
 
-    //Test
-    void OnAddImageS(wxCommandEvent& e);
+    /**
+    * @brief Progammatically add an image to the map
+    * @param e Unused
+    */
+    void OnAddImage(wxCommandEvent& e);
 
     /**
      * @brief Read a file with polygons and show on map
      * @param  Unused
     */
     void OnAddPolygons(wxCommandEvent& WXUNUSED(e));
+
+    /**
+     * @brief Read a file with information about images and show on map
+     * @param  Unused
+    */
+    void OnAddImages(wxCommandEvent& WXUNUSED(e));
 
     /**
      * @brief Remove last added marker
@@ -109,6 +118,8 @@ public:
     bool AddPolygons(wxString const& filename);
 
     bool AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons, std::vector<wxString> const& vPolygonName);
+
+    bool AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& vPoints, std::vector<wxString> const& vPaths);
 
     void UpdateState();
     void OnIdle(wxIdleEvent& evt);

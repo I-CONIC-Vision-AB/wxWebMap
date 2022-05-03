@@ -5,3 +5,5 @@
 /exports
 /build
 /deps
+/test/wxWebMapTest
+/test/wxWebMapTest2

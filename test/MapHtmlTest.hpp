@@ -2,6 +2,7 @@
 
 #include    <boost/test/unit_test.hpp>
 namespace buf = boost::unit_test::framework;
+//#define _WINSOCKAPI_    // stops windows.h including winsock.h
 #include    <wxWebMap.h>
 #include    <wxMapUtil.h>
 #include	<wx/filename.h>
@@ -27,31 +28,34 @@ BOOST_AUTO_TEST_CASE(maprect)
     BOOST_TEST(r[3] == r.h);
 }
 
-BOOST_AUTO_TEST_CASE(webmap)
-{
-    std::cerr << "Running test case: " << buf::current_test_case().p_name << std::endl;
-    wxLog::SetActiveTarget(new wxLogStderr);
-    wxLog::SetVerbose(true);
-    wxFileSystem::AddHandler(new wxMemoryFSHandler);
-
-    wxFrame *f = new wxFrame(nullptr, wxID_ANY, "Dummy frame");
-
-    // Create the webview
-    wxString backend = wxWebViewBackendDefault;
-    if (wxWebView::IsBackendAvailable(wxWebViewBackendDefault)) {
-    }
-#ifdef __WXMSW__
-    if (wxWebView::IsBackendAvailable(wxWebViewBackendEdge)) {
-        wxLogMessage("Using Edge backend");
-        backend = wxWebViewBackendEdge;
-    } else {
-        wxLogMessage("Edge backend not available");
-    }
-#endif
-
-    wxWebMap* pMap = wxWebMap::Create(f, wxID_ANY, "map.html", wxDefaultPosition, wxDefaultSize, backend);
-    BOOST_TEST(pMap);
-
-    f->Destroy();
-    wxFileSystem::CleanUpHandlers();
-}
+//BOOST_AUTO_TEST_CASE(webmap)
+//{
+// /* THIS TEST REQUIRES A wxApp (AT LEAST FOR EDGE BACKEND) SO CAN NOT BE RUN FROM COMMAND LINE!
+//    USE THE GUI EXAMPLE APP INSTEAD 
+// */
+//    std::cerr << "Running test case: " << buf::current_test_case().p_name << std::endl;
+//    wxLog::SetActiveTarget(new wxLogStderr);
+//    wxLog::SetVerbose(true);
+//    wxFileSystem::AddHandler(new wxMemoryFSHandler);
+//
+//    wxFrame *f = new wxFrame(nullptr, wxID_ANY, "Dummy frame");
+//
+//    // Create the webview
+//    wxString backend = wxWebViewBackendDefault;
+//    if (wxWebView::IsBackendAvailable(wxWebViewBackendDefault)) {
+//    }
+//#ifdef __WXMSW__
+//    if (wxWebView::IsBackendAvailable(wxWebViewBackendEdge)) {
+//        wxLogMessage("Using Edge backend");
+//        backend = wxWebViewBackendEdge;
+//    } else {
+//        wxLogMessage("Edge backend not available");
+//    }
+//#endif
+//
+//    wxWebMap* pMap = wxWebMap::Create(f, wxID_ANY, "html/map.html", wxDefaultPosition, wxDefaultSize, backend);
+//    BOOST_TEST(pMap);
+//
+//    f->Destroy();
+//    wxFileSystem::CleanUpHandlers();
+//}
