@@ -2,7 +2,6 @@
 #include    <wx/tokenzr.h>
 #include    <wx/log.h>
 #include    <wx/intl.h>
-#include <wxMapObject.h>
 
 wxMapMarker::wxMapMarker(double lat, double lon, bool bDraggable) :
     cLat(lat),

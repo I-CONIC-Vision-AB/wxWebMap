@@ -63,17 +63,20 @@ bool wxMapHtml::AddLeafletJavaScripts()
     // These examples should be read only templates.
     // User should be able to configure own versions, e.g.add 'map.setView([lat,lon]);' in add_marker so that the map centers on the added marker
     // Owner configured templates do not require recompilation of wxWebMap or any other C++ code.
-    fn.SetFullName("wxMapMarker.js");
-    wxString filename = fn.GetFullPath();
-    wxFFile jsFile(filename, "r");
-    if (!jsFile.IsOpened()) {
-        wxLogError(_("Could not open wxMapMarker in the expected path %s"), filename);
-        return false;
+    std::vector<wxString> vsJavaScript = { "wxMapPolygon.js", "wxMapMarker.js" };
+    for (int i = 0; i < 2; ++i) {
+        fn.SetFullName(vsJavaScript[i]);
+        wxString filename = fn.GetFullPath();
+        wxFFile jsFile(filename, "r");
+        if (!jsFile.IsOpened()) {
+            wxLogError(_("Could not open wxMapMarker in the expected path %s"), filename);
+            return false;
+        }
+        wxString jsCodeString;
+        jsFile.ReadAll(&jsCodeString);
+        // Although we add a new text node, this text is prepended to the start of the existing text
+        wxXmlNode* addMarkerNode = new wxXmlNode(scriptNode, wxXmlNodeType::wxXML_TEXT_NODE, wxString("script"), jsCodeString);
     }
-    wxString jsCodeString;
-    jsFile.ReadAll(&jsCodeString);
-    // Although we add a new text node, this text is prepended to the start of the existing text
-    wxXmlNode* addMarkerNode = new wxXmlNode(scriptNode, wxXmlNodeType::wxXML_TEXT_NODE, wxString("script"), jsCodeString);
 
     wxStringOutputStream os;
     Save(os);

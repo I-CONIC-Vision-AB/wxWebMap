@@ -17,6 +17,7 @@
 #include    <wx/log.h>
 
 #include    <wxWebMap.h>
+#include    <wxMapPolygon.h>
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
 #include "../sample.xpm"

@@ -6,9 +6,7 @@
 #include    <wx/filename.h>
 
 /**
- * @brief Utility to add e.g. javascripts to an 
-
- page.
+ * @brief Utility to add e.g. javascripts to an HTML page.
  *
  * This is typically only done once to create an HTML file with desired javascripts so that a wxMapObject can be added and edited.
  * Called internally in wxWebMap::Create using the \c basemapHtmlFileName argument to identify HTML template.

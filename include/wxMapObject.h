@@ -33,7 +33,7 @@ public:
     /**
      * @brief Returns the script to add this object to a map
      * @param map Map to add to
-     * @returuc2n Java script to execute
+     * @return Java script to execute
      * @sa wxWebMap::AddMapObject
     */
     virtual wxString GetJavaScriptAdd(wxString map) const = 0;
@@ -50,14 +50,13 @@ public:
         cLeafletId = id;
     }
 
-    virtual int GetLeafletID() {
+    virtual int GetLeafletId() const {
         return cLeafletId;
     }
 
     virtual wxString GetRemoveString(wxString const& map);
 
     static bool ParseResult(wxString const& result, EMapObjectType& type, int& id);
-
 protected:
     EMapObjectType cType;
     int cLeafletId;

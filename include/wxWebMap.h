@@ -11,7 +11,6 @@
 #include    <webmap_exports.h>
 #include	<wx/webview.h>
 #include    <wxMapMarker.h>
-#include    <wxMapPolygon.h>
 #include    <wxMapUtil.h>
 #include    <list>
 

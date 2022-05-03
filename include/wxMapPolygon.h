@@ -8,6 +8,7 @@
 #pragma once
 #include    <wxMapObject.h>
 #include	<wxMapUtil.h>
+#include    <vector>
 
 /**
  * @brief Polygon
@@ -24,17 +25,12 @@
 */
 class ICONIC_WEBMAP_EXPORT wxMapPolygon : public wxMapObject {
 public:
-
-    std::vector<wxMapPoint> coordinates;
-
     /**
      * @brief Use case 1.2
      * @param vPoints
     */
-    wxMapPolygon(std::vector<wxMapPoint>& vPoints);
-    bool wxMapPolygon::ParseResult(wxString const& result, EMapObjectType& type, int& id);
+    wxMapPolygon(std::vector<wxMapPoint> const &vPoints);
 
-    wxString wxMapPolygon::GetRemoveString(wxString const& map);
     /**
      * @brief Returns the script to add this object to a map
      * @param map Map to add to
@@ -47,8 +43,11 @@ public:
     * @brief Create a polygon
     * @return a marker
     */
-    static boost::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> &vPoints);
+    static boost::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> const &vPoints);
 
+    virtual wxString GetRemoveString(wxString const& map);
+
+    std::vector<wxMapPoint> coordinates;
 };
 
 typedef boost::shared_ptr<wxMapPolygon> pwxMapPolygon; //!< Smart pointer to a map polygon.

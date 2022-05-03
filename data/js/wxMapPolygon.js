@@ -1,22 +1,22 @@
 
-var polygons = [];
-var nextPolygon = [];
+var polygons = new Array();
+var nextPolygon = new Array();
 function polygon_coord_add(lat, lon) {
-    nextPolygon.push[lat, lon];
+    var pt = new Array();
+    pt[0] = lat;
+    pt[1] = lon;
+    nextPolygon.push(pt);
 };
 
 function polygon_add(map) {
-    if (nextPolygon.length > 2) {
-        var polygon = new L.polygon(nextPolygon);
-        polygon.addTo(map);
-        polygons[polygon._leaflet_id] = polygon;
-        nextPolygon = [];
-        return "POLYGON," + polygon._leaflet_id;
-    }
-    return "FALSE";
+    var polygon = new L.polygon(nextPolygon);
+    polygon.addTo(map);
+    polygons[polygon._leaflet_id] = polygon;
+    nextPolygon = new Array();
+    return "POLYGON," + polygon._leaflet_id;
 };
 
-function mapobject_remove(id, map) {
+function polygon_remove(id, map) {
     map.removeLayer(polygons[id]);
     delete polygons[id];
 };

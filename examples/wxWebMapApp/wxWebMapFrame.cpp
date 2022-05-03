@@ -313,7 +313,7 @@ void WebFrame::RemovePolygon(int id, wxString newpolygon)
 {
     for (int i = 0; i < polygons.size(); i++) {
         //wxLogMessage("disaniof %d %d", id, polygons.at(i).GetLeafletID());
-        if (polygons.at(i).GetLeafletID() == id) {
+        if (polygons.at(i).GetLeafletId() == id) {
             polygons.erase(polygons.begin()+i);
             break;
         }
@@ -376,7 +376,7 @@ wxMenu* WebFrame::CreateMapMenu()
     Bind(wxEVT_MENU, &WebFrame::OnAddImages, this, pMenuItem->GetId());
     map_menu->AppendSeparator();
 
-    pMenuItem = map_menu->Append(wxID_ANY, _("Remove last marker"));
+    pMenuItem = map_menu->Append(wxID_ANY, _("Remove last map object"));
     Bind(wxEVT_MENU, &WebFrame::OnRemoveLastMarker, this, pMenuItem->GetId());
     Bind(wxEVT_UPDATE_UI, &WebFrame::OnUpdateRemoveLastMarker, this, pMenuItem->GetId());
 
@@ -781,7 +781,7 @@ void WebFrame::RunScript(const wxString& javascript)
         wxLogWarning("RunScript() failed");
     }
 }
-//
+
 void WebFrame::OnRemoveLastMarker(wxCommandEvent& e)
 {
     if (!m_webmap->GetMapObjects().size()) {
@@ -850,8 +850,8 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
     for (int i = 0; i < vPolygons.size(); ++i) {
         std::vector<wxMapPoint> const& aPolygon = vPolygons[i];
         // TODO: Create a wxMapPolygon instance and assign polygon
-//        pPolygon = wxMapPolygon::Create(aPolygon);
-//        m_webmap->AddMapObject(aPolygon, &result);
+        pPolygon = wxMapPolygon::Create(aPolygon);
+        m_webmap->AddMapObject(pPolygon, &result);
         wxLogMessage(_("Added polygon object %s with result %s"), vPolygonName[i], result);
 
         for (int j = 0; j < aPolygon.size(); ++j) {
