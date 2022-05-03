@@ -73,6 +73,5 @@ configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapMarker.js ${CMAKE_RUNTIME_OUTPUT
 configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapPolygon.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapPolygon.js COPYONLY)
 
 add_subdirectory("src")
-#add_subdirectory("webview")
 add_subdirectory("examples")
 add_subdirectory("test")
