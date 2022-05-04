@@ -11,6 +11,7 @@
 #include    <webmap_exports.h>
 #include	<wx/webview.h>
 #include    <wxMapMarker.h>
+#include    <wxMapPolygon.h>
 #include    <wxMapUtil.h>
 #include    <list>
 
@@ -54,6 +55,21 @@ public:
      * @return the aggregated wxWebView.
     */
     virtual wxWebView* GetWebView() = 0;
+
+    /**
+    * @brief Store a polygon in the polygon buffer
+    *
+    * Used when a new polygon or an updated polygon has been received from the WebView
+    */
+    void wxWebMap::StorePolygon(int id, wxString polygon);
+
+    /**
+    * @brief Remove a polygon from the polygon buffer
+    *
+    * Used when an outdated version of a polygon needs to be removed
+    * Or when removing a polygon
+    */
+    void RemovePolygon(int id, wxString newpolygon);
 
     /**
      * @brief Add a map object to the map
@@ -115,4 +131,7 @@ protected:
     * @brief Empty constructor.
     */
     wxWebMap();
+
+private:
+    std::vector<wxMapPolygon> polygons;
 };

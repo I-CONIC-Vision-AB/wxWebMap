@@ -17,7 +17,6 @@
 #endif
 #include    <wx/webviewarchivehandler.h>
 #include    <wx/webviewfshandler.h>
-#include    <boost/algorithm/string.hpp>
 #include    <wxMapImage.h>
 
 WebFrame::WebFrame(const wxString& url) :
@@ -243,45 +242,6 @@ WebFrame::WebFrame(const wxString& url) :
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptNull, this, m_script_null->GetId());
     Bind(wxEVT_MENU, &WebFrame::OnRunScriptDate, this, m_script_date->GetId());
 
-    // Install message handler with the name wx_msg
-    m_browser->AddScriptMessageHandler("wx_msg");
-    // Bind handler
-    m_browser->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, [&](wxWebViewEvent& evt) {
-        wxString s = evt.GetString();
-        wxLogMessage(s);
-        std::string delimiter = ": ";
-        size_t pos = 0;
-        std::string function_token;
-        std::string id_token;
-
-        pos = s.find(delimiter);
-        function_token = s.substr(0, pos);
-        s.erase(0, pos + delimiter.length());
-        //wxLogMessage("%s", function_token);
-
-        pos = s.find(delimiter);
-        id_token = s.substr(0, pos);
-        s.erase(0, pos + delimiter.length());
-        //wxLogMessage("%s", id_token);
- 
-        pos = s.find(delimiter);
-        //wxLogMessage(s);
-
-        if (function_token == "Create") {
-            //wxLogMessage("%d", stoi(id_token));
-            StorePolygon(stoi(id_token), s);
-        }
-        else if (function_token == "Update") {
-            RemovePolygon(stoi(id_token), s);
-            StorePolygon(stoi(id_token), s);
-        }
-        else
-        {
-            RemovePolygon(stoi(id_token), s);
-        }
-        //wxLogMessage("%d", static_cast<int>(polygons.size()));
-        });
-
 
 #if wxUSE_WEBVIEW_IE
     if (!wxWebView::IsBackendAvailable(wxWebViewBackendEdge)) {
@@ -305,56 +265,6 @@ WebFrame::WebFrame(const wxString& url) :
 WebFrame::~WebFrame()
 {
     delete m_tools_menu;
-}
-
-
-
-void WebFrame::RemovePolygon(int id, wxString newpolygon)
-{
-    for (int i = 0; i < polygons.size(); i++) {
-        //wxLogMessage("disaniof %d %d", id, polygons.at(i).GetLeafletID());
-        if (polygons.at(i).GetLeafletId() == id) {
-            polygons.erase(polygons.begin()+i);
-            break;
-        }
-    }
-}
-
-void WebFrame::StorePolygon(int id, wxString newpolygon)
-{
-
-    std::string string = newpolygon.ToStdString();
-    boost::erase_all(string, "LatLng(");
-    boost::erase_all(string, " ");
-    boost::erase_all(string, ")");
-    //wxLogMessage("%s", string);
-    
-    std::string delimiter = ",";
-
-    bool b = false;
-    size_t pos = 0;
-    std::string token;
-    std::vector<wxMapPoint> points;
-    while ((pos = string.find(delimiter)) != std::string::npos) {
-        if (b) {
-            float lat = ::atof(token.c_str());
-            b = false;
-            token = string.substr(0, pos);
-            float lng = ::atof(token.c_str());
-            wxMapPoint* point = new wxMapPoint(lat, lng);
-            wxMapPoint notpointer = *point;
-            points.push_back(notpointer);
-        }
-        else {
-            b = true;
-            token = string.substr(0, pos);
-
-        }
-        string.erase(0, pos + delimiter.length());
-    }
-    wxMapPolygon* polygon = new wxMapPolygon(points);
-    polygon->SetLeafletId(id);
-    polygons.push_back(*polygon);
 }
 
 wxMenu* WebFrame::CreateMapMenu()
