@@ -57,14 +57,6 @@
         L.control.layers(basemaps, {}, { collapsed: true }).addTo(map);
         basemaps.Map.addTo(map);
 
-        //map.on('click', onMapClick);
-        //// Add marker on map click 
-        //function onMapClick(e) {
-        //    var marker = new L.Marker(e.latlng, { draggable: true });
-        //    marker.addTo(map);
-        //    markers[marker._leaflet_id] = marker;
-        //};
-
 
         // add leaflet.pm controls to the map
         map.pm.addControls({
@@ -98,27 +90,34 @@
             'rotateMode',
             'removalMode'
         ]);
-
+		
+	    
         map.on('pm:create', function (e) {
-            var latlngs = e.layer.getLatLngs();
-            //alert(latlngs);
-            function f() {
-                window.wx_msg.postMessage(latlngs);
-            } f();
+			create_polygon(e);
             e.layer.on('pm:update', function (e) {
-                alert("edited layer");
+                update_polygon(e);
+            });
+            e.layer.on('pm:rotateend', function (e) {
+                update_polygon(e);
+            });
+            e.layer.on('pm:dragend', function (e) {
+                update_polygon(e);
+            });
+            e.layer.on('pm:remove', function (e) {
+                remove_polygon(e);
             });
         });
-
-        //map.on('pm:globaleditmodetoggled', function (e) {
-        //    //var latlngs = e.layer.getLatLngs();
-        //    //alert(latlngs);
-        //    alert("tester2");
-        //});
-
-        //layer.on('pm:update', function (e) {
-        //    alert("edited layer");
-        //});
+    	
+    	function create_polygon(e) {
+			window.wx_msg.postMessage("CREATE," + e.layer._leaflet_id + "," + e.layer.getLatLngs());
+		};
+    	function update_polygon(e) {
+			window.wx_msg.postMessage("UDPATE," + e.layer._leaflet_id + "," + e.layer.getLatLngs());
+		};
+    	function remove_polygon(e) {
+			window.wx_msg.postMessage("REMOVE," + e.layer._leaflet_id + "," + e.layer.getLatLngs());
+		};
+		
     </script>
 </body>
 </html>
