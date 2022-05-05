@@ -18,7 +18,6 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
     wxString str;
     int c = 0;
     wxFileName imgPath(filename);
-    imgPath.AppendDir("images");
     imgPath.AppendDir("thumbnails");
     imgPath.SetExt("jpg");
     std::pair<wxMapPoint, wxMapPoint> corners;
