@@ -110,13 +110,13 @@
         });
     	
     	function create_polygon(e) {
-			window.wx_msg.postMessage("CREATE," + e.layer._leaflet_id + "," + e.layer.getLatLngs());
+			window.wx_msg.postMessage("CREATE;" + e.layer._leaflet_id + ";" + e.layer.getLatLngs());
 		};
     	function update_polygon(e) {
-			window.wx_msg.postMessage("UDPATE," + e.layer._leaflet_id + "," + e.layer.getLatLngs());
+			window.wx_msg.postMessage("UDPATE;" + e.layer._leaflet_id + ";" + e.layer.getLatLngs());
 		};
     	function remove_polygon(e) {
-			window.wx_msg.postMessage("REMOVE," + e.layer._leaflet_id + "," + e.layer.getLatLngs());
+			window.wx_msg.postMessage("REMOVE;" + e.layer._leaflet_id + ";" + e.layer.getLatLngs());
 		};
 		
     </script>
