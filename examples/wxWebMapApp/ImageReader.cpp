@@ -52,7 +52,12 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
             break;
         case 6:
             imagePoints.push_back(corners);
-            imagePaths.push_back(imgPath.GetFullPath());
+            if (imgPath.Exists()) {
+                imagePaths.push_back(imgPath.GetFullPath());
+            }
+            else {
+                wxLogWarning(_("The image %s does not exist"), imgPath.GetFullPath());
+            }
             break;
         default:
             break;
