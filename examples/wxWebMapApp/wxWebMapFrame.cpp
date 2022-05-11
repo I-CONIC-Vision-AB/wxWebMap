@@ -817,7 +817,7 @@ void WebFrame::OnAddPolygons(wxCommandEvent& WXUNUSED(e))
 {
     wxFileName fn;
     fn.SetPath(wxFileName::GetCwd());
-    wxString filename = wxFileSelector(_("Select polygon file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("I-CONIC Footprint file (*.ifp)|*.ifp"));
+    wxString filename = wxFileSelector(_("Select polygon file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("Footprint file (*.ifp)|*.ifp"));
     if (filename.empty()) {
         return;
     }
@@ -866,7 +866,7 @@ void WebFrame::OnAddImages(wxCommandEvent& WXUNUSED(e))
 {
     wxFileName fn;
     fn.SetPath(wxFileName::GetCwd());
-    wxString filename = wxFileSelector(_("Select image txt file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("Image description file (*.txt)|*.txt|I-CONIC Footprint file (*.ifp)|*.ifp"));
+    wxString filename = wxFileSelector(_("Select image txt file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("Footprint file (*.ifp)|*.ifp"));
     if (filename.empty()) {
         return;
     }
