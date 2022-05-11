@@ -34,9 +34,9 @@
     <div id="map"><!-- Empty div body. Paceholder for leaflet map. --></div>
     <script type="text/javascript">
         // ToDo: Move all javascript code to js/*.js directory and add them with wxMapHtml!
-        var map = L.map('map', {
-            center: [59.326180, 18.072263],
-            zoom: 12
+        var map = L.map('map', {  
+            center: [59.61417749543643, 18.872957835353688],
+            zoom: 14
         });
         var basemaps = {
             'Map': L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
@@ -47,7 +47,7 @@
                 layers: 'TOPO-WMS,OSM-Overlay-WMS',
                 attribution: '©OpenStreetMap contributors'
             }),
-            'Imagery': L.tileLayer.wms('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/%7Bz%7D/%7By%7D/%7Bx%7D', {
+            'Imagery': L.tileLayer.wms('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 layers: 'Imagery',
                 attribution: 'Esri, USGS|Esri, FAO, NOAA|Earthstar Geographics'
             })
