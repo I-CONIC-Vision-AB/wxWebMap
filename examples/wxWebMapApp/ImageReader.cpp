@@ -18,7 +18,6 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
     wxString str;
     int c = 0;
     wxFileName imgPath(filename);
-    imgPath.AppendDir("thumbnails");
     imgPath.SetExt("jpg");
     std::pair<wxMapPoint, wxMapPoint> corners;
     wxMapPoint pt;
@@ -27,7 +26,6 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
     for (str = file.GetFirstLine(); !bEof; str = file.GetNextLine()) {
         switch (c) {
         case 0:
-            str = "thumb010_" + str;
             imgPath.SetName(str);
             break;
         case 1:
