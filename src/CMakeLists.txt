@@ -38,7 +38,7 @@ add_library(IconicWebMap SHARED ${SRC_FILES} "wxWebMap.cpp" "wxMapPolygon.cpp" "
 
 generate_export_header(IconicWebMap
     BASE_NAME iconic_webmap
-    EXPORT_FILE_NAME "${ICONIC_EXPORTS_DIR}/webmap_exports.h"
+    EXPORT_FILE_NAME "${ICONIC_WEBMAP_EXPORTS_DIR}/webmap_exports.h"
 )
 
 target_compile_definitions(IconicWebMap PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
@@ -46,7 +46,9 @@ target_compile_definitions(IconicWebMap PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CO
 target_include_directories(IconicWebMap
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-        ${ICONIC_EXPORTS_DIR}
+        $<BUILD_INTERFACE:${ICONIC_WEBMAP_EXPORTS_DIR}>
+		$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
+	PRIVATE
         ${wxWidgets_INCLUDE_DIRS}
 )
 
@@ -65,29 +67,4 @@ endif()
 #if (VCPKG_TARGET_IS_WINDOWS)
 configure_file(${CMAKE_SOURCE_DIR}/cmake/WebView2Loader.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WebView2Loader.dll COPYONLY)
 #endif()
-
-install(TARGETS IconicWebMap  
-    EXPORT iconicTargets
-    RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
-    ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
-    LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-)
-
-install(
-    DIRECTORY 
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}
-    FILES_MATCHING PATTERN "*.dll" PATTERN "*.html" PATTERN "*.exe" PATTERN "*.js"
-)
-
-install(
-    DIRECTORY "../include" 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}
-    PATTERN "../include/detail" EXCLUDE
-)
-
-install(
-    FILES "${ICONIC_EXPORTS_DIR}/webmap_exports.h"
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include
-)
 
