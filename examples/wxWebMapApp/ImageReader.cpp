@@ -18,7 +18,7 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
     wxString str;
     int c = 0;
     wxFileName imgPath(filename);
-    imgPath.SetExt("jpg");
+    wxString vExt[] = { "png","jpg","tif" };
     std::pair<wxMapPoint, wxMapPoint> corners;
     wxMapPoint pt;
 
@@ -49,13 +49,22 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
             }
             break;
         case 6:
+        {
             imagePoints.push_back(corners);
-            if (imgPath.Exists()) {
-                imagePaths.push_back(imgPath.GetFullPath());
+            bool bFound = false;
+            for (int j = 0; j < 3; ++j) {
+                imgPath.SetExt(vExt[j]);
+                wxString filename = imgPath.GetFullPath();
+                if (imgPath.Exists()) {
+                    bFound = true;
+                    imagePaths.push_back(imgPath.GetFullPath());
+                    break;
+                }
             }
-            else {
+            if (!bFound) {
                 wxLogWarning(_("The image %s does not exist"), imgPath.GetFullPath());
             }
+        }
             break;
         default:
             break;
