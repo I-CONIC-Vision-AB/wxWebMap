@@ -69,7 +69,7 @@ WebFrame::WebFrame(const wxString& url) :
 
     // Create the webview
     wxString backend = wxWebViewBackendDefault;
-// #ifdef __WXMSW__ Don´t have to check for windows
+// #ifdef __WXMSW__ Donï¿½t have to check for windows
     if (wxWebView::IsBackendAvailable(wxWebViewBackendEdge)) {
         wxLogMessage("Using Edge backend");
         backend = wxWebViewBackendEdge;

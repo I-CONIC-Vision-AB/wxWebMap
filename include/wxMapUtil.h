@@ -88,6 +88,6 @@ public:
 */
 enum class ICONIC_WEBMAP_EXPORT EActionMode {
     PAN=1,        //!< Default. Move around in the map. Move in map when mouse is moving and left is down.
-    DRAW=2,       //!< E.g. add a point on left mouse click. Currently also default in sample application (but shouldn´t really be default)
+    DRAW=2,       //!< E.g. add a point on left mouse click. Currently also default in sample application (but shouldnï¿½t really be default)
     SELECT=4      //!< Select map object under mouse cursor on left click
 };

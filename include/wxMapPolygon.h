@@ -29,7 +29,7 @@ public:
      * @brief Use case 1.2
      * @param vPoints
     */
-    wxMapPolygon(std::vector<wxMapPoint> const &vPoints);
+    wxMapPolygon(std::vector<wxMapPoint> const &vPoints, float opacity = 0.5, wxString color = wxString("blue"));
 
     /**
      * @brief Returns the script to add this object to a map
@@ -43,7 +43,9 @@ public:
     * @brief Create a polygon
     * @return a marker
     */
-    static boost::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> const &vPoints);
+    static boost::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> const &vPoints, float opacity = 0.5, wxString color = wxString("blue"));
+    float cOpacity;
+    wxString cColor;
 
     virtual wxString GetRemoveString(wxString const& map);
 
