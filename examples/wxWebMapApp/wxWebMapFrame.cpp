@@ -848,9 +848,9 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
 {
     pwxMapPolygon pPolygon;
     wxString result;
-    double opacity = 0.5;
-    wxString sOpacity = ::wxGetTextFromUser(_("Opacity"), _("Polygon display"), wxString::Format("%lf", opacity, this));
-    sOpacity.ToDouble(&opacity);
+    long opacity = 50;
+    opacity = ::wxGetNumberFromUser(_("Opacity"), _("Percent 0-100"), _("Polygon display"), opacity, 0L, 100L, this);
+    float fOpacity = opacity / 100.0f;
     wxColourDialog* dlg = new wxColourDialog(this);
     wxColour col("BLUE");
     if (dlg->ShowModal() == wxID_OK) {
@@ -861,7 +861,7 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
     for (int i = 0; i < vPolygons.size(); ++i) {
         std::vector<wxMapPoint> const& aPolygon = vPolygons[i];
         // TODO: Create a wxMapPolygon instance and assign polygon
-        pPolygon = wxMapPolygon::Create(aPolygon, (float)opacity, col.GetAsString(wxC2S_HTML_SYNTAX));
+        pPolygon = wxMapPolygon::Create(aPolygon, fOpacity, col.GetAsString(wxC2S_HTML_SYNTAX));
         m_webmap->AddMapObject(pPolygon, &result);
         wxLogMessage(_("Added polygon object %s with result %s"), vPolygonName[i], result);
 
