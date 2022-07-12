@@ -11,7 +11,7 @@ wxMapMarker::wxMapMarker(double lat, double lon, bool bDraggable) :
     cType = EMapObjectType::MARKER;
 }
 
-wxString wxMapMarker::GetJavaScriptAdd(wxString map, float opacity, wxString color) const
+wxString wxMapMarker::GetJavaScriptAdd(wxString map) const
 {
     if (!cbDraggable) {
         return wxString::Format("marker_add(%.6lf,%.6lf,%s); \n", cLat, cLon, map);

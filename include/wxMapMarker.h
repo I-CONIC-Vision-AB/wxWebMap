@@ -29,7 +29,7 @@ public:
      * @param map Map name
      * @return script to run to add this object
     */
-    virtual wxString GetJavaScriptAdd(wxString map, float opacity = 0, wxString color = wxString("red")) const;
+    virtual wxString GetJavaScriptAdd(wxString map) const;
 
     /**
      * @brief Create a marker

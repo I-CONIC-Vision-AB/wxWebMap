@@ -36,7 +36,7 @@ public:
      * @return Java script to execute
      * @sa wxWebMap::AddMapObject
     */
-    virtual wxString GetJavaScriptAdd(wxString map, float opacity = 0.5, wxString color = wxString("blue")) const = 0;
+    virtual wxString GetJavaScriptAdd(wxString map) const = 0;
 
     /**
      * @brief Returns type of map object

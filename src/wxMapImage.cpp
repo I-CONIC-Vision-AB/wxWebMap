@@ -14,7 +14,7 @@ wxMapImage::wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRig
     cType = EMapObjectType::IMAGE;
 }
 
-wxString wxMapImage::GetJavaScriptAdd(wxString map, float opacity, wxString color) const
+wxString wxMapImage::GetJavaScriptAdd(wxString map) const
 {
     return "image_add('" + cUrl + wxString::Format("',%.6lf,%.6lf,%.6lf,%.6lf,%s", cLeftLat, cLeftLon, cRightLat, cRightLon, map) + "); \n";
 }
