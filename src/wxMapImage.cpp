@@ -11,6 +11,7 @@ wxMapImage::wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRig
     cRightLon(lowerRightLon),
     cUrl(imageUrl)
 {
+    cUrl.Replace('\\', '/');
     cType = EMapObjectType::IMAGE;
 }
 

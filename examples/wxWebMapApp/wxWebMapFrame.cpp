@@ -19,6 +19,7 @@
 #include    <wx/webviewfshandler.h>
 #include    <boost/algorithm/string.hpp>
 #include    <wxMapImage.h>
+#include    <wx/colordlg.h>
 
 WebFrame::WebFrame(const wxString& url) :
     wxFrame(NULL, wxID_ANY, "wxWebView Sample"),
@@ -847,10 +848,20 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
 {
     pwxMapPolygon pPolygon;
     wxString result;
+    double opacity = 0.5;
+    wxString sOpacity = ::wxGetTextFromUser(_("Opacity"), _("Polygon display"), wxString::Format("%lf", opacity, this));
+    sOpacity.ToDouble(&opacity);
+    wxColourDialog* dlg = new wxColourDialog(this);
+    wxColour col("BLUE");
+    if (dlg->ShowModal() == wxID_OK) {
+        wxColourData colData = dlg->GetColourData();
+        col = colData.GetColour();
+    }
+    dlg->Destroy();
     for (int i = 0; i < vPolygons.size(); ++i) {
         std::vector<wxMapPoint> const& aPolygon = vPolygons[i];
         // TODO: Create a wxMapPolygon instance and assign polygon
-        pPolygon = wxMapPolygon::Create(aPolygon);
+        pPolygon = wxMapPolygon::Create(aPolygon, (float)opacity, col.GetAsString(wxC2S_HTML_SYNTAX));
         m_webmap->AddMapObject(pPolygon, &result);
         wxLogMessage(_("Added polygon object %s with result %s"), vPolygonName[i], result);
 
