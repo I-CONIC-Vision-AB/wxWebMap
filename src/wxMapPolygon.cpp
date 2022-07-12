@@ -11,14 +11,14 @@ wxMapPolygon::wxMapPolygon(std::vector<wxMapPoint> const& vPoints) :
     cType = EMapObjectType::POLYGON;
 }
 
-wxString wxMapPolygon::GetJavaScriptAdd(wxString map) const
+wxString wxMapPolygon::GetJavaScriptAdd(wxString map,  float opacity,wxString color ) const
 {
     wxString js;
     for (int i=0; i<coordinates.size(); ++i)
     {
         js += wxString::Format("polygon_coord_add(%.6lf,%.6lf);\n", coordinates[i].x, coordinates[i].y);
     }
-    js += wxString::Format("polygon_add(%s); \n", map);
+    js += "polygon_add(" + wxString::Format("%s,%f,'", map, opacity) + color + "' ); \n";
     return wxString(js);
 }
 

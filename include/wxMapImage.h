@@ -79,7 +79,7 @@ public:
      * @sa wxWebMap::AddMapObject
      * @todo Implement
     */
-    virtual wxString GetJavaScriptAdd(wxString map) const;
+    virtual wxString GetJavaScriptAdd(wxString map, float opacity = 0, wxString color = wxString("red")) const;
 
     /**
     * @brief Create an image

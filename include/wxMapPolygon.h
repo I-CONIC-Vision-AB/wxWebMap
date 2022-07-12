@@ -37,7 +37,7 @@ public:
      * @return Java script to execute
      * @sa wxWebMap::AddMapObject
     */
-    virtual wxString GetJavaScriptAdd(wxString map) const;
+    virtual wxString GetJavaScriptAdd(wxString map, float opacity = 0.5, wxString color = wxString("blue")) const;
 
     /**
     * @brief Create a polygon

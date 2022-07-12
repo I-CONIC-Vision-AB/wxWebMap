@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wxMapObject
 // Purpose:     Base class for map objects
-// Author:      Håkan Wiman
+// Author:      Hï¿½kan Wiman
 // Copyright:   (c) 2022 I-CONIC Vision AB, Sweden
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ public:
      * @return Java script to execute
      * @sa wxWebMap::AddMapObject
     */
-    virtual wxString GetJavaScriptAdd(wxString map) const = 0;
+    virtual wxString GetJavaScriptAdd(wxString map, float opacity = 0.5, wxString color = wxString("blue")) const = 0;
 
     /**
      * @brief Returns type of map object

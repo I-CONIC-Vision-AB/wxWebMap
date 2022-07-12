@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wxWebMap
 // Purpose:     Show and manipulate web maps in Windows, Linux and Mac applications
-// Author:      Håkan Wiman
+// Author:      Hï¿½kan Wiman
 // Copyright:   (c) 2022 I-CONIC Vision AB, Sweden
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////

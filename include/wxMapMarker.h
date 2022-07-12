@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wxMapMarker
 // Purpose:     Point marker on map
-// Author:      Håkan Wiman
+// Author:      Hï¿½kan Wiman
 // Copyright:   (c) 2022 I-CONIC Vision AB, Sweden
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ public:
      * @param map Map name
      * @return script to run to add this object
     */
-    virtual wxString GetJavaScriptAdd(wxString map) const;
+    virtual wxString GetJavaScriptAdd(wxString map, float opacity = 0, wxString color = wxString("red")) const;
 
     /**
      * @brief Create a marker

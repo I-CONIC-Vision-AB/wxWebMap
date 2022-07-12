@@ -8,8 +8,15 @@ function polygon_coord_add(lat, lon) {
     nextPolygon.push(pt);
 };
 
-function polygon_add(map) {
-    var polygon = new L.polygon(nextPolygon);
+function polygon_add(map, opacity, color) {
+    
+    var polygonOptions = {
+        color: color,
+        fillColor: color,
+        fillOpacity: opacity
+    }
+
+    var polygon = new L.polygon(nextPolygon, polygonOptions);
     polygon.addTo(map);
     map.setView([nextPolygon[0][0], nextPolygon[0][1]]);
     polygons[polygon._leaflet_id] = polygon;
