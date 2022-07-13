@@ -8,12 +8,13 @@ function polygon_coord_add(lat, lon) {
     nextPolygon.push(pt);
 };
 
-function polygon_add(map, opacity, color) {
+function polygon_add(map, opacity, weight, color) {
     
     var polygonOptions = {
         color: color,
         fillColor: color,
-        fillOpacity: opacity
+        fillOpacity: opacity,
+        weight: weight
     }
 
     var polygon = new L.polygon(nextPolygon, polygonOptions);
