@@ -852,7 +852,7 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
     double weight = 0.5;
     opacity = ::wxGetNumberFromUser(_("Opacity"), _("Percent 0-100"), _("Polygon display"), opacity, 0L, 100L, this);
     float fOpacity = opacity / 100.0f;
-    wxString sWeight = ::wxGetTextFromUser(_("Line width"), _("Polygon display"), wxString::Format("%f", weight, this));
+    wxString sWeight = ::wxGetTextFromUser(_("Line width"), _("Polygon display"), wxString::Format("%f", weight), this);
     sWeight.ToDouble(&weight);
     wxColourDialog* dlg = new wxColourDialog(this);
     wxColour col("BLUE");
