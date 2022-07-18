@@ -83,7 +83,7 @@ set(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 set(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include")
 set(INSTALL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/CMake")
-set(INSTALL_DATA_DIR "${CMAKE_INSTALL_PREFIX}/data")
+set(INSTALL_DATA_DIR "${CMAKE_INSTALL_PREFIX}")
 
 
 # Create a list of all targets
@@ -148,4 +148,19 @@ install(
 		PATTERN "*.html" 
 		PATTERN "*.js" 
 		PATTERN "*.ico"
+)
+
+install(
+    FILES "${CMAKE_SOURCE_DIR}/data/html/map.html"
+    DESTINATION "${INSTALL_BIN_DIR}/html"
+)
+
+install(
+    FILES "${CMAKE_SOURCE_DIR}/data/js/wxMapMarker.js"
+    DESTINATION "${INSTALL_BIN_DIR}/js"
+)
+
+install(
+    FILES "${CMAKE_SOURCE_DIR}/data/js/wxMapPolygon.js"
+    DESTINATION "${INSTALL_BIN_DIR}/js"
 )
