@@ -208,6 +208,7 @@ WebFrame::WebFrame(const wxString& url) :
     Bind(wxEVT_WEBVIEW_ERROR, &WebFrame::OnError, this, m_browser->GetId());
     Bind(wxEVT_WEBVIEW_NEWWINDOW, &WebFrame::OnNewWindow, this, m_browser->GetId());
     Bind(wxEVT_WEBVIEW_TITLE_CHANGED, &WebFrame::OnTitleChanged, this, m_browser->GetId());
+    Bind(wxEVT_WEBVIEW_SCRIPT_RESULT, &WebFrame::OnScriptResult, this, m_browser->GetId());
 
     // Connect the menu events
     Bind(wxEVT_MENU, &WebFrame::OnSetPage, this, setPage->GetId());
@@ -606,6 +607,23 @@ void WebFrame::OnTitleChanged(wxWebViewEvent& evt)
 {
     SetTitle(evt.GetString());
     wxLogMessage("%s", "Title changed; title='" + evt.GetString() + "'");
+}
+
+void WebFrame::OnScriptResult(wxWebViewEvent& evt)
+{
+    // Update leaflet id
+    const wxString msg = evt.GetString(); // javascript result string
+    pwxMapObject o = m_webmap->Find(msg); // Find object matching result string
+    if (o) {
+        // Object found
+        int id;
+        EMapObjectType type;
+        if (wxMapObject::ParseResult(msg, type, id)) {
+            // ID parsed, so assign it to object
+            o->SetLeafletId(id);
+        }
+    }
+    wxLogVerbose("Script result:" + msg);
 }
 
 void WebFrame::OnSetPage(wxCommandEvent& WXUNUSED(evt))

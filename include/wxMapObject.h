@@ -30,6 +30,8 @@ enum class ICONIC_WEBMAP_EXPORT EMapObjectType {
 */
 class ICONIC_WEBMAP_EXPORT wxMapObject {
 public:
+    wxMapObject();
+
     /**
      * @brief Returns the script to add this object to a map
      * @param map Map to add to
@@ -57,6 +59,16 @@ public:
     virtual wxString GetRemoveString(wxString const& map);
 
     static bool ParseResult(wxString const& result, EMapObjectType& type, int& id);
+
+    /**
+     * @brief Compare this object with a javascript result string.
+     * 
+     * Used to identify which object has been added.
+     * @param result javascript result string
+     * @return True if same type. (more criteria in subclasses)
+    */
+    virtual bool operator==(const wxString& result);
+
 protected:
     EMapObjectType cType;
     int cLeafletId;

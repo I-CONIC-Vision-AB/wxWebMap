@@ -51,6 +51,8 @@ public:
 
     virtual wxString GetRemoveString(wxString const& map);
 
+    virtual bool operator==(const wxString& result) { return wxMapObject::operator==(result); }
+
     std::vector<wxMapPoint> coordinates;
 };
 

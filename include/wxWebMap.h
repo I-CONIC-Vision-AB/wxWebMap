@@ -110,6 +110,8 @@ public:
     */
     virtual void AddAction(EActionMode mode) {}
 
+    virtual pwxMapObject Find(wxString const& result) = 0;
+
 protected:
     /**
     * @brief Empty constructor.

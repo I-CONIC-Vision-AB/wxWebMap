@@ -6,8 +6,8 @@
 
 class wxWebMapImpl : public wxWebMap {
 public:
-    static wxWebMap* Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, /*wxString const& dataDirectory,
-                            const wxString& url, */const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name);
+    static wxWebMap* Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, 
+        const wxString& backend, long style, const wxString& name);
 
 protected:
     wxWebMapImpl();
@@ -18,7 +18,7 @@ protected:
     virtual bool DeleteMapObject(pwxMapObject o);
     virtual void SetMapName(wxString const& name);
     virtual std::list<pwxMapObject>& GetMapObjects();
-
+    virtual pwxMapObject Find(wxString const& result);
 
     wxWebView* cpWebView;
     wxString cMapName;

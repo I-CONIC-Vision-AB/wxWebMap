@@ -40,6 +40,10 @@ public:
     */
     static boost::shared_ptr<wxMapMarker> Create(double lat, double lon, bool bDraggable = false);
 
+    bool ParseResult(wxString const& result, EMapObjectType& type, int& id, double lat, double lon);
+
+    virtual bool operator==(const wxString& result);
+
     double cLat;
     double cLon;
     bool cbDraggable;
