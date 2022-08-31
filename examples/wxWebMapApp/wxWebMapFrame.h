@@ -52,7 +52,7 @@ public:
     virtual ~WebFrame();
 
     void StorePolygon(int id, wxString polygon);
-    void WebFrame::RemovePolygon(int id, wxString newpolygon);
+    void RemovePolygon(int id, wxString newpolygon);
     /**
      * @brief Get the web map
      * @return the web map

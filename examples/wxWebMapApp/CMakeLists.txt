@@ -1,5 +1,3 @@
-
-
 set(SOURCES
     "wxWebMapApp.cpp"
     "wxWebMapFrame.cpp"
@@ -21,11 +19,14 @@ add_executable(wxWebMapApp WIN32 MACOSX_BUNDLE ${SOURCES})
 
 target_compile_definitions(wxWebMapApp PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
 
-target_include_directories(wxWebMapApp PUBLIC "../wxWebMApApp" ${wxWidgets_INCLUDE_DIRS})
+target_include_directories(wxWebMapApp PUBLIC "../wxWebMapApp" ${wxWidgets_INCLUDE_DIRS} ${BOOST_INCLUDE_DIRS})
 #target_include_directories(IconicWebMapTest PUBLIC ${Boost_INCLUDE_DIRS})
 #target_include_directories(IconicWebMapTest PUBLIC ${EIGEN3_INCLUDE_DIRS})
 #target_include_directories(IconicWebMapTest PUBLIC ${GLFW_INCLUDE_DIRS})
 target_include_directories(wxWebMapApp PUBLIC "../../include")
+
+# Link required libraries to the executable
+# For wxWidget libraries, see options in root CMakeList file. There are multiple options
 
 target_link_libraries(wxWebMapApp 
 # ${INSTALL_BIN_DIR}

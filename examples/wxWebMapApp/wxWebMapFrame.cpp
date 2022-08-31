@@ -78,9 +78,9 @@ WebFrame::WebFrame(const wxString& url) :
         wxLogMessage("Edge backend not available");
         // Edge does not support handlers, but the other webviews do
         //We register the wxfs:// protocol for testing purposes
-        m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewArchiveHandler("wxfs")));
+        //m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewArchiveHandler("wxfs")));
         //And the memory: file system
-        m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler("memory")));
+        //m_browser->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler("memory")));
     }
 //#endif
 
@@ -686,6 +686,8 @@ void WebFrame::OnToolsClicked(wxCommandEvent& WXUNUSED(evt))
     wxMenuItem* item;
 
     unsigned int i;
+	// TODO: This code makes the application crash on Linux. The issue
+	//	is that the title element sent to AppendRadioItem can have an empty title
     for (i = 0; i < back.size(); i++) {
         item = m_tools_history_menu->AppendRadioItem(wxID_ANY, back[i]->GetTitle());
         m_histMenuItems[item->GetId()] = back[i];

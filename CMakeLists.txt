@@ -14,14 +14,17 @@
 #
 
 # Declare the minimum required CMake version
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.22.1)
 
 # Name the project
 project(iconic-webmap)
 
-find_package(wxWidgets COMPONENTS net core base html xml webview stc REQUIRED)
-# message(STATUS "${wxWidgets_LIBRARIES}")
+# For wxWidgets usage, see https://docs.wxwidgets.org/3.2.0/overview_cmake.html
+# Option 1 - using find_package
+find_package(wxWidgets REQUIRED COMPONENTS net core base html xml webview stc)
 include(${wxWidgets_USE_FILE})
+
+SET(wxWidgets_USE_UNICODE OFF)
 
 # --------------------------------------------------------------------------
 # On Visual Studio 8 MS deprecated C. This removes all 1.276E1265 security
@@ -51,11 +54,11 @@ if(WIN32)
 add_definitions(-D_WIN32_WINNT=0x0A00)
 endif()
 
+# Find files and store the path in a variable for later use
+find_path(BOOST_INCLUDE_DIRS "boost/shared_ptr.hpp") # Make sure we have boost::shared_ptr for smart pointer handling
 
-# Request the required wxWidgets libs
-find_path(BOOST_SHARED_PTR_INCLUDE_DIRS "boost/shared_ptr.hpp") # Make sure we have boost::shared_ptr for smart pointer handling
-
-set(CMAKE_CXX_STANDARD 11)
+# Use C++17
+set(CMAKE_CXX_STANDARD 17)
 
 include(GenerateExportHeader)
 set(ICONIC_WEBMAP_EXPORTS_DIR "${CMAKE_CURRENT_LIST_DIR}/exports")
@@ -65,8 +68,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Copy the template map.html file
-#message(STATUS "in dir: ${CMAKE_SOURCE_DIR}/data/map.html")
-#message(STATUS "out dir:${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/map.html")
 configure_file(${CMAKE_SOURCE_DIR}/data/html/map.html ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/html/map.html COPYONLY)
 configure_file(${CMAKE_SOURCE_DIR}/data/iconic.ico ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/iconic.ico COPYONLY)
 configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapMarker.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapMarker.js COPYONLY)
@@ -74,8 +75,8 @@ configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapPolygon.js ${CMAKE_RUNTIME_OUTPU
 
 add_subdirectory("src")
 add_subdirectory("examples")
-add_subdirectory("test")
-
+# Tests are not completely implemented yet, so skip for now
+#add_subdirectory("test")
 
 ### INSTALLATION ###
 

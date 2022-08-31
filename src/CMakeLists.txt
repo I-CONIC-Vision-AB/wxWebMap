@@ -14,7 +14,10 @@
 #
 
 # Declare the minimum required CMake version
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.22.1)
+
+# Include functions
+include(GenerateExportHeader)
 
 # Define a variable containing a list of source files for the project
 set(SRC_FILES
@@ -50,9 +53,11 @@ target_include_directories(IconicWebMap
 		$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
 	PRIVATE
         ${wxWidgets_INCLUDE_DIRS}
+        ${BOOST_INCLUDE_DIRS}
 )
 
 # Link required libraries to the executable
+# For wxWidget libraries, see options in root CMakeList file. There are multiple options
 target_link_libraries(IconicWebMap ${wxWidgets_LIBRARIES})
 
 if(APPLE)
@@ -64,7 +69,7 @@ if(APPLE)
         )
 endif()
 
-#if (VCPKG_TARGET_IS_WINDOWS)
-configure_file(${CMAKE_SOURCE_DIR}/cmake/WebView2Loader.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WebView2Loader.dll COPYONLY)
-#endif()
+if (VCPKG_TARGET_IS_WINDOWS)
+    configure_file(${CMAKE_SOURCE_DIR}/cmake/WebView2Loader.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WebView2Loader.dll COPYONLY)
+endif()
 

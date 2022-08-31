@@ -10,7 +10,7 @@ add_executable(IconicWebMapTest ${SOURCES})
 
 target_compile_definitions(IconicWebMapTest PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
 
-target_include_directories(IconicWebMapTest PUBLIC "../test" "../include" ${wxWidgets_INCLUDE_DIRS})
+target_include_directories(IconicWebMapTest PUBLIC "../test" "../include" ${wxWidgets_INCLUDE_DIRS} ${BOOST_INCLUDE_DIRS} /home/hames/code/vcpkg/installed/x64-linux/include)
 target_compile_definitions(IconicWebMapTest PUBLIC BOOST_TEST_DYN_LINK)
 
 target_link_libraries(IconicWebMapTest 

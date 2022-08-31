@@ -26,7 +26,7 @@ wxWebMapImpl::wxWebMapImpl() :
 
 wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
 {
-    bool bUseMemoryFS = (backend != wxWebViewBackendEdge);
+    bool bUseMemoryFS = false;//(backend != wxWebViewBackendEdge);
     wxString url = basemapHtmlFileName;
     wxWebMapImpl* p = new wxWebMapImpl();
     p->cpMapHtml = boost::make_shared<wxMapHtml>(basemapHtmlFileName, bUseMemoryFS);

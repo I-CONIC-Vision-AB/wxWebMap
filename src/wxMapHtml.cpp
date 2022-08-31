@@ -1,6 +1,6 @@
 #include	<wxMapHtml.h>
 #include    <wx/log.h>
-#include    <wx/FFile.h>
+#include    <wx/ffile.h>
 #include    <wx/sstream.h>
 #include    <wx/fs_mem.h>
 
