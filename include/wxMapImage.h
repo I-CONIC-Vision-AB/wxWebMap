@@ -98,6 +98,9 @@ public:
     */
     //static boost::shared_ptr<wxMapImage> Create(wxImage const& image, float latitude, float longitude);
 
+    bool ParseResult(const wxString& result, EMapObjectType& type, int& id, wxString& url);
+    bool operator==(const wxString& result);
+
     // Test
     static boost::shared_ptr<wxMapImage> Create(double upperLeftLat, double upperLeftLon, double lowerRightLat, double lowerRightLon, wxString imageUrl);
     double cLeftLat;

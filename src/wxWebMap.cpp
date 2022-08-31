@@ -5,11 +5,11 @@
 #include    <wx/sizer.h>
 #include    <wx/filename.h>
 #include    <wx/fs_mem.h>
+#include    <boost/foreach.hpp>
 
 wxWebMap::wxWebMap() :
     wxWindow()
 {
-
 }
 
 wxWebMap* wxWebMap::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
@@ -56,14 +56,11 @@ wxWebView* wxWebMapImpl::GetWebView()
 
 bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* result)
 {
-    cpWebView->RunScript(o->GetJavaScriptAdd(cMapName), result);
-    if (result && !result->IsEmpty()) {
-        int id;
-        EMapObjectType type;
-        wxMapObject::ParseResult(*result, type, id);
-        o->SetLeafletId(id);
+    if (std::find(clMapObjects.begin(), clMapObjects.end(), o) == clMapObjects.end()) {
+        // We run java script async because otherwise wxYield is called which may trigger unwanted events before we get our result
+        clMapObjects.push_back(o);
+        cpWebView->RunScriptAsync(o->GetJavaScriptAdd(cMapName), &o);
     }
-    clMapObjects.push_back(o);
 
     return true;
 }
@@ -85,8 +82,15 @@ std::list<pwxMapObject>& wxWebMapImpl::GetMapObjects()
 {
     return clMapObjects;
 }
-//
-//std::list<pwxMapObject>& wxWebMapImpl::GetMapPolygon()
-//{
-//    return clMapObjects;
-//}
+
+pwxMapObject wxWebMapImpl::Find(wxString const& result) {
+    int id;
+    EMapObjectType type;
+    wxMapObject::ParseResult(result, type, id);
+    BOOST_FOREACH(pwxMapObject pMapObject, clMapObjects) {
+        if (*pMapObject == result) {
+            return pMapObject;
+        }
+    }
+    return pwxMapObject();
+}

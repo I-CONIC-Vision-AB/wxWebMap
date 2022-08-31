@@ -3,6 +3,9 @@
 #include    <wx/log.h>
 #include    <wx/intl.h>
 
+wxMapObject::wxMapObject() :
+    cLeafletId(-1) {}
+
 wxString wxMapObject::GetRemoveString(wxString const& map)
 {
     return wxString::Format("mapobject_remove(%d, %s); \n", cLeafletId, map);
@@ -45,4 +48,16 @@ bool wxMapObject::ParseResult(wxString const& result, EMapObjectType& type, int&
         ++i;
     }
     return bOk;
+}
+
+bool wxMapObject::operator==(const wxString& result) {
+    EMapObjectType type;
+    int id;
+    if (!ParseResult(result, type, id)) return false;
+    if (type != cType) return false;
+    if (cLeafletId > -1 && cLeafletId != id) {
+        // There is an id set and it differs from the result id
+        return false;
+    }
+    return true;
 }
