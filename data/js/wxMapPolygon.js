@@ -25,6 +25,21 @@ function polygon_add(map, opacity, weight, color) {
     return "POLYGON," + polygon._leaflet_id;
 };
 
+function polyline_add(map, weight, color) {
+
+    var polylineOptions = {
+        color: color,
+        weight: weight
+    }
+
+    var polyline = new L.polyline(nextPolygon, polylineOptions);
+    polyline.addTo(map);
+    map.setView([nextPolygon[0][0], nextPolygon[0][1]]);
+    polygons[polyline._leaflet_id] = polyline;
+    nextPolygon = new Array();
+    return "POLYLINE," + polyline._leaflet_id;
+};
+
 function polygon_remove(id, map) {
     map.removeLayer(polygons[id]);
     delete polygons[id];

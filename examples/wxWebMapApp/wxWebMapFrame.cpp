@@ -884,7 +884,7 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
     for (int i = 0; i < vPolygons.size(); ++i) {
         std::vector<wxMapPoint> const& aPolygon = vPolygons[i];
         // TODO: Create a wxMapPolygon instance and assign polygon
-        pPolygon = wxMapPolygon::Create(aPolygon, fOpacity,(float)weight, col.GetAsString(wxC2S_HTML_SYNTAX));
+        pPolygon = wxMapPolygon::Create(aPolygon, true, fOpacity,(float)weight, col.GetAsString(wxC2S_HTML_SYNTAX));
         m_webmap->AddMapObject(pPolygon, &result);
         wxLogMessage(_("Added polygon object %s with result %s"), vPolygonName[i], result);
 
