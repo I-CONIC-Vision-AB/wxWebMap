@@ -10,6 +10,7 @@
 
 #include    <webmap_exports.h>
 #include	<wx/webview.h>
+#include	<wx/window.h>
 #include    <wxMapMarker.h>
 #include    <wxMapUtil.h>
 #include    <list>
