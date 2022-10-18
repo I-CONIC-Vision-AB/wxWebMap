@@ -1,0 +1,29 @@
+{
+    "version": 5,
+    "configurePresets": [
+        {
+            "name": "linux-x64-debug",
+            "displayName": "Linux x64 debug",
+            "description": "Default configuration for Linux",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "~/dev/install/x64-debug",
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "toolchainFile": ""
+        },
+        {
+            "name": "windows-x64-debug",
+            "displayName": "Windows x64 debug",
+            "description": "Default configuration for Windows",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "~/dev/install/x64-debug",
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "toolchainFile": ""
+        }
+    ]
+}

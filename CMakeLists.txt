@@ -1,30 +1,9 @@
-#############################################################################
-# Name:        samples/minimal/CMakeListst.txt
-# Purpose:     Sample CMake file to show usage of cmake for wxWidgets users
-# Author:      Tobias Taschner
-# Created:     2016-10-23
-# Copyright:   (c) 2016 wxWidgets development team
-# Licence:     wxWindows licence
-#############################################################################
-
-#
-# This file is just a sample to show using cmake from an application
-# If you want to build the minimal and other samples please use the
-# wxBUILD_SAMPLES option when using cmake on the library
-#
-
-# Declare the minimum required CMake version
 cmake_minimum_required(VERSION 3.22.1)
 
-# Name the project
 project(iconic-webmap)
 
-# For wxWidgets usage, see https://docs.wxwidgets.org/3.2.0/overview_cmake.html
-# Option 1 - using find_package
-find_package(wxWidgets REQUIRED COMPONENTS net core base html xml webview stc)
-include(${wxWidgets_USE_FILE})
-
-SET(wxWidgets_USE_UNICODE OFF)
+# Use C++17
+set(CMAKE_CXX_STANDARD 17)
 
 # --------------------------------------------------------------------------
 # On Visual Studio 8 MS deprecated C. This removes all 1.276E1265 security
@@ -55,10 +34,7 @@ add_definitions(-D_WIN32_WINNT=0x0A00)
 endif()
 
 # Find files and store the path in a variable for later use
-find_path(BOOST_INCLUDE_DIRS "boost/shared_ptr.hpp") # Make sure we have boost::shared_ptr for smart pointer handling
-
-# Use C++17
-set(CMAKE_CXX_STANDARD 17)
+find_path(BOOST_INCLUDE_DIRS "boost/shared_ptr.hpp")
 
 include(GenerateExportHeader)
 set(ICONIC_WEBMAP_EXPORTS_DIR "${CMAKE_CURRENT_LIST_DIR}/exports")
@@ -73,10 +49,30 @@ configure_file(${CMAKE_SOURCE_DIR}/data/iconic.ico ${CMAKE_RUNTIME_OUTPUT_DIRECT
 configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapMarker.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapMarker.js COPYONLY)
 configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapPolygon.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapPolygon.js COPYONLY)
 
+find_package(Git QUIET)
+
+# Update all submodules
+if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+    message(STATUS "Submodule update")
+    message(STATUS ${GIT_EXECUTABLE})
+    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                    RESULT_VARIABLE GIT_SUBMOD_RESULT)
+    message(STATUS "Submodule update DONE: ${GIT_SUBMOD_RESULT}")
+    if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+        message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+    endif()
+endif()
+
+if(NOT EXISTS "${PROJECT_SOURCE_DIR}/wxwidgets/CMakeLists.txt")
+    message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+endif()
+#find_package(wxWidgets REQUIRED COMPONENTS net core base html xml webview stc)
+#include(${wxWidgets_USE_FILE})
+SET(wxWidgets_USE_UNICODE OFF)
+
 add_subdirectory("src")
 add_subdirectory("examples")
-# Tests are not completely implemented yet, so skip for now
-#add_subdirectory("test")
 
 ### INSTALLATION ###
 
@@ -85,7 +81,6 @@ set(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include")
 set(INSTALL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/CMake")
 set(INSTALL_DATA_DIR "${CMAKE_INSTALL_PREFIX}")
-
 
 # Create a list of all targets
 install(
