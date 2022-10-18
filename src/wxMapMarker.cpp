@@ -23,7 +23,7 @@ wxString wxMapMarker::GetJavaScriptAdd(wxString map) const
 
 pwxMapMarker wxMapMarker::Create(double lat, double lon, bool bDraggable)
 {
-    return boost::make_shared<wxMapMarker>(lat, lon, bDraggable);
+    return std::make_shared<wxMapMarker>(lat, lon, bDraggable);
 }
 
 bool wxMapMarker::ParseResult(wxString const& result, EMapObjectType& type, int& id, double lat, double lon)

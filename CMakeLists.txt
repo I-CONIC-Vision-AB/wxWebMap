@@ -33,9 +33,6 @@ if(WIN32)
 add_definitions(-D_WIN32_WINNT=0x0A00)
 endif()
 
-# Find files and store the path in a variable for later use
-find_path(BOOST_INCLUDE_DIRS "boost/shared_ptr.hpp")
-
 include(GenerateExportHeader)
 set(ICONIC_WEBMAP_EXPORTS_DIR "${CMAKE_CURRENT_LIST_DIR}/exports")
 
@@ -49,24 +46,38 @@ configure_file(${CMAKE_SOURCE_DIR}/data/iconic.ico ${CMAKE_RUNTIME_OUTPUT_DIRECT
 configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapMarker.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapMarker.js COPYONLY)
 configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapPolygon.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapPolygon.js COPYONLY)
 
-find_package(Git QUIET)
-
+# See https://cliutils.gitlab.io/modern-cmake/chapters/projects/submodule.html
+#find_package(Git QUIET)
 # Update all submodules
-if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-    message(STATUS "Submodule update")
-    message(STATUS ${GIT_EXECUTABLE})
-    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                    RESULT_VARIABLE GIT_SUBMOD_RESULT)
-    message(STATUS "Submodule update DONE: ${GIT_SUBMOD_RESULT}")
-    if(NOT GIT_SUBMOD_RESULT EQUAL "0")
-        message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
-    endif()
-endif()
+#if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+#    message(STATUS "Submodule update")
+#    message(STATUS ${GIT_EXECUTABLE})
+#    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+#                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#                    RESULT_VARIABLE GIT_SUBMOD_RESULT)
+#    message(STATUS "Submodule update DONE: ${GIT_SUBMOD_RESULT}")
+#    if(NOT GIT_SUBMOD_RESULT EQUAL "0")
+#        message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+#    endif()
+#endif()
 
-if(NOT EXISTS "${PROJECT_SOURCE_DIR}/wxwidgets/CMakeLists.txt")
-    message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
-endif()
+#if(NOT EXISTS "${PROJECT_SOURCE_DIR}/wxwidgets/CMakeLists.txt")
+#    message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+#endif()
+
+#message(STATUS "Before add")
+add_subdirectory("wxwidgets")
+
+install(TARGETS wx_webview DESTINATION asd2) # FOrtsätt här
+
+#find_package(wxWidgets PATHS C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib NO_DEFAULT_PATH)
+#find_package(wxWidgets)# COMPONENTS webview REQUIRED)
+#message(FATAL_ERROR "wxWidgets libraries: ${wxWidgets_LIBRARIES}" )
+
+#Here, we want to get a list of .lib files. See how wxWidgets_LIBRARIES looks like if we use find_package connected to vcpkg:
+#debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxbase31ud_net.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u_net.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_core.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_core.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxbase31ud.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_aui.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_aui.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_html.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_html.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxbase31ud_xml.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u_xml.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_gl.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_gl.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_webview.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_webview.lib;opengl32;glu32;winmm;comctl32;uuid;oleacc;uxtheme;rpcrt4;shlwapi;version;wsock32
+SET(wxWidgets_LIBRARIES "debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_stc.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxbase33ud_net.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u_net.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_core.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_core.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxbase33ud.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_aui.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_aui.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_html.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_html.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxbase33ud_xml.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u_xml.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_gl.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_gl.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_webview.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_webview.lib;opengl32;glu32;winmm;comctl32;uuid;oleacc;uxtheme;rpcrt4;shlwapi;version;wsock32")
+
 #find_package(wxWidgets REQUIRED COMPONENTS net core base html xml webview stc)
 #include(${wxWidgets_USE_FILE})
 SET(wxWidgets_USE_UNICODE OFF)
@@ -160,3 +171,7 @@ install(
     FILES "${CMAKE_SOURCE_DIR}/data/js/wxMapPolygon.js"
     DESTINATION "${INSTALL_BIN_DIR}/js"
 )
+
+#target_include_directories(IconicWebMap PRIVATE "wxwidgets/include")
+# TODO: Will only work for Windows, what about Linux?
+#target_include_directories(IconicWebMap PRIVATE "build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/mswud")

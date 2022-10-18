@@ -1,8 +1,9 @@
 #pragma once
 
-#include	<wxWebMap.h>
-#include    <wxMapHtml.h>
-#include    <list>
+#include <wxWebMap.h>
+#include <wxMapHtml.h>
+#include <list>
+#include <memory>
 
 class wxWebMapImpl : public wxWebMap {
 public:
@@ -23,5 +24,5 @@ protected:
     wxWebView* cpWebView;
     wxString cMapName;
     std::list<pwxMapObject> clMapObjects;
-    boost::shared_ptr<wxMapHtml> cpMapHtml;
+    std::shared_ptr<wxMapHtml> cpMapHtml;
 };

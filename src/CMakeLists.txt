@@ -53,7 +53,6 @@ target_include_directories(IconicWebMap
 		$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
 	PRIVATE
         ${wxWidgets_INCLUDE_DIRS}
-        ${BOOST_INCLUDE_DIRS}
 )
 
 # Link required libraries to the executable
