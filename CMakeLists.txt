@@ -175,13 +175,15 @@ install(
 )
 
 # Copy DLL:s to install directory
-if(WIN32)
+#if(WIN32)
 	install(
 		DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" 
 		DESTINATION ${CMAKE_INSTALL_PREFIX}
-		FILES_MATCHING PATTERN "*.dll"
+		FILES_MATCHING
+            PATTERN "*.dll"
+            PATTERN "*.so"
 	)
-endif()
+#endif()
 
 # Copy data files to install directory
 install(

@@ -6,7 +6,7 @@
       "displayName": "Base config (not usable as preset)",
       "description": "Should be inherited by some other presets",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "installDir": "${sourceDir}/out/build/install/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
       "toolchainFile": "",
       "hidden": true
     },
