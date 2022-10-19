@@ -30,7 +30,6 @@ target_include_directories(wxWebMapApp PUBLIC "../../include")
 
 target_link_libraries(wxWebMapApp 
 # ${INSTALL_BIN_DIR}
-    ${Boost_LIBRARIES}
     ${wxWidgets_LIBRARIES}
     IconicWebMap
 )

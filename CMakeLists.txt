@@ -65,66 +65,101 @@ configure_file(${CMAKE_SOURCE_DIR}/data/js/wxMapPolygon.js ${CMAKE_RUNTIME_OUTPU
 #    message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 #endif()
 
-#message(STATUS "Before add")
-add_subdirectory("wxwidgets")
+function(dump_cmake_variables)
+    get_cmake_property(_variableNames VARIABLES)
+    list (SORT _variableNames)
+    foreach (_variableName ${_variableNames})
+        if (ARGV0)
+            unset(MATCHED)
+            string(REGEX MATCH ${ARGV0} MATCHED ${_variableName})
+            if (NOT MATCHED)
+                continue()
+            endif()
+        endif()
+        message(STATUS "${_variableName}=${${_variableName}}")
+    endforeach()
+endfunction()
 
-install(TARGETS wx_webview DESTINATION asd2) # FOrtsätt här
-
-#find_package(wxWidgets PATHS C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib NO_DEFAULT_PATH)
-#find_package(wxWidgets)# COMPONENTS webview REQUIRED)
-#message(FATAL_ERROR "wxWidgets libraries: ${wxWidgets_LIBRARIES}" )
-
-#Here, we want to get a list of .lib files. See how wxWidgets_LIBRARIES looks like if we use find_package connected to vcpkg:
-#debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxbase31ud_net.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u_net.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_core.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_core.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxbase31ud.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_aui.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_aui.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_html.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_html.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxbase31ud_xml.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u_xml.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_gl.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_gl.lib;debug;C:/dev/vcpkg/installed/x64-windows/debug/lib/wxmsw31ud_webview.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_webview.lib;opengl32;glu32;winmm;comctl32;uuid;oleacc;uxtheme;rpcrt4;shlwapi;version;wsock32
-SET(wxWidgets_LIBRARIES "debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_stc.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxbase33ud_net.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u_net.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_core.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_core.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxbase33ud.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_aui.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_aui.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_html.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_html.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxbase33ud_xml.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxbase31u_xml.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_gl.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_gl.lib;debug;C:/Users/andre/source/repos/wxWebMap/build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/wxmsw33ud_webview.lib;optimized;C:/dev/vcpkg/installed/x64-windows/lib/wxmsw31u_webview.lib;opengl32;glu32;winmm;comctl32;uuid;oleacc;uxtheme;rpcrt4;shlwapi;version;wsock32")
-
-#find_package(wxWidgets REQUIRED COMPONENTS net core base html xml webview stc)
-#include(${wxWidgets_USE_FILE})
-SET(wxWidgets_USE_UNICODE OFF)
+set(wxWidgets_USE_UNICODE off)
+add_subdirectory("wxWidgets")
 
 add_subdirectory("src")
 add_subdirectory("examples")
 
-### INSTALLATION ###
+target_include_directories(IconicWebMap PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/wxWidgets/include>
+    $<INSTALL_INTERFACE:wxWidgets/include>
+)
 
-set(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
-set(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+# TODO: Will only work for Windows, what about Linux?
+# https://stackoverflow.com/questions/25676277/cmake-target-include-directories-prints-an-error-when-i-try-to-add-the-source
+target_include_directories(IconicWebMap PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/out/build/windows-x64-release/wxWidgets/lib/vc_x64_dll/mswu>
+    $<INSTALL_INTERFACE:out/build/windows-x64-release/wxWidgets/lib/vc_x64_dll/mswu>
+)
+
+# See this for how to link with wxWidgets: https://docs.wxwidgets.org/3.2.0/overview_cmake.html
+target_link_libraries(IconicWebMap wx::core wx::xml wx::webview wx::stc)
+
+# Set install paths
+set(INSTALL_BIN_DIR     "${CMAKE_INSTALL_PREFIX}/bin")
+set(INSTALL_LIB_DIR     "${CMAKE_INSTALL_PREFIX}/lib")
 set(INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include")
-set(INSTALL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/CMake")
-set(INSTALL_DATA_DIR "${CMAKE_INSTALL_PREFIX}")
+set(INSTALL_CMAKE_DIR   "${CMAKE_INSTALL_PREFIX}/CMake")
 
-# Create a list of all targets
+# Define rules for installing this targets and associates with target name IconicWebMapTargets. 
+#   We want to use target IconicWebMap and also targets from wxWidgets that we rely on
+# Set output paths for:
+#   Runtime (executables and .dll)
+#   Archive (static libraries and .lib)
+#   Library (shared libraries, except from .dll)
 install(
-    TARGETS IconicWebMap
+    TARGETS IconicWebMap wxcore wxbase wxwebview wxxml wxstc
     EXPORT IconicWebMapTargets
     RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
     ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
     LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
 )
 
+# Generate and install CMake file for importing targets to in another project.
+# EXPORT_LINK_INTERFACE_LIBRARIES makes it possible to use these targets with
+# older CMake versions. see: https://cmake.org/cmake/help/latest/command/export.html
 install(
-    EXPORT IconicWebMapTargets FILE "IconicWebMapTargets.cmake"
+    EXPORT IconicWebMapTargets
+    FILE "IconicWebMapTargets.cmake"
     EXPORT_LINK_INTERFACE_LIBRARIES
     DESTINATION "${INSTALL_CMAKE_DIR}"
 )
 
-export(EXPORT IconicWebMapTargets 
+# Export CMake file with targets to be used for other projects
+export(
+    EXPORT IconicWebMapTargets 
     FILE "${CMAKE_CURRENT_BINARY_DIR}/IconicWebMapTargets.cmake"
 )
 
+# Import utility functions for generating config files (IconicWebMapConfig.cmake / IconicWebMap-config.cmake)
+# https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
 include(CMakePackageConfigHelpers)
 
+# Parameters:
+#   input_file
+#   output_file
+#   path
+#   list of directories used during install
 configure_package_config_file(
     "cmake/IconicWebMapConfig.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/IconicWebMapConfig.cmake"
     INSTALL_DESTINATION "${INSTALL_CMAKE_DIR}"
-    PATH_VARS INSTALL_INCLUDE_DIR INSTALL_DATA_DIR
+    PATH_VARS INSTALL_INCLUDE_DIR CMAKE_INSTALL_PREFIX
 )
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/IconicWebMapConfig.cmake"
+# Copy config file to install directory
+install(
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/IconicWebMapConfig.cmake"
     DESTINATION "${INSTALL_CMAKE_DIR}"
 )
 
+# Copy include files to install directory
 install(
     DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/include"
     DESTINATION "${CMAKE_INSTALL_PREFIX}"
@@ -133,12 +168,13 @@ install(
         PATTERN "*.hpp"
 )
 
+# Copy export file to install directory
 install(
     FILES "${ICONIC_WEBMAP_EXPORTS_DIR}/webmap_exports.h"
     DESTINATION "${INSTALL_INCLUDE_DIR}"
 )
 
-# Copy DLL:s to target directory
+# Copy DLL:s to install directory
 if(WIN32)
 	install(
 		DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" 
@@ -147,31 +183,32 @@ if(WIN32)
 	)
 endif()
 
-# Install data files
+# Copy data files to install directory
 install(
     DIRECTORY "${CMAKE_SOURCE_DIR}/data" 
-    DESTINATION "${INSTALL_DATA_DIR}"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}"
     FILES_MATCHING 
 		PATTERN "*.html" 
 		PATTERN "*.js" 
 		PATTERN "*.ico"
 )
 
+# Copy map.html to install directory
 install(
     FILES "${CMAKE_SOURCE_DIR}/data/html/map.html"
     DESTINATION "${INSTALL_BIN_DIR}/html"
 )
 
+# Copy wxMapMarker.js to install directory
 install(
     FILES "${CMAKE_SOURCE_DIR}/data/js/wxMapMarker.js"
     DESTINATION "${INSTALL_BIN_DIR}/js"
 )
 
+# Copy wxMapPolygon.js to install directory
 install(
     FILES "${CMAKE_SOURCE_DIR}/data/js/wxMapPolygon.js"
     DESTINATION "${INSTALL_BIN_DIR}/js"
 )
 
-#target_include_directories(IconicWebMap PRIVATE "wxwidgets/include")
-# TODO: Will only work for Windows, what about Linux?
-#target_include_directories(IconicWebMap PRIVATE "build/windows-x64-debug/wxwidgets/lib/vc_x64_dll/mswud")
+#dump_cmake_variables()

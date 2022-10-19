@@ -2,30 +2,49 @@
   "version": 3,
   "configurePresets": [
     {
+      "name": "base-config",
+      "displayName": "Base config (not usable as preset)",
+      "description": "Should be inherited by some other presets",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/build/install/${presetName}",
+      "toolchainFile": "",
+      "hidden": true
+    },
+    {
       "name": "linux-x64-debug",
       "displayName": "Linux x64 debug",
-      "description": "Default configuration for Linux",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/${presetName}",
-      "installDir": "${sourceDir}/build/install/${presetName}",
+      "description": "Debug configuration for Linux x64",
+      "inherits": [ "base-config" ],
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "VCPKG_TARGET_TRIPLET": "x64-linux"
-      },
-      "toolchainFile": ""
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "linux-x64-release",
+      "displayName": "Linux x64 release",
+      "description": "Release configuration for Linux x64",
+      "inherits": [ "base-config" ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
     },
     {
       "name": "windows-x64-debug",
       "displayName": "Windows x64 debug",
-      "description": "Default configuration for Windows",
-      "generator": "Visual Studio 17 2022",
-      "binaryDir": "${sourceDir}/build/${presetName}",
-      "installDir": "${sourceDir}/build/install/${presetName}",
+      "description": "Debug configuration for Windows x64",
+      "inherits": [ "base-config" ],
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "VCPKG_TARGET_TRIPLET": "x64-windows"
-      },
-      "toolchainFile": ""
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "windows-x64-release",
+      "displayName": "Windows x64 release",
+      "description": "Release configuration for Windows x64",
+      "inherits": [ "base-config" ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
     }
   ]
 }
