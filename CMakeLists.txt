@@ -34,7 +34,7 @@ add_definitions(-D_WIN32_WINNT=0x0A00)
 endif()
 
 include(GenerateExportHeader)
-set(ICONIC_WEBMAP_EXPORTS_DIR "${CMAKE_CURRENT_LIST_DIR}/exports")
+set(ICONIC_WEBMAP_EXPORTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/exports")
 set(ICONIC_WEBMAP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -85,11 +85,20 @@ set(wxWidgets_USE_UNICODE off)
 add_subdirectory("wxWidgets")
 
 add_subdirectory("src")
-add_subdirectory("examples")
+
+# Only build example projects if the build is started with wxWebMap as root.
+# If wxWebMap is build as a subproject, it is not built
+if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+    add_subdirectory("examples")
+endif()
 
 target_include_directories(IconicWebMap PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/wxWidgets/include>
     $<INSTALL_INTERFACE:wxWidgets/include>
+)
+target_include_directories(IconicWebMap PUBLIC 
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/exports>
+    $<INSTALL_INTERFACE:exports>
 )
 
 # TODO: Will only work for Windows, what about Linux?

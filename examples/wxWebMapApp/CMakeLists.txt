@@ -19,7 +19,12 @@ add_executable(wxWebMapApp WIN32 MACOSX_BUNDLE ${SOURCES})
 
 target_compile_definitions(wxWebMapApp PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
 
-target_include_directories(wxWebMapApp PUBLIC ${wxWidgets_INCLUDE_DIRS} ${BOOST_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(wxWebMapApp PUBLIC ${wxWidgets_INCLUDE_DIRS} ${BOOST_INCLUDE_DIRS})
+
+target_include_directories(wxWebMapApp PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>  
+    $<INSTALL_INTERFACE:.>
+)
 
 target_include_directories(wxWebMapApp PUBLIC 
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>  
