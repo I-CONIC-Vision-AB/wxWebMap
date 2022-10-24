@@ -88,7 +88,7 @@ add_subdirectory("src")
 add_subdirectory("examples")
 
 target_include_directories(IconicWebMap PUBLIC 
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/wxWidgets/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/wxWidgets/include>
     $<INSTALL_INTERFACE:wxWidgets/include>
 )
 
@@ -188,7 +188,7 @@ install(
 
 # Copy data files to install directory
 install(
-    DIRECTORY "${CMAKE_SOURCE_DIR}/data" 
+    DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data" 
     DESTINATION "${CMAKE_INSTALL_PREFIX}"
     FILES_MATCHING 
 		PATTERN "*.html" 
@@ -198,19 +198,19 @@ install(
 
 # Copy map.html to install directory
 install(
-    FILES "${CMAKE_SOURCE_DIR}/data/html/map.html"
+    FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/html/map.html"
     DESTINATION "${INSTALL_BIN_DIR}/html"
 )
 
 # Copy wxMapMarker.js to install directory
 install(
-    FILES "${CMAKE_SOURCE_DIR}/data/js/wxMapMarker.js"
+    FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/js/wxMapMarker.js"
     DESTINATION "${INSTALL_BIN_DIR}/js"
 )
 
 # Copy wxMapPolygon.js to install directory
 install(
-    FILES "${CMAKE_SOURCE_DIR}/data/js/wxMapPolygon.js"
+    FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/js/wxMapPolygon.js"
     DESTINATION "${INSTALL_BIN_DIR}/js"
 )
 
