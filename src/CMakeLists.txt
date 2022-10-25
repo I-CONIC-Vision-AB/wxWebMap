@@ -21,12 +21,13 @@ include(GenerateExportHeader)
 
 # Define a variable containing a list of source files for the project
 set(SRC_FILES
-    wxWebMap.cpp
-    wxMapMarker.cpp
     wxMapHtml.cpp
     wxMapImage.cpp
+    wxMapMarker.cpp
     wxMapObject.cpp
-    )
+    wxMapPolygon.cpp
+    wxWebMap.cpp
+)
 
 if(WIN32)
     # Include a RC file for windows
@@ -37,7 +38,8 @@ elseif(APPLE)
 endif()
 
 # Define the build target for the executable
-add_library(IconicWebMap SHARED ${SRC_FILES} "wxWebMap.cpp" "wxMapPolygon.cpp" "wxMapImage.cpp" "wxMapObject.cpp")
+add_library(IconicWebMap SHARED)
+target_sources(IconicWebMap PRIVATE ${SRC_FILES})
 
 generate_export_header(IconicWebMap
     BASE_NAME iconic_webmap
