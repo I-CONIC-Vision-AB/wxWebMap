@@ -7,7 +7,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include    <wxMapObject.h>
+#include <wxMapObject.h>
+#include <memory>
 
 /**
  * @brief A marker object
@@ -38,7 +39,7 @@ public:
      * @param bDraggable Draggable
      * @return a marker
     */
-    static boost::shared_ptr<wxMapMarker> Create(double lat, double lon, bool bDraggable = false);
+    static std::shared_ptr<wxMapMarker> Create(double lat, double lon, bool bDraggable = false);
 
     bool ParseResult(wxString const& result, EMapObjectType& type, int& id, double lat, double lon);
 
@@ -49,4 +50,4 @@ public:
     bool cbDraggable;
 };
 
-typedef boost::shared_ptr<wxMapMarker> pwxMapMarker; //!< Smart pointer to a map marker.
+typedef std::shared_ptr<wxMapMarker> pwxMapMarker; //!< Smart pointer to a map marker.

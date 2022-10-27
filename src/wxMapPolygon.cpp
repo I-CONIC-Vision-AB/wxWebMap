@@ -33,7 +33,7 @@ wxString wxMapPolygon::GetJavaScriptAdd(wxString map) const
 
 pwxMapPolygon wxMapPolygon::Create(std::vector<wxMapPoint> const &vPoints, bool bIsPolygon, float opacity, float weight, wxString color)
 {
-    return boost::make_shared<wxMapPolygon>(vPoints,bIsPolygon,opacity,weight,color);
+    return std::make_shared<wxMapPolygon>(vPoints,bIsPolygon,opacity,weight,color);
 }
 
 wxString wxMapPolygon::GetRemoveString(wxString const& map)

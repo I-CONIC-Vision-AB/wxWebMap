@@ -6,9 +6,8 @@
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include    <wxMapObject.h>
-//#include	<wxMapUtil.h>
-//#include    <wx/image.h>
+#include <wxMapObject.h>
+#include <memory>
 
 /**
  * @brief Image
@@ -81,28 +80,12 @@ public:
     */
     virtual wxString GetJavaScriptAdd(wxString map) const;
 
-    /**
-    * @brief Create an image
-    * @return an image
-    * @todo Implement
-    */
-    //static boost::shared_ptr<wxMapImage> Create(wxString const& imageUrl, wxMapPoint const& latLon);
-
-    /**
-     * @brief Use case 2.3
-     * @param image
-     * @param latitude
-     * @param longitude
-     * @return Image
-     * @todo Implement
-    */
-    //static boost::shared_ptr<wxMapImage> Create(wxImage const& image, float latitude, float longitude);
 
     bool ParseResult(const wxString& result, EMapObjectType& type, int& id, wxString& url);
     bool operator==(const wxString& result);
 
     // Test
-    static boost::shared_ptr<wxMapImage> Create(double upperLeftLat, double upperLeftLon, double lowerRightLat, double lowerRightLon, wxString imageUrl);
+    static std::shared_ptr<wxMapImage> Create(double upperLeftLat, double upperLeftLon, double lowerRightLat, double lowerRightLon, wxString imageUrl);
     double cLeftLat;
     double cLeftLon;
     double cRightLat;
@@ -112,4 +95,4 @@ public:
 
 };
 
-typedef boost::shared_ptr<wxMapImage> pwxMapImage; //!< Smart pointer to an image.
+typedef std::shared_ptr<wxMapImage> pwxMapImage; //!< Smart pointer to an image.
