@@ -32,6 +32,12 @@ if(WIN32)
     endif()
 add_definitions(-D_WIN32_WINNT=0x0A00)
 endif()
+message(STATUS "Flags: ${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS}")
+message(STATUS "Generator: ${CMAKE_GENERATOR}")
+message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
+add_definitions("-fPIC -fno-jump-tables")
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+add_compile_options(-fno-jump-tables)
 
 include(GenerateExportHeader)
 set(ICONIC_WEBMAP_EXPORTS_DIR "${CMAKE_CURRENT_LIST_DIR}/exports")
@@ -85,6 +91,8 @@ add_subdirectory("wxWidgets")
 
 add_subdirectory("src")
 add_subdirectory("examples")
+
+target_compile_options(IconicWebMap PRIVATE -fPIC -fno-jump-tables -Wl,--hash-style=sysv)
 
 target_include_directories(IconicWebMap PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/wxWidgets/include>

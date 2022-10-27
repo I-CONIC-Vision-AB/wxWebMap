@@ -12,6 +12,7 @@
     },
     {
       "name": "linux-x64-debug",
+      "generator": "Ninja",
       "displayName": "Linux x64 debug",
       "description": "Debug configuration for Linux x64",
       "inherits": [ "base-config" ],
@@ -21,6 +22,7 @@
     },
     {
       "name": "linux-x64-release",
+      "generator": "Ninja",
       "displayName": "Linux x64 release",
       "description": "Release configuration for Linux x64",
       "inherits": [ "base-config" ],
