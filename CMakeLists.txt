@@ -39,6 +39,9 @@ add_definitions("-fPIC -fno-jump-tables")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_compile_options(-fno-jump-tables)
 
+# Use C++17
+set(CMAKE_CXX_STANDARD 17)
+
 include(GenerateExportHeader)
 set(ICONIC_WEBMAP_EXPORTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/exports")
 set(ICONIC_WEBMAP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
