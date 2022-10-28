@@ -324,7 +324,7 @@ void WebFrame::RemovePolygon(int id, wxString newpolygon)
 
 void eraseAllSubStr(std::string& mainStr, const std::string& toErase) {
     size_t pos = std::string::npos;
-    // Search for the substring in string in a loop untill nothing is found
+    // Search for the substring in string in a loop until nothing is found
     while ((pos = mainStr.find(toErase)) != std::string::npos)
     {
         // If found then erase it from string
