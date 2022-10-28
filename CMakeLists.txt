@@ -54,9 +54,6 @@ if(WIN32)
 add_definitions(-D_WIN32_WINNT=0x0A00)
 endif()
 
-# Find files and store the path in a variable for later use
-find_path(BOOST_INCLUDE_DIRS "boost/shared_ptr.hpp") # Make sure we have boost::shared_ptr for smart pointer handling
-
 # Use C++17
 set(CMAKE_CXX_STANDARD 17)
 

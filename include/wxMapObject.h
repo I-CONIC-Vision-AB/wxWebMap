@@ -7,11 +7,10 @@
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include    <webmap_exports.h>
-#include    <wx/string.h>
-#include    <wx/event.h>
-#include    <boost/shared_ptr.hpp>
-#include    <boost/make_shared.hpp>
+#include <webmap_exports.h>
+#include <wx/string.h>
+#include <wx/event.h>
+#include <memory>
 
 /**
  * @brief Map object type.
@@ -74,7 +73,7 @@ protected:
     int cLeafletId;
 };
 
-typedef boost::shared_ptr<wxMapObject> pwxMapObject; //!< Smart pointer to a map object.
+typedef std::shared_ptr<wxMapObject> pwxMapObject; //!< Smart pointer to a map object.
 
 /**
  * @brief Specialized event for wxWebMap

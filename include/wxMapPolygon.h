@@ -6,9 +6,11 @@
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include    <wxMapObject.h>
-#include	<wxMapUtil.h>
-#include    <vector>
+
+#include <wxMapObject.h>
+#include <wxMapUtil.h>
+#include <vector>
+#include <memory>
 
 /**
  * @brief Polygon
@@ -49,7 +51,7 @@ public:
     * @brief Create a polygon
     * @return a polygon
     */
-    static boost::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> const &vPoints, bool bIsPolygon = true, float opacity = 0.5, float weight = 0.5, wxString color = wxString("blue"));
+    static std::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> const &vPoints, bool bIsPolygon = true, float opacity = 0.5, float weight = 0.5, wxString color = wxString("blue"));
     float cOpacity;
     float cWeight;
     wxString cColor;
@@ -62,4 +64,4 @@ public:
     std::vector<wxMapPoint> coordinates;
 };
 
-typedef boost::shared_ptr<wxMapPolygon> pwxMapPolygon; //!< Smart pointer to a map polygon.
+typedef std::shared_ptr<wxMapPolygon> pwxMapPolygon; //!< Smart pointer to a map polygon.

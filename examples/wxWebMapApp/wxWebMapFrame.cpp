@@ -2,6 +2,7 @@
 #include    <wxMapMarker.h>
 #include    <wxMapPolygon.h>
 #include    <SourceViewDialog.h>
+#include    <string>
 #include    <PolygonReader.h>
 #include    <ImageReader.h>
 #include    <wx/sizer.h>
@@ -17,7 +18,6 @@
 #endif
 #include    <wx/webviewarchivehandler.h>
 #include    <wx/webviewfshandler.h>
-#include    <boost/algorithm/string.hpp>
 #include    <wxMapImage.h>
 #include    <wx/colordlg.h>
 
@@ -322,14 +322,21 @@ void WebFrame::RemovePolygon(int id, wxString newpolygon)
     }
 }
 
-void WebFrame::StorePolygon(int id, wxString newpolygon)
-{
+void eraseAllSubStr(std::string& mainStr, const std::string& toErase) {
+    size_t pos = std::string::npos;
+    // Search for the substring in string in a loop until nothing is found
+    while ((pos = mainStr.find(toErase)) != std::string::npos)
+    {
+        // If found then erase it from string
+        mainStr.erase(pos, toErase.length());
+    }
+}
 
-    std::string string = newpolygon.ToStdString();
-    boost::erase_all(string, "LatLng(");
-    boost::erase_all(string, " ");
-    boost::erase_all(string, ")");
-    //wxLogMessage("%s", string);
+void WebFrame::StorePolygon(int id, wxString newpolygon) {
+    std::string polygon_string = newpolygon.ToStdString();
+    eraseAllSubStr(polygon_string, "LatLng(");
+    eraseAllSubStr(polygon_string, " ");
+    eraseAllSubStr(polygon_string, ")");
     
     std::string delimiter = ",";
 
@@ -337,11 +344,11 @@ void WebFrame::StorePolygon(int id, wxString newpolygon)
     size_t pos = 0;
     std::string token;
     std::vector<wxMapPoint> points;
-    while ((pos = string.find(delimiter)) != std::string::npos) {
+    while ((pos = polygon_string.find(delimiter)) != std::string::npos) {
         if (b) {
             float lat = ::atof(token.c_str());
             b = false;
-            token = string.substr(0, pos);
+            token = polygon_string.substr(0, pos);
             float lng = ::atof(token.c_str());
             wxMapPoint* point = new wxMapPoint(lat, lng);
             wxMapPoint notpointer = *point;
@@ -349,10 +356,10 @@ void WebFrame::StorePolygon(int id, wxString newpolygon)
         }
         else {
             b = true;
-            token = string.substr(0, pos);
+            token = polygon_string.substr(0, pos);
 
         }
-        string.erase(0, pos + delimiter.length());
+        polygon_string.erase(0, pos + delimiter.length());
     }
     wxMapPolygon* polygon = new wxMapPolygon(points);
     polygon->SetLeafletId(id);

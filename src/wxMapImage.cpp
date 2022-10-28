@@ -1,7 +1,7 @@
-#include	<wxMapImage.h>
-#include    <wx/tokenzr.h>
-#include    <wx/log.h>
-#include    <wx/intl.h>
+#include <wxMapImage.h>
+#include <wx/tokenzr.h>
+#include <wx/log.h>
+#include <wx/intl.h>
 #include <wxMapObject.h>
 
 wxMapImage::wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon, wxString imageUrl) :
@@ -22,7 +22,7 @@ wxString wxMapImage::GetJavaScriptAdd(wxString map) const
 
 pwxMapImage wxMapImage::Create(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon, wxString imageUrl)
 {
-    return boost::make_shared<wxMapImage>(upperLeftLat, upperLeftlon, lowerRightLat, lowerRightLon, imageUrl);
+    return std::make_shared<wxMapImage>(upperLeftLat, upperLeftlon, lowerRightLat, lowerRightLon, imageUrl);
 }
 
 bool wxMapImage::ParseResult(const wxString& result, EMapObjectType& type, int& id, wxString& url) {

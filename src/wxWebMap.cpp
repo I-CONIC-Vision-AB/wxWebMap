@@ -1,11 +1,10 @@
-#include	<detail/wxWebMapImpl.h>
-#include    <wxMapHtml.h>
-#include    <wx/log.h>
-#include    <wx/intl.h>
-#include    <wx/sizer.h>
-#include    <wx/filename.h>
-#include    <wx/fs_mem.h>
-#include    <boost/foreach.hpp>
+#include <detail/wxWebMapImpl.h>
+#include <wxMapHtml.h>
+#include <wx/log.h>
+#include <wx/intl.h>
+#include <wx/sizer.h>
+#include <wx/filename.h>
+#include <wx/fs_mem.h>
 
 wxWebMap::wxWebMap() :
     wxWindow()
@@ -29,7 +28,7 @@ wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& 
     bool bUseMemoryFS = false;//(backend != wxWebViewBackendEdge);
     wxString url = basemapHtmlFileName;
     wxWebMapImpl* p = new wxWebMapImpl();
-    p->cpMapHtml = boost::make_shared<wxMapHtml>(basemapHtmlFileName, bUseMemoryFS);
+    p->cpMapHtml = std::make_shared<wxMapHtml>(basemapHtmlFileName, bUseMemoryFS);
     p->wxWindow::Create(parent, id, pos, size, style, name);
 
     wxBoxSizer* bs = new wxBoxSizer(wxHORIZONTAL);
@@ -87,7 +86,7 @@ pwxMapObject wxWebMapImpl::Find(wxString const& result) {
     int id;
     EMapObjectType type;
     wxMapObject::ParseResult(result, type, id);
-    BOOST_FOREACH(pwxMapObject pMapObject, clMapObjects) {
+    for(auto pMapObject : clMapObjects) {
         if (*pMapObject == result) {
             return pMapObject;
         }
