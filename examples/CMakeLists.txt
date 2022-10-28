@@ -1,2 +1,1 @@
 add_subdirectory(wxWebMapApp)
-#add_subdirectory(wxWebMapApp2)

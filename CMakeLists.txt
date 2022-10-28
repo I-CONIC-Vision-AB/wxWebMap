@@ -32,19 +32,10 @@ if(WIN32)
     endif()
 add_definitions(-D_WIN32_WINNT=0x0A00)
 endif()
-message(STATUS "Flags: ${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS}")
-message(STATUS "Generator: ${CMAKE_GENERATOR}")
-message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
-add_definitions("-fPIC -fno-jump-tables")
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-add_compile_options(-fno-jump-tables)
-
-# Use C++17
-set(CMAKE_CXX_STANDARD 17)
 
 include(GenerateExportHeader)
-set(ICONIC_WEBMAP_EXPORTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/exports")
-set(ICONIC_WEBMAP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(ICONIC_WEBMAP_EXPORTS_DIR "${PROJECT_SOURCE_DIR}/exports")
+set(ICONIC_WEBMAP_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -91,7 +82,23 @@ function(dump_cmake_variables)
 endfunction()
 
 set(wxWidgets_USE_UNICODE off)
-add_subdirectory("wxWidgets")
+
+if(WIN32)
+    # For wxWidgets usage, see https://docs.wxwidgets.org/3.2.0/overview_cmake.html
+    # Option 1 - using find_package
+    find_package(wxWidgets REQUIRED COMPONENTS net core base html xml webview stc)
+    include(${wxWidgets_USE_FILE})
+else()
+    message(STATUS "Flags: ${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS}")
+    message(STATUS "Generator: ${CMAKE_GENERATOR}")
+    message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
+    add_definitions("-fPIC -fno-jump-tables")
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    add_compile_options(-fno-jump-tables)
+    add_subdirectory("wxWidgets")
+endif()
+
+set(wxWidgets_USE_UNICODE OFF)
 
 add_subdirectory("src")
 
@@ -101,26 +108,6 @@ if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
     add_subdirectory("examples")
 endif()
 
-target_compile_options(IconicWebMap PRIVATE -fPIC -fno-jump-tables -Wl,--hash-style=sysv)
-
-target_include_directories(IconicWebMap PUBLIC 
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/wxWidgets/include>
-    $<INSTALL_INTERFACE:wxWidgets/include>
-)
-target_include_directories(IconicWebMap PUBLIC 
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/exports>
-    $<INSTALL_INTERFACE:exports>
-)
-
-# TODO: Will only work for Windows, what about Linux?
-# https://stackoverflow.com/questions/25676277/cmake-target-include-directories-prints-an-error-when-i-try-to-add-the-source
-target_include_directories(IconicWebMap PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/out/build/windows-x64-release/wxWidgets/lib/vc_x64_dll/mswu>
-    $<INSTALL_INTERFACE:out/build/windows-x64-release/wxWidgets/lib/vc_x64_dll/mswu>
-)
-
-# See this for how to link with wxWidgets: https://docs.wxwidgets.org/3.2.0/overview_cmake.html
-target_link_libraries(IconicWebMap wx::core wx::xml wx::webview wx::stc)
 
 # Set install paths
 set(INSTALL_BIN_DIR     "${CMAKE_INSTALL_PREFIX}/bin")
@@ -134,13 +121,25 @@ set(INSTALL_CMAKE_DIR   "${CMAKE_INSTALL_PREFIX}/CMake")
 #   Runtime (executables and .dll)
 #   Archive (static libraries and .lib)
 #   Library (shared libraries, except from .dll)
-install(
-    TARGETS IconicWebMap wxcore wxbase wxwebview wxxml wxstc
-    EXPORT IconicWebMapTargets
-    RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
-    ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
-    LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-)
+if(WIN32)
+    install(
+        TARGETS IconicWebMap
+        EXPORT IconicWebMapTargets
+        RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+        ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+        LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+    )
+else()
+    # On Linux, we build wxWidgets from source, and thus also have to (?) build its targets
+    install(
+        TARGETS IconicWebMap wxcore wxbase wxwebview wxxml wxstc
+        EXPORT IconicWebMapTargets
+        RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+        ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+        LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+    )
+endif()
+
 
 # Generate and install CMake file for importing targets to in another project.
 # EXPORT_LINK_INTERFACE_LIBRARIES makes it possible to use these targets with
