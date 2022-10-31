@@ -13,7 +13,6 @@
       "name": "windows-base",
       "hidden": true,
       "inherits": [ "base-config" ],
-      "toolchainFile": "c:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
