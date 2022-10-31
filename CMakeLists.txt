@@ -47,40 +47,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/iconic.ico ${CMAKE_RUNTIME_OUTPU
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/js/wxMapMarker.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapMarker.js COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/js/wxMapPolygon.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapPolygon.js COPYONLY)
 
-# See https://cliutils.gitlab.io/modern-cmake/chapters/projects/submodule.html
-#find_package(Git QUIET)
-# Update all submodules
-#if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-#    message(STATUS "Submodule update")
-#    message(STATUS ${GIT_EXECUTABLE})
-#    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-#                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#                    RESULT_VARIABLE GIT_SUBMOD_RESULT)
-#    message(STATUS "Submodule update DONE: ${GIT_SUBMOD_RESULT}")
-#    if(NOT GIT_SUBMOD_RESULT EQUAL "0")
-#        message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
-#    endif()
-#endif()
-
-#if(NOT EXISTS "${PROJECT_SOURCE_DIR}/wxwidgets/CMakeLists.txt")
-#    message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
-#endif()
-
-function(dump_cmake_variables)
-    get_cmake_property(_variableNames VARIABLES)
-    list (SORT _variableNames)
-    foreach (_variableName ${_variableNames})
-        if (ARGV0)
-            unset(MATCHED)
-            string(REGEX MATCH ${ARGV0} MATCHED ${_variableName})
-            if (NOT MATCHED)
-                continue()
-            endif()
-        endif()
-        message(STATUS "${_variableName}=${${_variableName}}")
-    endforeach()
-endfunction()
-
 set(wxWidgets_USE_UNICODE off)
 
 if(WIN32)
@@ -195,15 +161,13 @@ install(
 )
 
 # Copy DLL:s to install directory
-#if(WIN32)
-	install(
-		DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" 
-		DESTINATION ${CMAKE_INSTALL_PREFIX}
-		FILES_MATCHING
-            PATTERN "*.dll"
-            PATTERN "*.so"
-	)
-#endif()
+install(
+	DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" 
+	DESTINATION ${CMAKE_INSTALL_PREFIX}
+	FILES_MATCHING
+        PATTERN "*.dll"
+        PATTERN "*.so"
+)
 
 # Copy data files to install directory
 install(
@@ -232,5 +196,3 @@ install(
     FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/js/wxMapPolygon.js"
     DESTINATION "${INSTALL_BIN_DIR}/js"
 )
-
-#dump_cmake_variables()
