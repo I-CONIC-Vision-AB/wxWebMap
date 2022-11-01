@@ -1,0 +1,71 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "base-config",
+      "displayName": "Base config (not usable as preset)",
+      "description": "Should be inherited by some other presets",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "hidden": true
+    },
+    {
+      "name": "windows-base",
+      "hidden": true,
+      "inherits": [ "base-config" ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-base",
+      "hidden": true,
+      "inherits": [ "base-config" ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-x64-debug",
+      "generator": "Ninja",
+      "displayName": "Linux x64 debug",
+      "description": "Debug configuration for Linux x64",
+      "inherits": [ "linux-base" ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "linux-x64-release",
+      "generator": "Ninja",
+      "displayName": "Linux x64 release",
+      "description": "Release configuration for Linux x64",
+      "inherits": [ "linux-base" ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-x64-debug",
+      "displayName": "Windows x64 debug",
+      "description": "Debug configuration for Windows x64",
+      "inherits": [ "windows-base" ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "windows-x64-release",
+      "displayName": "Windows x64 release",
+      "description": "Release configuration for Windows x64",
+      "inherits": [ "windows-base" ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ]
+}
