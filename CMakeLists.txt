@@ -69,6 +69,10 @@ configure_file(${PROJECT_SOURCE_DIR}/data/html/map.html ${CMAKE_RUNTIME_OUTPUT_D
 configure_file(${PROJECT_SOURCE_DIR}/data/iconic.ico ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/iconic.ico COPYONLY)
 configure_file(${PROJECT_SOURCE_DIR}/data/js/wxMapMarker.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapMarker.js COPYONLY)
 configure_file(${PROJECT_SOURCE_DIR}/data/js/wxMapPolygon.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapPolygon.js COPYONLY)
+if (WIN32)
+    # Needed for Windows Edge backend
+    configure_file(${PROJECT_SOURCE_DIR}/cmake/WebView2Loader.dll "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" COPYONLY)
+endif(WIN32)
 
 add_subdirectory("src")
 add_subdirectory("examples")
