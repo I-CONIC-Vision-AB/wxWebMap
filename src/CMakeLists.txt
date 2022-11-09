@@ -38,7 +38,12 @@ elseif(APPLE)
 endif()
 
 # Define the build target for the executable
-add_library(IconicWebMap SHARED)
+if(ICONIC_USE_STATIC)
+	add_library(IconicWebMap STATIC)
+else()
+	add_library(IconicWebMap SHARED)
+endif()
+	
 target_sources(IconicWebMap PRIVATE ${SRC_FILES})
 
 generate_export_header(IconicWebMap
