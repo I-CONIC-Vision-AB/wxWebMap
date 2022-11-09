@@ -84,7 +84,7 @@ WebFrame::WebFrame(const wxString& url) :
     SetTitle("wxWebView Sample");
 
     CreateStatusBar(2);
-    LogStatus(GetTitle());
+    LogStatus(GetTitle().ToStdString());
 
     wxBoxSizer* topsizer = new wxBoxSizer(wxVERTICAL);
 
