@@ -21,6 +21,60 @@
 #include    <wxMapImage.h>
 #include    <wx/colordlg.h>
 
+/**
+ * @brief Log level
+*/
+enum class ELogType {
+    Message,
+    Warning,
+    Error,
+    Verbose,
+    Status
+};
+
+/**
+ * @brief Base for logging.
+ *
+ * Use LogError, LogWarning, LogMessage instead.
+ * @tparam ...Args Optional printf style arguments
+ * @param type Log level
+ * @param msg Message string
+ * @param ...args Optional arguments
+ * @sa LogError LogWarning LogMessage
+*/
+template<class... Args>
+void LogBase(ELogType type, std::string const msg, Args... args) {
+    switch (type) {
+    case ELogType::Message:
+        wxLogMessage(wxString(msg), args...);
+        break;
+    case ELogType::Warning:
+        wxLogWarning(wxString(msg), args...);
+        break;
+    case ELogType::Error:
+        wxLogError(wxString(msg), args...);
+        break;
+    case ELogType::Verbose:
+        wxLogVerbose(wxString(msg), args...);
+        break;
+
+    }
+}
+
+/**
+ * @brief
+ * @tparam ...Args Optional printf style arguments
+ * @param msg Message string
+ * @param ...args Optional arguments
+*/
+template<class... Args>
+void LogStatus(std::string const msg, Args... args) {
+    // Status is #defined in X11/X.h for Linux. Status is also used in the wxLogStatus macro in wx/log.h which will make things break.
+     //  We are not using the Status-definition from X.h so just undefine it
+#undef Status
+    LogBase(ELogType::Status, msg, args...);
+}
+
 WebFrame::WebFrame(const wxString& url) :
     wxFrame(NULL, wxID_ANY, "wxWebView Sample"),
     cbDraggable(false)
@@ -30,7 +84,7 @@ WebFrame::WebFrame(const wxString& url) :
     SetTitle("wxWebView Sample");
 
     CreateStatusBar(2);
-    wxLogStatus(GetTitle());
+    LogStatus(GetTitle());
 
     wxBoxSizer* topsizer = new wxBoxSizer(wxVERTICAL);
 
@@ -864,7 +918,7 @@ bool WebFrame::AddPolygons(wxString const &filename)
         wxLogError(_("Could not read polygons from %s"), filename);
         return false;
     }
-    wxLogStatus(_("%d polygons read from %s"), (int)vPolygons.size(), filename);
+    LogStatus("%d polygons read from %s", static_cast<int>(vPolygons.size()), filename);
     if (!AddPolygons(vPolygons, vPolygonMetaData)) {
         return false;
     }
@@ -918,7 +972,7 @@ void WebFrame::OnAddImages(wxCommandEvent& WXUNUSED(e))
         wxLogError(_("Could not read images from %s"), filename);
         return;
     }
-    wxLogStatus(_("%d images read from %s"), (int)vPoints.size(), filename);
+    LogStatus("%d images read from %s", static_cast<int>(vPoints.size()), filename);
     if (!AddImages(vPoints, vPaths)) {
         wxLogError(_("Could not add polygons to map"));
     }
