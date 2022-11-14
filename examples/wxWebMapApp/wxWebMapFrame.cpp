@@ -864,7 +864,7 @@ void WebFrame::RunScript(const wxString& javascript)
     }
 }
 
-void WebFrame::OnRemoveLastMarker(wxCommandEvent& e)
+void WebFrame::OnRemoveLastMarker(wxCommandEvent& WXUNUSED(e))
 {
     if (!m_webmap->GetMapObjects().size()) {
         return;
@@ -874,7 +874,7 @@ void WebFrame::OnRemoveLastMarker(wxCommandEvent& e)
     m_webmap->DeleteMapObject(*it);
 }
 
-void WebFrame::OnAddMarker(wxCommandEvent& e)
+void WebFrame::OnAddMarker(wxCommandEvent& WXUNUSED(e))
 {
     wxString sLatLon = wxGetTextFromUser(_("Enter latitude longitude"), _("Add marker"), _("59.326180, 18.072263"), this);
     if (sLatLon.IsEmpty()) {
