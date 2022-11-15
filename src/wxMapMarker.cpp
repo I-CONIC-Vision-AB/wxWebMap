@@ -18,7 +18,6 @@ wxString wxMapMarker::GetJavaScriptAdd(wxString map) const
     } else {
         return wxString::Format("marker_add_drag(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
     }
-    return wxEmptyString;
 }
 
 pwxMapMarker wxMapMarker::Create(double lat, double lon, bool bDraggable)
