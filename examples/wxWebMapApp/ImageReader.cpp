@@ -83,8 +83,10 @@ wxMapPoint ImageReader::ReadPoint(wxString str)
     auto eof = std::char_traits<char>::eof();
 
     // First in file is longitude, but we want latitude first
-    if ((sscanf(tokens[0].char_str(), "%f", &(pt[1])) == eof) ||
-        (sscanf(tokens[1].char_str(), "%f", &(pt[0])) == eof)) {
+    auto res1 = sscanf(tokens[0].char_str(), "%f", &(pt[1]));
+    auto res2 = sscanf(tokens[1].char_str(), "%f", &(pt[0]));
+
+    if ((res1 == eof) || (res2 == eof)) {
         wxLogWarning("Did not find lat/long in string");
     }
 
