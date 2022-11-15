@@ -75,6 +75,7 @@ bool wxMapHtml::AddLeafletJavaScripts()
         wxString jsCodeString;
         jsFile.ReadAll(&jsCodeString);
         // Although we add a new text node, this text is prepended to the start of the existing text
+        new wxXmlNode(scriptNode, wxXmlNodeType::wxXML_TEXT_NODE, wxString("script"), jsCodeString);
     }
 
     wxStringOutputStream os;
