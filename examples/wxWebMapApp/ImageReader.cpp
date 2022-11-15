@@ -54,7 +54,6 @@ ImageReader::ImageReader(wxString const& filename, std::vector<std::pair<wxMapPo
             bool bFound = false;
             for (int j = 0; j < 3; ++j) {
                 imgPath.SetExt(vExt[j]);
-                wxString filename = imgPath.GetFullPath();
                 if (imgPath.Exists()) {
                     bFound = true;
                     imagePaths.push_back(imgPath.GetFullPath());
@@ -81,8 +80,14 @@ wxMapPoint ImageReader::ReadPoint(wxString str)
 {
     wxMapPoint pt;
     wxArrayString tokens = wxStringTokenize(str, ",");
-    sscanf(tokens[0].char_str(), "%f", &(pt[1])); // First in file is longitude, but we want latitude first
-    sscanf(tokens[1].char_str(), "%f", &(pt[0]));
+    auto eof = std::char_traits<char>::eof();
+
+    // First in file is longitude, but we want latitude first
+    if ((sscanf(tokens[0].char_str(), "%f", &(pt[1])) == eof) ||
+        (sscanf(tokens[1].char_str(), "%f", &(pt[0])) == eof)) {
+        wxLogWarning("Did not find lat/long in string");
+    }
+
     return pt;
 }
 

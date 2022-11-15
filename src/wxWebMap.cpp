@@ -53,7 +53,7 @@ wxWebView* wxWebMapImpl::GetWebView()
     return cpWebView;
 }
 
-bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* result)
+bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* WXUNUSED(result))
 {
     if (std::find(clMapObjects.begin(), clMapObjects.end(), o) == clMapObjects.end()) {
         // We run java script async because otherwise wxYield is called which may trigger unwanted events before we get our result

@@ -75,7 +75,6 @@ bool wxMapHtml::AddLeafletJavaScripts()
         wxString jsCodeString;
         jsFile.ReadAll(&jsCodeString);
         // Although we add a new text node, this text is prepended to the start of the existing text
-        wxXmlNode* addMarkerNode = new wxXmlNode(scriptNode, wxXmlNodeType::wxXML_TEXT_NODE, wxString("script"), jsCodeString);
     }
 
     wxStringOutputStream os;
@@ -90,10 +89,10 @@ bool wxMapHtml::AddLeafletJavaScripts()
     if (cbUseMemoryFS) {
         wxMemoryFSHandler::AddFileWithMimeType(htmlName, s, "text/html");
     } else {
-        wxFileName fn;
-        fn.SetPath(wxFileName::GetTempDir());
-        fn.SetFullName(htmlName);
-        cOutputFileName = fn;
+        wxFileName fn1;
+        fn1.SetPath(wxFileName::GetTempDir());
+        fn1.SetFullName(htmlName);
+        cOutputFileName = fn1;
         wxString filename = cOutputFileName.GetFullPath();
         wxFFile outFile(filename, "w");
         outFile.Write(s);
