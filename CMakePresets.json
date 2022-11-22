@@ -37,7 +37,7 @@
         "rhs": "Linux"
       },
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -pedantic -Werror"
+      	"CMAKE_CXX_FLAGS": "-Wall -Wextra -pedantic -Werror"
       }
     },
     {

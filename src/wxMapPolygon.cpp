@@ -6,8 +6,8 @@
 #include    <wx/intl.h>
 
 wxMapPolygon::wxMapPolygon(std::vector<wxMapPoint> const& vPoints, bool bIsPolygon, float opacity, float weight, wxString color) :
-    coordinates(vPoints),
     cOpacity(opacity),
+    coordinates(vPoints),
     cWeight(weight),
     cColor(color),
     cbIsPolygon(bIsPolygon)
@@ -18,7 +18,7 @@ wxMapPolygon::wxMapPolygon(std::vector<wxMapPoint> const& vPoints, bool bIsPolyg
 wxString wxMapPolygon::GetJavaScriptAdd(wxString map) const
 {
     wxString js;
-    for (int i=0; i<coordinates.size(); ++i)
+    for (size_t i=0; i < coordinates.size(); ++i)
     {
         js += wxString::Format("polygon_coord_add(%.6f,%.6f);\n", coordinates[i].x, coordinates[i].y);
     }

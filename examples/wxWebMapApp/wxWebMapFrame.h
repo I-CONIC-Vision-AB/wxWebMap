@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wxWebMapFrame
 // Purpose:     wxWebView with map sample
-// Author:      Håkan Wiman
+// Author:      Hï¿½kan Wiman
 // Adapted from:      webview.cpp by Marianne Gagnon
 // Copyright:   (c) 2022 I-CONIC Vision AB, Sweden
 // Licence:     wxWindows licence
@@ -34,8 +34,6 @@
 #include "refresh.xpm"
 #endif
 
-#include "wxlogo.xpm"
-
 //We map menu items to their history items
 WX_DECLARE_HASH_MAP(int, wxSharedPtr<wxWebViewHistoryItem>,
                     wxIntegerHash, wxIntegerEqual, wxMenuHistoryMap);
@@ -52,7 +50,7 @@ public:
     virtual ~WebFrame();
 
     void StorePolygon(int id, wxString polygon);
-    void RemovePolygon(int id, wxString newpolygon);
+    void RemovePolygon(int id);
     /**
      * @brief Get the web map
      * @return the web map
