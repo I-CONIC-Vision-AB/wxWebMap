@@ -998,7 +998,7 @@ bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& v
 }
 
 
-void WebFrame::OnToggleDraggable(wxCommandEvent& e)
+void WebFrame::OnToggleDraggable(wxCommandEvent& WXUNUSED(e))
 {
     cbDraggable = !cbDraggable;
 }
