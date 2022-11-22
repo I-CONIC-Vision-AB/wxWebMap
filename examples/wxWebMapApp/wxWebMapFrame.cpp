@@ -21,6 +21,8 @@
 #include    <wxMapImage.h>
 #include    <wx/colordlg.h>
 
+#include "wxlogo.xpm"
+
 /**
  * @brief Log level
 */
@@ -57,7 +59,13 @@ void LogBase(ELogType type, std::string const msg, Args... args) {
     case ELogType::Verbose:
         wxLogVerbose(wxString(msg), args...);
         break;
-
+    case ELogType::Status:
+        // Status is #defined in X11/X.h for Linux. Status is also used in the wxLogStatus macro in wx/log.h which will make things break.
+        //  We are not using the Status-definition from X.h so just undefine it
+        #undef Status
+        wxLogStatus(wxString(msg), args...);
+    default:
+        return;
     }
 }
 
@@ -328,12 +336,12 @@ WebFrame::WebFrame(const wxString& url) :
             StorePolygon(stoi(id_token), s);
         }
         else if (function_token == "Update") {
-            RemovePolygon(stoi(id_token), s);
+            RemovePolygon(stoi(id_token));
             StorePolygon(stoi(id_token), s);
         }
         else
         {
-            RemovePolygon(stoi(id_token), s);
+            RemovePolygon(stoi(id_token));
         }
         //wxLogMessage("%d", static_cast<int>(polygons.size()));
         });
@@ -365,9 +373,9 @@ WebFrame::~WebFrame()
 
 
 
-void WebFrame::RemovePolygon(int id, wxString newpolygon)
+void WebFrame::RemovePolygon(int id)
 {
-    for (int i = 0; i < polygons.size(); i++) {
+    for (int i = 0; i < static_cast<int>(polygons.size()); i++) {
         //wxLogMessage("disaniof %d %d", id, polygons.at(i).GetLeafletID());
         if (polygons.at(i).GetLeafletId() == id) {
             polygons.erase(polygons.begin()+i);
@@ -942,14 +950,14 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
         col = colData.GetColour();
     }
     dlg->Destroy();
-    for (int i = 0; i < vPolygons.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(vPolygons.size()); ++i) {
         std::vector<wxMapPoint> const& aPolygon = vPolygons[i];
         // TODO: Create a wxMapPolygon instance and assign polygon
         pPolygon = wxMapPolygon::Create(aPolygon, true, fOpacity,(float)weight, col.GetAsString(wxC2S_HTML_SYNTAX));
         m_webmap->AddMapObject(pPolygon, &result);
         wxLogMessage(_("Added polygon object %s with result %s"), vPolygonName[i], result);
 
-        for (int j = 0; j < aPolygon.size(); ++j) {
+        for (int j = 0; j < static_cast<int>(aPolygon.size()); ++j) {
             wxLogMessage(_("lat=%.8f, lon=%.8f"), aPolygon[j].x, aPolygon[j].y);
         }
     }
@@ -980,7 +988,7 @@ void WebFrame::OnAddImages(wxCommandEvent& WXUNUSED(e))
 
 bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& vPoints, std::vector<wxString> const& vPaths)
 {
-    for (int i = 0; i < vPoints.size(); i++) {
+    for (int i = 0; i < static_cast<int>(vPoints.size()); i++) {
         wxMapPoint upperLeft = vPoints[i].first;
         wxMapPoint lowerRight = vPoints[i].second;
         wxString tFilePath = vPaths[i];
@@ -998,7 +1006,7 @@ bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& v
 }
 
 
-void WebFrame::OnToggleDraggable(wxCommandEvent& e)
+void WebFrame::OnToggleDraggable(wxCommandEvent& WXUNUSED(e))
 {
     cbDraggable = !cbDraggable;
 }
@@ -1072,18 +1080,6 @@ void WebFrame::OnRunScriptDate(wxCommandEvent& WXUNUSED(evt))
 {
     RunScript("function resolveAfter2Seconds() {return new Promise(resolve => {setTimeout(() => {resolve('resolved');}, 2000)});}async function asyncCall() {document.write('CALLING'); const result = await resolveAfter2Seconds();window.wx_msg.postMessage(result);}asyncCall();");
 }
-
-//void WebFrame::OnRunScriptNull(wxCommandEvent& WXUNUSED(evt))
-//{
-//    RunScript("function f(){return null;}f();");
-//}
-//
-//void WebFrame::OnRunScriptDate(wxCommandEvent& WXUNUSED(evt))
-//{
-//    RunScript("function f(){var d = new Date('10/08/2017 21:30:40'); \
-//        var tzoffset = d.getTimezoneOffset() * 60000; \
-//        return new Date(d.getTime() - tzoffset);}f();");
-//}
 
 #if wxUSE_WEBVIEW_IE
 void WebFrame::OnRunScriptObjectWithEmulationLevel(wxCommandEvent& WXUNUSED(evt))

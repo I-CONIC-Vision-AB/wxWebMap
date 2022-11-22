@@ -17,6 +17,9 @@
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "/W4 /WX /EHsc"
       }
     },
     {
@@ -27,6 +30,9 @@
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Linux"
+      },
+      "cacheVariables": {
+      	"CMAKE_CXX_FLAGS": "-Wall -Wextra -pedantic -Werror"
       }
     },
     {

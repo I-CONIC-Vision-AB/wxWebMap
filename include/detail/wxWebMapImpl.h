@@ -21,8 +21,8 @@ protected:
     virtual std::list<pwxMapObject>& GetMapObjects();
     virtual pwxMapObject Find(wxString const& result);
 
-    wxWebView* cpWebView;
     wxString cMapName;
+    wxWebView* cpWebView;
     std::list<pwxMapObject> clMapObjects;
     std::shared_ptr<wxMapHtml> cpMapHtml;
 };

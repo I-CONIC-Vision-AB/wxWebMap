@@ -53,15 +53,14 @@ public:
     */
     static std::shared_ptr<wxMapPolygon> Create(std::vector<wxMapPoint> const &vPoints, bool bIsPolygon = true, float opacity = 0.5, float weight = 0.5, wxString color = wxString("blue"));
     float cOpacity;
+    std::vector<wxMapPoint> coordinates;
     float cWeight;
     wxString cColor;
     bool cbIsPolygon;
-
     virtual wxString GetRemoveString(wxString const& map);
-
     virtual bool operator==(const wxString& result) { return wxMapObject::operator==(result); }
 
-    std::vector<wxMapPoint> coordinates;
+
 };
 
 typedef std::shared_ptr<wxMapPolygon> pwxMapPolygon; //!< Smart pointer to a map polygon.
