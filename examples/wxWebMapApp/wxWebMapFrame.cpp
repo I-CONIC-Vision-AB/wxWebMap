@@ -343,7 +343,7 @@ WebFrame::WebFrame(const wxString& url) :
         {
             RemovePolygon(stoi(id_token));
         }
-        //wxLogMessage("%d", static_cast<int>(polygons.size()));
+
         });
 
 
@@ -375,7 +375,7 @@ WebFrame::~WebFrame()
 
 void WebFrame::RemovePolygon(int id)
 {
-    for (int i = 0; i < static_cast<int>(polygons.size()); i++) {
+    for (size_t i = 0; i < polygons.size(); i++) {
         //wxLogMessage("disaniof %d %d", id, polygons.at(i).GetLeafletID());
         if (polygons.at(i).GetLeafletId() == id) {
             polygons.erase(polygons.begin()+i);
@@ -950,14 +950,14 @@ bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons
         col = colData.GetColour();
     }
     dlg->Destroy();
-    for (int i = 0; i < static_cast<int>(vPolygons.size()); ++i) {
+    for (size_t i = 0; i < vPolygons.size(); ++i) {
         std::vector<wxMapPoint> const& aPolygon = vPolygons[i];
         // TODO: Create a wxMapPolygon instance and assign polygon
         pPolygon = wxMapPolygon::Create(aPolygon, true, fOpacity,(float)weight, col.GetAsString(wxC2S_HTML_SYNTAX));
         m_webmap->AddMapObject(pPolygon, &result);
         wxLogMessage(_("Added polygon object %s with result %s"), vPolygonName[i], result);
 
-        for (int j = 0; j < static_cast<int>(aPolygon.size()); ++j) {
+        for (size_t j = 0; j < aPolygon.size(); ++j) {
             wxLogMessage(_("lat=%.8f, lon=%.8f"), aPolygon[j].x, aPolygon[j].y);
         }
     }
@@ -988,7 +988,7 @@ void WebFrame::OnAddImages(wxCommandEvent& WXUNUSED(e))
 
 bool WebFrame::AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& vPoints, std::vector<wxString> const& vPaths)
 {
-    for (int i = 0; i < static_cast<int>(vPoints.size()); i++) {
+    for (size_t i = 0; i < vPoints.size(); i++) {
         wxMapPoint upperLeft = vPoints[i].first;
         wxMapPoint lowerRight = vPoints[i].second;
         wxString tFilePath = vPaths[i];
