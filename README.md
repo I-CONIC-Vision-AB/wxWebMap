@@ -10,30 +10,41 @@ The map functionality is implemented using [```leafletjs```](https://leafletjs.c
 
 ## Sample application
 In examples/wxWebMapApplication there is a sample application with GUI. It is based on the wxWidgets wxWebView sample and opens a map in the web view. 
-To demonstrate the C++ binding to the map, you can add markers, polygons or images using ```menu->Map->Add marker|polygons|images...```.
+To demonstrate the C++ binding to the map, you can add markers, polygons or images using ```Menu->Map->Add marker|polygons|images...```.
 
 ![wxWebMapApp](wxWebMapApplication.jpg "wxWebMapApplication")
 
 ## Build instructions
 
-### Windows
-* Clone the wxWebMap repository at https://github.com/HWiman-ICONIC/wxWebMap
-* Install vcpkg by following these instructions: https://vcpkg.io/en/getting-started.html
-* Install the wxWidgets and boost libraries: ```.\vcpkg.exe install wxwidgets:x64-windows boost:x64-windows``` in e.g. powershell (Admin mode)
-    * If you run into problems when compiling wxWidgets or even if compilation works but you get messages like "wx*.dll not found" when running sample applications. Replace the ```./vcpkg/ports/wxwidgets/portfile.cmake``` with the one in ```wxWebMap/cmake/portfile.cmake``` and rebuild wxWidgets (```vcpkg install wxwidgets:x64-windows```).
-    * You only have to build ```boost-smart-ptr``` and ```boost-test```, but you might as well build all of [```boost```](https://www.boost.org/). 
-* Open VisualStudio and choose the ```Open a local folder``` option and select your wxWebMap directory.
-* This will trigger [CMake](https://cmake.org/) to parse the project. 
-    * You may get warnings, but in the Output tab you should see ```CMake generation finished```.
-* Now Build->Build all
-* Set target to e.g. bin/wxWebMapApp.exe and run the application
+### Install required packages
 
-### Linux
-<vcpkg> is the vcpkg root directory
+1. Install *vcpkg* by following these instructions: https://vcpkg.io/en/getting-started.html
+1. Set environment variable CMAKE_TOOLCHAIN_FILE to **[path to vcpkg]/scripts/buildsystems/vcpkg.cmake**
+1. Install wxWidgets
+    ```
+    Windows: $ .\vcpkg.exe install wxwidgets:x64-windows
+    Linux:   $ .\vcpkg.exe install wxwidgets:x64-linux
+    ```
+1. Clone the wxWebMap repository from https://github.com/I-CONIC-Vision-AB/wxWebMap
 
-1. Clone as above
-1. Use vcpkg
-1. Create configuration:
-$ cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=<vcpkg>/scripts/buildsystems/vcpkg.cmake
-1. Build
-$ cmake --build . --target IconicWebMap --config Debug
+### Build with Visual Studio
+
+Open the wxWebMap folder in Visual Studio. CMake configuration should start automatically. Choose your preset (debug/release) and build.
+
+### Build with CMake command
+
+```
+$ cmake -S . --preset=[preset name]
+$ cmake --build out/build/[preset name]
+```
+
+Available presets are:
+
+- linux-x64-debug
+- linux-x64-release
+- windows-x64-debug
+- windows-x64-release
+
+### Known issues
+
+If you run into problems when compiling wxWidgets or even if compilation works but you get messages like "wx*.dll not found" when running sample applications. Replace the ```./vcpkg/ports/wxwidgets/portfile.cmake``` with the one in ```wxWebMap/cmake/portfile.cmake``` and rebuild wxWidgets (```vcpkg install wxwidgets:x64-windows```).
