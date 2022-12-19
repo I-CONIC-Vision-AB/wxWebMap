@@ -98,19 +98,20 @@ WebFrame::WebFrame(const wxString& url) :
 
     // Create the toolbar
     m_toolbar = CreateToolBar(wxTB_TEXT);
-    m_toolbar->SetToolBitmapSize(wxSize(32, 32));
+    wxSize bitmapSize(32, 32);
+    m_toolbar->SetToolBitmapSize(bitmapSize);
 
-    wxBitmap back = wxArtProvider::GetBitmap(wxART_GO_BACK, wxART_TOOLBAR);
-    wxBitmap forward = wxArtProvider::GetBitmap(wxART_GO_FORWARD, wxART_TOOLBAR);
+    wxBitmap back = wxArtProvider::GetBitmap(wxART_GO_BACK, wxART_TOOLBAR, bitmapSize);
+    wxBitmap forward = wxArtProvider::GetBitmap(wxART_GO_FORWARD, wxART_TOOLBAR, bitmapSize);
 #ifdef __WXGTK__
     wxBitmap stop = wxArtProvider::GetBitmap("gtk-stop", wxART_TOOLBAR);
 #else
-    wxBitmap stop = wxBitmap(stop_xpm);
+    wxBitmap stop = wxArtProvider::GetBitmap(wxART_STOP, wxART_TOOLBAR, bitmapSize);
 #endif
 #ifdef __WXGTK__
     wxBitmap refresh = wxArtProvider::GetBitmap("gtk-refresh", wxART_TOOLBAR);
 #else
-    wxBitmap refresh = wxBitmap(refresh_xpm);
+    wxBitmap refresh = wxArtProvider::GetBitmap(wxART_REFRESH, wxART_TOOLBAR, bitmapSize);
 #endif
 
     m_toolbar_back = m_toolbar->AddTool(wxID_ANY, _("Back"), back);
