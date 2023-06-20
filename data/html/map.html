@@ -33,11 +33,15 @@
     <div id="map"><!-- Empty div body. Paceholder for leaflet map. --></div>
     <script type="text/javascript">
         // ToDo: Move all javascript code to js/*.js directory and add them with wxMapHtml!
-        var map = L.map('map', {  
-            center: [59.61417749543643, 18.872957835353688],
+        var map = L.map('map', {
+            center: [59.33166035099538, 18.063309439933338],
             zoom: 14
         });
         var basemaps = {
+            'Imagery': L.tileLayer.wms('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                layers: 'Imagery',
+                attribution: 'Esri, USGS|Esri, FAO, NOAA|Earthstar Geographics'
+            }),
             'Map': L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
                 layers: 'OSM-WMS',
                 attribution: '©OpenStreetMap contributors'
@@ -45,14 +49,10 @@
             'Topography': L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
                 layers: 'TOPO-WMS,OSM-Overlay-WMS',
                 attribution: '©OpenStreetMap contributors'
-            }),
-            'Imagery': L.tileLayer.wms('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                layers: 'Imagery',
-                attribution: 'Esri, USGS|Esri, FAO, NOAA|Earthstar Geographics'
             })
         };
         L.control.layers(basemaps, {}, { collapsed: true }).addTo(map);
-        basemaps.Map.addTo(map);
+        basemaps.Imagery.addTo(map);
 
         // add leaflet.pm controls to the map
         map.pm.addControls({
