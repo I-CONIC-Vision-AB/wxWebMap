@@ -20,7 +20,9 @@ wxWebMapImpl::wxWebMapImpl() :
     wxWebMap(),
     cMapName("map"),
     cpWebView(nullptr)
-{
+{    
+    auto f = &wxWebMapImpl::OnScriptResult;
+    Bind(wxEVT_WEBVIEW_SCRIPT_RESULT, f, this);
 }
 
 wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
@@ -48,6 +50,36 @@ wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& 
     return p;
 }
 
+void wxWebMapImpl::OnScriptResult(wxWebViewEvent& evt) {
+    wxMapObject* o = (wxMapObject*)evt.GetClientData();
+
+    if (!o) {
+        return;
+    }
+
+    bool found = false; // will be called in many cases, make sure its the one we are intrested in (AddMapObject)
+    for (auto it = clMapObjects.begin(); it != clMapObjects.end(); ++it) {
+        if (it->get() == o) {
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        return;
+    }
+
+    if (o->GetType() != EMapObjectType::MARKER) {
+        return;
+    }
+
+
+    wxString result = evt.GetString();
+    long val = 0;
+    result.ToLong(&val);
+    o->SetLeafletId(val);
+}
+
 wxWebView* wxWebMapImpl::GetWebView()
 {
     return cpWebView;
@@ -58,7 +90,8 @@ bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* WXUNUSED(result))
     if (std::find(clMapObjects.begin(), clMapObjects.end(), o) == clMapObjects.end()) {
         // We run java script async because otherwise wxYield is called which may trigger unwanted events before we get our result
         clMapObjects.push_back(o);
-        cpWebView->RunScriptAsync(o->GetJavaScriptAdd(cMapName), &o);
+
+        cpWebView->RunScriptAsync(o->GetJavaScriptAdd(cMapName), o.get());
     }
 
     return true;
@@ -66,7 +99,8 @@ bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* WXUNUSED(result))
 
 bool wxWebMapImpl::DeleteMapObject(pwxMapObject o)
 {
-    cpWebView->RunScript(o->GetRemoveString(cMapName));
+    wxString javascript = o->GetRemoveString(cMapName);
+    cpWebView->RunScript(javascript);
     GetMapObjects().remove(o);
 
     return true;
