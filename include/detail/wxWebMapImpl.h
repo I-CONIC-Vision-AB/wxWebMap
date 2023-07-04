@@ -10,6 +10,8 @@ public:
     static wxWebMap* Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, 
         const wxString& backend, long style, const wxString& name);
 
+    void OnScriptResult(wxWebViewEvent& evt);
+
 protected:
     wxWebMapImpl();
 
