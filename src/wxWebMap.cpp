@@ -47,6 +47,12 @@ wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& 
         wxString filename = p->cpMapHtml->GetLocalFileName().GetFullPath();
         p->cpWebView->LoadURL(filename); // It is strange that this url can not be given in the wxWebView construction above... There, LoadURL is called also, so it should work
     }
+
+    // Install message handler with the name wx_msg
+    p->cpWebView->AddScriptMessageHandler("wx_msg");
+    // Bind handler
+    p->cpWebView->Bind(wxEVT_WEBVIEW_SCRIPT_MESSAGE_RECEIVED, &wxWebMapImpl::OnScriptResult, p);
+
     return p;
 }
 
