@@ -9,12 +9,13 @@ wxMapMarker::wxMapMarker(double lat, double lon, bool bDraggable) :
     cbDraggable(bDraggable)
 {
     cType = EMapObjectType::MARKER;
+    label = "";
 }
 
 wxString wxMapMarker::GetJavaScriptAdd(wxString map) const
 {
     if (!cbDraggable) {
-        return wxString::Format("marker_add(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
+        return wxString::Format("marker_add(%.6lf,%.6lf,\"%s\",%s); \n", cLat, cLon, label, map);
     } else {
         return wxString::Format("marker_add_drag(%.6lf,%.6lf,%s); \n", cLat, cLon, map);
     }

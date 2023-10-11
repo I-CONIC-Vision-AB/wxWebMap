@@ -45,6 +45,8 @@ public:
 
     virtual bool operator==(const wxString& result);
 
+    wxString label;
+
     double cLat;
     double cLon;
     bool cbDraggable;
