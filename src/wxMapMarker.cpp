@@ -10,6 +10,7 @@ wxMapMarker::wxMapMarker(double lat, double lon, bool bDraggable) :
 {
     cType = EMapObjectType::MARKER;
     label = "";
+    cLeafletId = (int)this;
 }
 
 wxString wxMapMarker::GetJavaScriptAdd(wxString map) const
