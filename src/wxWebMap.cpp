@@ -97,6 +97,9 @@ bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* WXUNUSED(result))
         // We run java script async because otherwise wxYield is called which may trigger unwanted events before we get our result
         clMapObjects.push_back(o);
 
+        // Needs to be run after the wxEVT_WEBVIEW_LOADED event (which triggers SpacetimeView::OnDocumentLoaded)
+        //  is received. See documentation for RunScript, which also is true for RunScriptAsync:
+        //  https://docs.wxwidgets.org/stable/classwx_web_view.html#a67000a368c45f3684efd460d463ffb98
         cpWebView->RunScriptAsync(o->GetJavaScriptAdd(cMapName), o.get());
     }
 
