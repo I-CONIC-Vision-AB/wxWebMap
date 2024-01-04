@@ -15,6 +15,16 @@
 #include    <wxMapUtil.h>
 #include    <list>
 
+// Used to store region of interest coordinates
+struct lat_lng_coords {
+    float lat;
+    float lng;
+};
+
+// Region of interest
+struct roi_rectangle {
+    lat_lng_coords Rectangle[4];
+};
 
 /**
  * @brief A window displaying a map from a map source, such as WMS.
@@ -113,9 +123,22 @@ public:
 
     virtual pwxMapObject Find(wxString const& result) = 0;
 
+    bool QueryLastSavedRectangle(roi_rectangle& Out) {
+        bool Result = false;
+
+        // Set only if first vertex has a value, consider adding better error checking?
+        if (LastSavedRectangle.Rectangle[0].lat != 0.f && LastSavedRectangle.Rectangle[0].lng != 0.f) {
+            Out = LastSavedRectangle;
+            Result = true;
+        }
+        return(Result);
+    }
+
 protected:
     /**
     * @brief Empty constructor.
     */
     wxWebMap();
+    //May be saved to the project file as a region of interest
+    roi_rectangle LastSavedRectangle = {};
 };

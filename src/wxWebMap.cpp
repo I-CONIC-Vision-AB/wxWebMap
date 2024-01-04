@@ -5,6 +5,7 @@
 #include <wx/sizer.h>
 #include <wx/filename.h>
 #include <wx/fs_mem.h>
+#include <wx/tokenzr.h>
 
 wxWebMap::wxWebMap() :
     wxWindow()
@@ -59,6 +60,25 @@ wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& 
 void wxWebMapImpl::OnScriptResult(wxWebViewEvent& evt) {
     wxMapObject* o = (wxMapObject*)evt.GetClientData();
 
+    wxString EventString = evt.GetString();
+    if (EventString.StartsWith("Rectangle")) {
+        int RectangleVertexIndex = 0;
+        wxStringTokenizer Tokenizer(EventString, "(");
+        //The string we parse looks like this:
+        //Rectangle 266 LatLng(FloatValueLat, FloatValueLng),LatLng(FloatValueLat, FloatValueLng),LatLng(FloatValueLat, FloatValueLng),LatLng(FloatValueLat, FloatValueLng)
+        //Intentially skip Rectangle and ID parts of the string.
+        Tokenizer.GetNextToken();
+        while (Tokenizer.HasMoreTokens()) {
+            wxString Token = Tokenizer.GetNextToken();
+            int LngStartIndex = Token.Find(",") + 1;
+            wxString LatString = Token.substr(0, LngStartIndex - 1);
+            LastSavedRectangle.Rectangle[RectangleVertexIndex].lat = std::stof(LatString.ToStdString());
+            wxString LngString = Token.substr(LngStartIndex);
+            LastSavedRectangle.Rectangle[RectangleVertexIndex].lng = std::stof(LngString.ToStdString());
+            ++RectangleVertexIndex;
+        }
+    }
+
     if (!o) {
         return;
     }
@@ -102,7 +122,6 @@ bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* WXUNUSED(result))
         //  https://docs.wxwidgets.org/stable/classwx_web_view.html#a67000a368c45f3684efd460d463ffb98
         cpWebView->RunScriptAsync(o->GetJavaScriptAdd(cMapName), o.get());
     }
-
     return true;
 }
 
