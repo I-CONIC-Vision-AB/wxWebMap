@@ -8,12 +8,12 @@
 
 #pragma once
 
-#include    <webmap_exports.h>
-#include	<wx/webview.h>
-#include	<wx/window.h>
-#include    <wxMapMarker.h>
-#include    <wxMapUtil.h>
-#include    <list>
+#include <webmap_exports.h>
+#include <wx/webview.h>
+#include <wx/window.h>
+#include <wxMapMarker.h>
+#include <wxMapUtil.h>
+#include <list>
 
 // Used to store region of interest coordinates
 struct lat_lng_coords {
@@ -133,6 +133,8 @@ public:
         }
         return(Result);
     }
+
+    virtual void AddRectangleToWebMap(float MinX, float MaxX, float MinY, float MaxY, bool UseAsRegionOfInterest = true) = 0;
 
 protected:
     /**
