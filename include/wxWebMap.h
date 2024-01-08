@@ -24,6 +24,7 @@ struct lat_lng_coords {
 // Region of interest
 struct roi_rectangle {
     lat_lng_coords Rectangle[4];
+    int LeafletID;
 };
 
 /**
