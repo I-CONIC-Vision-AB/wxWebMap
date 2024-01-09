@@ -11,7 +11,7 @@ public:
         const wxString& backend, long style, const wxString& name);
 
     void OnScriptResult(wxWebViewEvent& evt);
-
+    virtual void SetEventListener(wxEvtHandler* Listener) override;
 protected:
     wxWebMapImpl();
 
@@ -26,6 +26,8 @@ protected:
     bool QueryLastSavedRectangle(roi_rectangle& Out);
     void AddRectangleToWebMap(float MinX, float MaxX, float MinY, float MaxY, bool UseAsRegionOfInterest);
     void ParseRectangleEvent(wxWebViewEvent& evt);
+    //ID is used for determining if we want to write(1), or clear(0)
+    void BroadcastROIChange(int ID);
 
     wxString cMapName;
     wxWebView* cpWebView;
@@ -33,4 +35,6 @@ protected:
     std::shared_ptr<wxMapHtml> cpMapHtml;
     //May be saved to the project file as a region of interest
     roi_rectangle LastSavedRectangle = {};
+    wxEvtHandler* EventListener = nullptr;
 };
+

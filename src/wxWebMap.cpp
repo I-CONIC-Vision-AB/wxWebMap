@@ -88,6 +88,10 @@ void wxWebMapImpl::OnScriptResult(wxWebViewEvent& evt) {
     o->SetLeafletId(val);
 }
 
+void wxWebMapImpl::SetEventListener(wxEvtHandler* Listener) {
+    this->EventListener = Listener;
+}
+
 wxWebView* wxWebMapImpl::GetWebView()
 {
     return cpWebView;
@@ -195,6 +199,7 @@ void wxWebMapImpl::ParseRectangleEvent(wxWebViewEvent& evt) {
             LastSavedRectangle.Rectangle[RectangleVertexIndex].lng = std::stof(LngString.ToStdString());
             ++RectangleVertexIndex;
         }
+        BroadcastROIChange(1);
     } else if (EventString.StartsWith(RemoveRectangleHeader)) {
         //wxStringTokenizer Tokenizer(EventString, "(");
         //wxString InitToken = Tokenizer.GetNextToken();
@@ -207,5 +212,15 @@ void wxWebMapImpl::ParseRectangleEvent(wxWebViewEvent& evt) {
         //}
 
         LastSavedRectangle = {};
+        BroadcastROIChange(0);
+    }
+}
+
+void wxWebMapImpl::BroadcastROIChange(int ID) {
+    if (EventListener) {
+        wxCommandEvent Event = { };
+        Event.SetEventType((int)WebMapEventIDS::ID_ROI_WAS_UPDATED);
+        Event.SetId(ID);
+        wxPostEvent(EventListener, Event);
     }
 }
