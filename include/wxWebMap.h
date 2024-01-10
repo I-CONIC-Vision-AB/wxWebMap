@@ -8,12 +8,12 @@
 
 #pragma once
 
-#include    <webmap_exports.h>
-#include	<wx/webview.h>
-#include	<wx/window.h>
-#include    <wxMapMarker.h>
-#include    <wxMapUtil.h>
-#include    <list>
+#include <webmap_exports.h>
+#include <wx/webview.h>
+#include <wx/window.h>
+#include <wxMapMarker.h>
+#include <wxMapUtil.h>
+#include <list>
 
 // Used to store region of interest coordinates
 struct lat_lng_coords {
@@ -24,6 +24,13 @@ struct lat_lng_coords {
 // Region of interest
 struct roi_rectangle {
     lat_lng_coords Rectangle[4];
+    //todo: add the use of this in ParseRectangleEvent.
+    //in order to use it, we need to get a leaflet id back from the first roi we add from c++ to the webmap
+    int LeafletID;
+};
+
+enum class ICONIC_WEBMAP_EXPORT WebMapEventIDS {
+    ID_ROI_WAS_UPDATED = 10365,
 };
 
 /**
@@ -33,7 +40,6 @@ struct roi_rectangle {
 */
 class ICONIC_WEBMAP_EXPORT wxWebMap : public wxWindow {
 public:
-
     /**
      * @brief Create a wxWebMap.
      *
@@ -123,22 +129,15 @@ public:
 
     virtual pwxMapObject Find(wxString const& result) = 0;
 
-    bool QueryLastSavedRectangle(roi_rectangle& Out) {
-        bool Result = false;
+    virtual bool QueryLastSavedRectangle(roi_rectangle& Out) = 0;
 
-        // Set only if first vertex has a value, consider adding better error checking?
-        if (LastSavedRectangle.Rectangle[0].lat != 0.f && LastSavedRectangle.Rectangle[0].lng != 0.f) {
-            Out = LastSavedRectangle;
-            Result = true;
-        }
-        return(Result);
-    }
+    virtual void AddRectangleToWebMap(float MinX, float MaxX, float MinY, float MaxY, bool UseAsRegionOfInterest = true) = 0;
+
+    virtual void SetEventListener(wxEvtHandler *EventListener) = 0;
 
 protected:
     /**
     * @brief Empty constructor.
     */
     wxWebMap();
-    //May be saved to the project file as a region of interest
-    roi_rectangle LastSavedRectangle = {};
 };
