@@ -34,10 +34,12 @@ bool PolygonReader::ReadPolygon(wxTextFile& file, wxString &s, std::vector<wxMap
     wxMapPoint pt;
     while (!s.IsEmpty()) {
         wxArrayString tokens = wxStringTokenize(s, ",");
-        sscanf(tokens[0].char_str(), "%f", &(pt[1])); // First in file is longitude, but we want latitude first
-        sscanf(tokens[1].char_str(), "%f", &(pt[0]));
-        // Ignore third height/altitude token for now since point is 2D
-        polygon.push_back(pt);
+		if (tokens.size() >= 2) {
+			sscanf(tokens[0].char_str(), "%f", &(pt[1])); // First in file is longitude, but we want latitude first
+			sscanf(tokens[1].char_str(), "%f", &(pt[0]));
+			// Ignore third height/altitude token for now since point is 2D
+			polygon.push_back(pt);
+		}
         s = file.GetNextLine();
     }
     polygon.pop_back(); // The last point is a "center of polygon point", not needed for creating the polygon
