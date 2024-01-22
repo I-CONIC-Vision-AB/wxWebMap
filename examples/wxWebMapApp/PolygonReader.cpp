@@ -14,6 +14,7 @@ PolygonReader::PolygonReader(wxString const& filename, std::vector<std::vector<w
     }
     std::vector<wxMapPoint > polygon;
     wxString meta;
+	size_t num_lines = file.GetLineCount(), line = 0;
     wxString s = file.GetFirstLine();
     while (ReadPolygon(file, s, polygon, meta)) {
         polygons.push_back(polygon);
@@ -21,7 +22,12 @@ PolygonReader::PolygonReader(wxString const& filename, std::vector<std::vector<w
         if (file.Eof()) {
             break;
         }
-        s = file.GetNextLine(); // Read line after empty line
+		line += 7; // Each object frame takes seven lines including empty line
+		if (line + 6 > num_lines) {
+			// Can´t be more object frames now
+			break;
+		}
+		s = file.GetNextLine(); // Read line after empty line
     }
 
 }
