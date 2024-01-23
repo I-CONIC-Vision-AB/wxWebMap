@@ -8,13 +8,30 @@
 
 #pragma once
 
-#include    <webmap_exports.h>
-#include	<wx/webview.h>
-#include	<wx/window.h>
-#include    <wxMapMarker.h>
-#include    <wxMapUtil.h>
-#include    <list>
+#include <webmap_exports.h>
+#include <wx/webview.h>
+#include <wx/window.h>
+#include <wxMapMarker.h>
+#include <wxMapUtil.h>
+#include <list>
 
+// Used to store region of interest coordinates
+struct lat_lng_coords {
+    float lat;
+    float lng;
+};
+
+// Region of interest
+struct roi_rectangle {
+    lat_lng_coords Rectangle[4];
+    //todo: add the use of this in ParseRectangleEvent.
+    //in order to use it, we need to get a leaflet id back from the first roi we add from c++ to the webmap
+    int LeafletID;
+};
+
+enum class ICONIC_WEBMAP_EXPORT WebMapEventIDS {
+    ID_ROI_WAS_UPDATED = 10365,
+};
 
 /**
  * @brief A window displaying a map from a map source, such as WMS.
@@ -23,7 +40,6 @@
 */
 class ICONIC_WEBMAP_EXPORT wxWebMap : public wxWindow {
 public:
-
     /**
      * @brief Create a wxWebMap.
      *
@@ -112,6 +128,12 @@ public:
     virtual void AddAction(EActionMode WXUNUSED(mode)) {}
 
     virtual pwxMapObject Find(wxString const& result) = 0;
+
+    virtual bool QueryLastSavedRectangle(roi_rectangle& Out) = 0;
+
+    virtual void AddRectangleToWebMap(float MinX, float MaxX, float MinY, float MaxY, bool UseAsRegionOfInterest = true) = 0;
+
+    virtual void SetEventListener(wxEvtHandler *EventListener) = 0;
 
 protected:
     /**

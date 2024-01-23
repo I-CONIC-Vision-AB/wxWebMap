@@ -33,7 +33,7 @@
     <div id="map"><!-- Empty div body. Paceholder for leaflet map. --></div>
     <script type="text/javascript">
         // ToDo: Move all javascript code to js/*.js directory and add them with wxMapHtml!
-        var map = L.map('map', {
+        var map = L.map('map', { 
             center: [59.33166035099538, 18.063309439933338],
             zoom: 14
         });
@@ -65,7 +65,7 @@
             drawMarker: false,
             drawCircleMarker: false,
             drawPolyline: false,
-            drawRectangle: false,
+            drawRectangle: true,
             drawPolygon: true,
             drawCircle: false,
             editMode: true,
@@ -86,10 +86,15 @@
             'rotateMode',
             'removalMode'
         ]);
+		
+		map.on('pm:remove', function (e) {
+                window.wx_msg.postMessage("Remove: " + e.shape + " " + e.layer._leaflet_id + " " + e.layer.getLatLngs());
+        });
 
         map.on('pm:create', function (e) {
             function f() {
-                window.wx_msg.postMessage("Create: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
+				window.wx_msg.postMessage("Create: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
+				window.wx_msg.postMessage("Create: " + e.shape + " " + e.layer._leaflet_id + " " + e.layer.getLatLngs());
             } f();
             e.layer.on('pm:update', function (e) {
                 window.wx_msg.postMessage("Update: " + e.layer._leaflet_id + ": " + e.layer.getLatLngs());
