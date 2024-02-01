@@ -24,7 +24,7 @@
         "rhs": "Windows"
       },
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "/W4 /WX /EHsc"
+        "CMAKE_CXX_FLAGS": "/W4 /EHsc"
       }
     },
     {
