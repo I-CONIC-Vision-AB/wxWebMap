@@ -6,6 +6,7 @@
 #include <wx/filename.h>
 #include <wx/fs_mem.h>
 #include <wx/tokenzr.h>
+#include <sstream>
 
 wxWebMap::wxWebMap() :
     wxWindow()
@@ -153,6 +154,22 @@ bool wxWebMapImpl::QueryLastSavedRectangle(roi_rectangle& Out) {
     return(Result);
 }
 
+void wxWebMapImpl::AddPolygonToWebMap(roi_polygon& Polygon, bool UseAsRegionOfInterest) {
+    std::stringstream In = {};
+    In << "L.polygon([";
+    for (int PointIndex = 0; PointIndex < Polygon.Points.size(); ++PointIndex) {
+        lat_lng_coords *Point = &Polygon.Points[PointIndex];
+        In << "[" << Point->lat << "," << Point->lng << "]";
+        if (PointIndex != Polygon.Points.size() - 1) {
+            In << ",";
+        }
+    }
+    In << "]).addTo(";
+    In << cMapName << ")";
+    wxString AddPolygonCommand = In.str();
+    cpWebView->RunScriptAsync(AddPolygonCommand);
+}
+
 void wxWebMapImpl::AddRectangleToWebMap(float MinX, float MaxX, float MinY, float MaxY, bool UseAsRegionOfInterest) {
     /*
     * Adds a leaflet rectangle to the webmap.
@@ -161,7 +178,7 @@ void wxWebMapImpl::AddRectangleToWebMap(float MinX, float MaxX, float MinY, floa
     // create an orange rectangle
     L.rectangle(bounds, {color: "#ff7800", weight: 1}).addTo(map);
     */
-    wxString AddRectangleCommand = wxString::Format("L.rectangle([[%f, %f], [%f, %f]]).addTo(%s)", MinX, MinY, MaxX, MaxY, cMapName);
+    wxString AddRectangleCommand = wxString::Format("L.rectangle([[%f, %f], [%f, %f]], {color: \"#ff7800\", weight: 1}).addTo(%s)", MinX, MinY, MaxX, MaxY, cMapName);
     cpWebView->RunScriptAsync(AddRectangleCommand);
 
     if (UseAsRegionOfInterest) {

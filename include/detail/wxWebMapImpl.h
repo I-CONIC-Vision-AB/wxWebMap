@@ -25,6 +25,7 @@ protected:
 
     bool QueryLastSavedRectangle(roi_rectangle& Out);
     void AddRectangleToWebMap(float MinX, float MaxX, float MinY, float MaxY, bool UseAsRegionOfInterest);
+    void AddPolygonToWebMap(roi_polygon& Polygon, bool UseAsRegionOfInterest);
     void ParseRectangleEvent(wxWebViewEvent& evt);
     //ID is used for determining if we want to write(1), or clear(0)
     void BroadcastROIChange(int ID);

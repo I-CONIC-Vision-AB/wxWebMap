@@ -29,6 +29,10 @@ struct roi_rectangle {
     int LeafletID;
 };
 
+struct roi_polygon {
+    std::vector<lat_lng_coords> Points;
+};
+
 enum class ICONIC_WEBMAP_EXPORT WebMapEventIDS {
     ID_ROI_WAS_UPDATED = 10365,
 };
@@ -132,6 +136,8 @@ public:
     virtual bool QueryLastSavedRectangle(roi_rectangle& Out) = 0;
 
     virtual void AddRectangleToWebMap(float MinX, float MaxX, float MinY, float MaxY, bool UseAsRegionOfInterest = true) = 0;
+
+    virtual void AddPolygonToWebMap(roi_polygon& Polygon, bool UseAsRegionOfInterest) = 0;
 
     virtual void SetEventListener(wxEvtHandler *EventListener) = 0;
 
