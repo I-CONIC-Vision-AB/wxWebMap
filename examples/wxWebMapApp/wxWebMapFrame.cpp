@@ -13,6 +13,7 @@
 #include    <wx/textdlg.h>
 #include    <wx/webview.h>
 #include    <wx/filedlg.h>
+#include	<wx/config.h>
 #if wxUSE_WEBVIEW_IE
 #include    <wx/msw/webview_ie.h>
 #endif
@@ -906,9 +907,11 @@ void WebFrame::OnAddMarker(wxCommandEvent& WXUNUSED(e))
 
 void WebFrame::OnAddPolygons(wxCommandEvent& WXUNUSED(e))
 {
-    wxFileName fn;
-    fn.SetPath(wxFileName::GetCwd());
-    wxString filename = wxFileSelector(_("Select polygon file"), fn.GetPath(), wxEmptyString, wxEmptyString, wxString("Footprint file (*.ifp)|*.ifp"));
+	const wxString config_file_path("last_file_path");
+	wxString path = wxFileName::GetCwd();
+	wxConfig::Get()->Read(config_file_path, &path);
+	const wxString fileFormat("I-CONIC metadata (*.imd)|*.imd|Footprint file (*.ifp)|*.ifp");
+    wxString filename = wxFileSelector(_("Select polygon file"), path, wxEmptyString, wxEmptyString, fileFormat);
     if (filename.empty()) {
         return;
     }
@@ -916,49 +919,64 @@ void WebFrame::OnAddPolygons(wxCommandEvent& WXUNUSED(e))
         wxLogError(_("Could not add polygons to map"));
         return;
     }
+	wxFileName fn(filename);
+	wxConfig::Get()->Write(config_file_path, fn.GetPath());
 }
 
 bool WebFrame::AddPolygons(wxString const &filename)
 {
     std::vector<std::vector<wxMapPoint>> vPolygons;
     std::vector<wxString> vPolygonMetaData;
-    PolygonReader reader(filename, vPolygons, vPolygonMetaData);
+	bool isPolygon = !filename.EndsWith("imd");
+    PolygonReader reader(filename, vPolygons, vPolygonMetaData, isPolygon);
     if (!vPolygons.size()) {
         wxLogError(_("Could not read polygons from %s"), filename);
         return false;
     }
     LogStatus("%d polygons read from %s", static_cast<int>(vPolygons.size()), filename);
-    if (!AddPolygons(vPolygons, vPolygonMetaData)) {
+    if (!AddPolygons(vPolygons, vPolygonMetaData, isPolygon)) {
         return false;
     }
     return true;
 }
 
-bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons, std::vector<wxString> const &vPolygonName)
+bool WebFrame::AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons, std::vector<wxString> const &vPolygonName, bool isPolygon)
 {
-    pwxMapPolygon pPolygon;
+	const wxString config_line_weight("line_weight");
+	const wxString config_line_color("line_color");
+	pwxMapPolygon pPolygon;
     wxString result;
     long opacity = 50;
-    double weight = 0.5;
-    opacity = ::wxGetNumberFromUser(_("Opacity"), _("Percent 0-100"), _("Polygon display"), opacity, 0L, 100L, this);
-    float fOpacity = opacity / 100.0f;
-    wxString sWeight = ::wxGetTextFromUser(_("Line width"), _("Polygon display"), wxString::Format("%f", weight), this);
+	double weight = 0.5; 
+	wxConfig::Get()->Read(config_line_weight, &weight);
+	if (isPolygon) {
+		opacity = ::wxGetNumberFromUser(_("Opacity"), _("Percent 0-100"), _("Polygon display"), opacity, 0L, 100L, this);
+	}
+	float fOpacity = opacity / 100.0f;
+	wxString sWeight = ::wxGetTextFromUser(_("Line width"), _("Polygon display"), wxString::Format("%f", weight), this);
     sWeight.ToDouble(&weight);
-    wxColourDialog* dlg = new wxColourDialog(this);
-    wxColour col("BLUE");
+	wxConfig::Get()->Write(config_line_weight, weight);
+	wxColourData colData;
+	wxString sColor("BLUE");
+	wxConfig::Get()->Read(config_line_color, &sColor);
+	wxColour col(sColor);
+	colData.SetColour(col);
+    wxColourDialog* dlg = new wxColourDialog(this, &colData);
     if (dlg->ShowModal() == wxID_OK) {
-        wxColourData colData = dlg->GetColourData();
+        colData = dlg->GetColourData();
         col = colData.GetColour();
-    }
+		wxConfig::Get()->Write(config_line_color, col.GetAsString());
+	}
     dlg->Destroy();
     for (size_t i = 0; i < vPolygons.size(); ++i) {
         std::vector<wxMapPoint> const& aPolygon = vPolygons[i];
         // TODO: Create a wxMapPolygon instance and assign polygon
-        pPolygon = wxMapPolygon::Create(aPolygon, true, fOpacity,(float)weight, col.GetAsString(wxC2S_HTML_SYNTAX));
+        pPolygon = wxMapPolygon::Create(aPolygon, isPolygon, fOpacity,(float)weight, col.GetAsString(wxC2S_HTML_SYNTAX));
         m_webmap->AddMapObject(pPolygon, &result);
         wxLogMessage(_("Added polygon object %s with result %s"), vPolygonName[i], result);
 
         for (size_t j = 0; j < aPolygon.size(); ++j) {
+			//m_webmap->AddMapObject(wxMapMarker::Create(aPolygon[j].x, aPolygon[j].y), &result);
             wxLogMessage(_("lat=%.8f, lon=%.8f"), aPolygon[j].x, aPolygon[j].y);
         }
     }

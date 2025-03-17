@@ -41,6 +41,8 @@ bool wxWebMapApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
 bool wxWebMapApp::OnInit()
 {
+	SetVendorName("I-CONIC Vision AB");
+	SetAppName("wxWebMapApp");
     if ( !wxApp::OnInit() ) {
         return false;
     }

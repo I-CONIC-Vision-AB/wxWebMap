@@ -116,7 +116,7 @@ public:
 
     bool AddPolygons(wxString const& filename);
 
-    bool AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons, std::vector<wxString> const& vPolygonName);
+    bool AddPolygons(std::vector<std::vector<wxMapPoint>> const& vPolygons, std::vector<wxString> const& vPolygonName, bool isPolygon = true);
 
     bool AddImages(std::vector<std::pair<wxMapPoint, wxMapPoint>> const& vPoints, std::vector<wxString> const& vPaths);
 
