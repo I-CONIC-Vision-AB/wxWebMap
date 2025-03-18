@@ -13,6 +13,7 @@ public:
      * @param filename I-CONIC footprint fie (*.ifp)
      * @param polygons Read polygons
      * @param metaData Name of each polygon
+	 * @param isPolygon If not true, then a line strip (trajectory) is read
     */
     PolygonReader(wxString const& filename, std::vector<std::vector<wxMapPoint>>& polygons, std::vector<wxString>& metaData, bool isPolygon = true);
 protected:
