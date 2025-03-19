@@ -25,5 +25,5 @@ protected:
      * @param meta Name of polygon
      * @return True on success
     */
-    bool ReadPolygon(wxTextFile& file, wxString& s, std::vector<wxMapPoint >& polygon, wxString& meta, bool isPolygon);
+    bool ReadPolygon(wxTextFile& file, wxString& s, std::vector<wxMapPoint >& polygon, wxString& meta);
 };
