@@ -16,16 +16,9 @@ To demonstrate the C++ binding to the map, you can add markers, polygons or imag
 
 ## Build instructions
 
-### Install required packages
+### Prerequisites 
 
-1. Install *vcpkg* by following these instructions: https://vcpkg.io/en/getting-started.html
-1. Set environment variable CMAKE_TOOLCHAIN_FILE to **[path to vcpkg]/scripts/buildsystems/vcpkg.cmake**
-1. Install wxWidgets
-    ```
-    Windows: $ .\vcpkg.exe install wxwidgets:x64-windows
-    Linux:   $ .\vcpkg.exe install wxwidgets:x64-linux
-    ```
-1. Clone the wxWebMap repository from https://github.com/I-CONIC-Vision-AB/wxWebMap
+Make sure you have followed the steps in our dev set up instructions first: [Set up dev environment](https://github.com/I-CONIC-Vision-AB/iconic-studio/wiki/Set-up-dev-environment)
 
 ### Build with Visual Studio
 

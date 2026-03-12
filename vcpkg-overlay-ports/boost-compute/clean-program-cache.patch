@@ -1,0 +1,23 @@
+diff --git a/include/boost/compute/utility/program_cache.hpp b/include/boost/compute/utility/program_cache.hpp
+index c80e1a3..9a70aa1 100644
+--- a/include/boost/compute/utility/program_cache.hpp
++++ b/include/boost/compute/utility/program_cache.hpp
+@@ -146,12 +146,17 @@ public:
+     /// program objects used by its algorithms. All Boost.Compute programs are
+     /// stored with a cache key beginning with \c "__boost". User programs
+     /// should avoid using the same prefix in order to prevent collisions.
+-    static boost::shared_ptr<program_cache> get_global_cache(const context &context)
++    static boost::shared_ptr<program_cache> get_global_cache(const context &context, bool clear = false)
+     {
+         typedef detail::lru_cache<cl_context, boost::shared_ptr<program_cache> > cache_map;
+ 
+         BOOST_COMPUTE_DETAIL_GLOBAL_STATIC(cache_map, caches, (8));
+ 
++		if (clear) {
++			caches.clear();
++			return nullptr;
++		}
++
+         boost::optional<boost::shared_ptr<program_cache> > cache = caches.get(context.get());
+         if(!cache){
+             cache = boost::make_shared<program_cache>(64);

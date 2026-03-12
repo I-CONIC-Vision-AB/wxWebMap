@@ -8,11 +8,14 @@
   "configurePresets": [
     {
       "name": "base-config",
+      "hidden": true,
       "displayName": "Base config (not usable as preset)",
       "description": "Should be inherited by some other presets",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "installDir": "${sourceDir}/out/install/${presetName}",
-      "hidden": true
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{ICONIC_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+      }
     },
     {
       "name": "windows-base",
