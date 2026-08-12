@@ -51,8 +51,6 @@ generate_export_header(IconicWebMap
     EXPORT_FILE_NAME "${ICONIC_WEBMAP_EXPORTS_DIR}/webmap_exports.h"
 )
 
-target_compile_definitions(IconicWebMap PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
-
 target_include_directories(IconicWebMap
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -64,7 +62,7 @@ target_include_directories(IconicWebMap
 
 # Link required libraries to the executable
 # For wxWidget libraries, see options in root CMakeList file. There are multiple options
-target_link_libraries(IconicWebMap ${wxWidgets_LIBRARIES})
+target_link_libraries(IconicWebMap wx::base wx::core wx::webview wx::xml wx::html wx::stc)
 
 if(APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -74,8 +72,3 @@ if(APPLE)
         MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxwidgets.webview"
         )
 endif()
-
-if (VCPKG_TARGET_IS_WINDOWS)
-    configure_file(${CMAKE_SOURCE_DIR}/cmake/WebView2Loader.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WebView2Loader.dll COPYONLY)
-endif()
-

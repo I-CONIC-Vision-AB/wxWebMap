@@ -2,100 +2,11 @@
 	"name": "wxwebmap",
 	"version": "1.0.0",
 	"dependencies": [
-		"boost-compute",
-		"boost-dll",
-		"boost-filesystem",
-		"boost-geometry",
-		"boost-iostreams",
-		"boost-json",
-		"boost-process",
-		"boost-program-options",
-		"boost-serialization",
-		"boost-test",
-		"boost-thread",
-		"boost-timer",
-		"clfft",
-		"cryptopp",
-		"cuda",
-		"efsw",
-		"eigen3",
-		"exiv2",
-		"glew",
-		"glfw3",
-		"laszip",
-		"libgeotiff",
-		"libtess2",
-		"libzippp",
-		"opencl",
-		"pcl",
-		"proj",
-		"tinygltf",
-		"tinyxml2",
 		{
 			"name": "wxwidgets",
 			"default-features": false,
 			"features": [
 				"webview"
-			]
-		},
-		{
-			"name": "openimageio",
-			"features": [
-				"gif",
-				"libraw"
-			]
-		},
-		{
-			"name": "gdal",
-			"default-features": false,
-			"features": [
-				"curl",
-				"expat",
-				"gif",
-				"hdf5",
-				"iconv",
-				"jpeg",
-				"lerc",
-				"libkml",
-				"libspatialite",
-				"libxml2",
-				"lzma",
-				"openjpeg",
-				"openssl",
-				"pcre2",
-				"png",
-				"recommended-features",
-				"sqlite3",
-				"webp",
-				"zstd"
-			]
-		},
-		{
-			"name": "pdal",
-			"features": [
-				"liblzma",
-				"supported-plugins",
-				"zstd"
-			]
-		},
-		{
-			"name": "ffmpeg",
-			"platform": "!arm",
-			"features": [
-				"lzma",
-				"nvcodec",
-				"opencl",
-				"openh264",
-				"vorbis",
-				"webp",
-				"zlib"
-			]
-		},
-		{
-			"name": "liblas",
-			"features": [
-				"jpeg",
-				"zlib"
 			]
 		}
 	],

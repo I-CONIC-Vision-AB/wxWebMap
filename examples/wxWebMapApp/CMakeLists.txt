@@ -17,8 +17,6 @@ endif()
 # Define the build target for the executable
 add_executable(wxWebMapApp WIN32 MACOSX_BUNDLE ${SOURCES})
 
-target_compile_definitions(wxWebMapApp PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
-
 target_include_directories(wxWebMapApp PUBLIC ${wxWidgets_INCLUDE_DIRS})
 
 # Include files from the current (wxWebMapApp) directory
@@ -34,11 +32,13 @@ target_include_directories(wxWebMapApp PUBLIC
 )
 
 # Link required libraries to the executable
-# For wxWidget libraries, see options in root CMakeList file. There are multiple options
-
 target_link_libraries(wxWebMapApp 
-# ${INSTALL_BIN_DIR}
-    ${wxWidgets_LIBRARIES}
+	wx::base
+	wx::core
+	wx::webview
+	wx::xml
+	wx::html
+	wx::stc
     IconicWebMap
 )
 
