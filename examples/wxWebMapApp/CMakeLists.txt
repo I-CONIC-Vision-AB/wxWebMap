@@ -33,12 +33,7 @@ target_include_directories(wxWebMapApp PUBLIC
 
 # Link required libraries to the executable
 target_link_libraries(wxWebMapApp 
-	wx::base
-	wx::core
-	wx::webview
-	wx::xml
-	wx::html
-	wx::stc
+	${wxWidgets_LIBRARIES}
     IconicWebMap
 )
 

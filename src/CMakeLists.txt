@@ -62,7 +62,7 @@ target_include_directories(IconicWebMap
 
 # Link required libraries to the executable
 # For wxWidget libraries, see options in root CMakeList file. There are multiple options
-target_link_libraries(IconicWebMap wx::base wx::core wx::webview wx::xml wx::html wx::stc)
+target_link_libraries(IconicWebMap ${wxWidgets_LIBRARIES})
 
 if(APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES
