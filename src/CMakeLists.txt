@@ -66,6 +66,8 @@ target_link_libraries(IconicWebMap
     wx::core 
     wx::base 
     wx::webview
+    wx::xml
+    wx::stc
 )
 
 if(APPLE)
