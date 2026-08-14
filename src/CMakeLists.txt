@@ -74,8 +74,3 @@ if(APPLE)
         MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxwidgets.webview"
         )
 endif()
-
-if (VCPKG_TARGET_IS_WINDOWS)
-    configure_file(${CMAKE_SOURCE_DIR}/cmake/WebView2Loader.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WebView2Loader.dll COPYONLY)
-endif()
-
