@@ -37,8 +37,9 @@ target_include_directories(wxWebMapApp PUBLIC
 # For wxWidget libraries, see options in root CMakeList file. There are multiple options
 
 target_link_libraries(wxWebMapApp 
-# ${INSTALL_BIN_DIR}
-    ${wxWidgets_LIBRARIES}
+    wx::core 
+    wx::base
+    wx::webview
     IconicWebMap
 )
 

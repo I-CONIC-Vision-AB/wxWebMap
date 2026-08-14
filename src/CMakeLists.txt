@@ -58,13 +58,15 @@ target_include_directories(IconicWebMap
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${ICONIC_WEBMAP_EXPORTS_DIR}>
 		$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
-	PRIVATE
-        ${wxWidgets_INCLUDE_DIRS}
 )
 
 # Link required libraries to the executable
 # For wxWidget libraries, see options in root CMakeList file. There are multiple options
-target_link_libraries(IconicWebMap ${wxWidgets_LIBRARIES})
+target_link_libraries(IconicWebMap 
+    wx::core 
+    wx::base 
+    wx::webview
+)
 
 if(APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES
