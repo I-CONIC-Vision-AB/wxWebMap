@@ -1,19 +1,3 @@
-#############################################################################
-# Name:        samples/minimal/CMakeListst.txt
-# Purpose:     Sample CMake file to show usage of cmake for wxWidgets users
-# Author:      Tobias Taschner
-# Created:     2016-10-23
-# Copyright:   (c) 2016 wxWidgets development team
-# Licence:     wxWindows licence
-#############################################################################
-
-#
-# This file is just a sample to show using cmake from an application
-# If you want to build the minimal and other samples please use the
-# wxBUILD_SAMPLES option when using cmake on the library
-#
-
-# Declare the minimum required CMake version
 cmake_minimum_required(VERSION 3.22.1)
 
 # Include functions
@@ -60,8 +44,6 @@ target_include_directories(IconicWebMap
 		$<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR}>
 )
 
-# Link required libraries to the executable
-# For wxWidget libraries, see options in root CMakeList file. There are multiple options
 target_link_libraries(IconicWebMap 
     wx::core 
     wx::base 

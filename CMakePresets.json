@@ -14,7 +14,7 @@
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "installDir": "${sourceDir}/out/install/${presetName}",
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$env{ICONIC_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "/mnt/c/Dev/vcpkg/scripts/buildsystems/vcpkg.cmake"
       }
     },
     {
@@ -40,7 +40,8 @@
         "rhs": "Linux"
       },
       "cacheVariables": {
-      	"CMAKE_CXX_FLAGS": "-Wall -Wextra -pedantic -Werror"
+        "CMAKE_CXX_FLAGS": "-Wall -Wextra -pedantic -Werror",
+        "VCPKG_TARGET_TRIPLET": "x64-linux-dynamic"
       }
     },
     {

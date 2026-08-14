@@ -1,26 +1,7 @@
-#############################################################################
-# Name:        samples/minimal/CMakeListst.txt
-# Purpose:     Sample CMake file to show usage of cmake for wxWidgets users
-# Author:      Tobias Taschner
-# Created:     2016-10-23
-# Copyright:   (c) 2016 wxWidgets development team
-# Licence:     wxWindows licence
-#############################################################################
-
-#
-# This file is just a sample to show using cmake from an application
-# If you want to build the minimal and other samples please use the
-# wxBUILD_SAMPLES option when using cmake on the library
-#
-
-# Declare the minimum required CMake version
 cmake_minimum_required(VERSION 3.22.1)
 
-# Name the project
 project(iconic-webmap)
 
-# For wxWidgets usage, see https://docs.wxwidgets.org/3.2.0/overview_cmake.html
-# Option 1 - using find_package
 find_package(wxWidgets REQUIRED CONFIG COMPONENTS net core base html xml webview stc)
 
 # --------------------------------------------------------------------------
@@ -51,7 +32,6 @@ if(WIN32)
 add_definitions(-D_WIN32_WINNT=0x0A00)
 endif()
 
-# Use C++17
 set(CMAKE_CXX_STANDARD 17)
 
 include(GenerateExportHeader)
@@ -69,17 +49,13 @@ configure_file(${PROJECT_SOURCE_DIR}/data/js/wxMapPolygon.js ${CMAKE_RUNTIME_OUT
 
 add_subdirectory("src")
 add_subdirectory("examples")
-# Tests are not completely implemented yet, so skip for now
-#add_subdirectory("test")
 
 ### INSTALLATION ###
-
 set(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 set(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include")
 set(INSTALL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/CMake")
 set(INSTALL_DATA_DIR "${CMAKE_INSTALL_PREFIX}")
-
 
 # Create a list of all targets
 install(
