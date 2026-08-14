@@ -51,8 +51,6 @@ generate_export_header(IconicWebMap
     EXPORT_FILE_NAME "${ICONIC_WEBMAP_EXPORTS_DIR}/webmap_exports.h"
 )
 
-target_compile_definitions(IconicWebMap PRIVATE ${wxWidgets_DEFINITIONS} "$<$<CONFIG:DEBUG>:${wxWidgets_DEFINITIONS_DEBUG}>")
-
 target_include_directories(IconicWebMap
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
