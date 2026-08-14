@@ -21,10 +21,7 @@ project(iconic-webmap)
 
 # For wxWidgets usage, see https://docs.wxwidgets.org/3.2.0/overview_cmake.html
 # Option 1 - using find_package
-find_package(wxWidgets REQUIRED COMPONENTS net core base html xml webview stc)
-include(${wxWidgets_USE_FILE})
-
-SET(wxWidgets_USE_UNICODE OFF)
+find_package(wxWidgets REQUIRED CONFIG COMPONENTS net core base html xml webview stc)
 
 # --------------------------------------------------------------------------
 # On Visual Studio 8 MS deprecated C. This removes all 1.276E1265 security
@@ -69,10 +66,6 @@ configure_file(${PROJECT_SOURCE_DIR}/data/html/map.html ${CMAKE_RUNTIME_OUTPUT_D
 configure_file(${PROJECT_SOURCE_DIR}/data/iconic.ico ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/iconic.ico COPYONLY)
 configure_file(${PROJECT_SOURCE_DIR}/data/js/wxMapMarker.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapMarker.js COPYONLY)
 configure_file(${PROJECT_SOURCE_DIR}/data/js/wxMapPolygon.js ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/js/wxMapPolygon.js COPYONLY)
-if (WIN32)
-    # Needed for Windows Edge backend
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/WebView2Loader.dll "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" COPYONLY)
-endif(WIN32)
 
 add_subdirectory("src")
 add_subdirectory("examples")
