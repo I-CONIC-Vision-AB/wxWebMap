@@ -40,7 +40,8 @@
         "rhs": "Linux"
       },
       "cacheVariables": {
-      	"CMAKE_CXX_FLAGS": "-Wall -Wextra -pedantic -Werror"
+      	"CMAKE_CXX_FLAGS": "-Wall -Wextra -pedantic -Werror",
+        "VCPKG_TARGET_TRIPLET": "$env{VCPKG_DEFAULT_TRIPLET}"
       }
     },
     {
