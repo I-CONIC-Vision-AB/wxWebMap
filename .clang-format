@@ -1,0 +1,14 @@
+---
+BasedOnStyle: WebKit
+
+# I-CONIC's modifications from WebKit's style
+BreakBeforeBraces: Attach
+BreakConstructorInitializers: AfterColon
+Cpp11BracedListStyle: FunctionCall
+InsertBraces: True
+NamespaceIndentation: None
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 0
+...
+
