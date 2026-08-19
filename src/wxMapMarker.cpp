@@ -9,7 +9,10 @@ wxMapMarker::wxMapMarker(double lat, double lon, bool bDraggable) :
     cbDraggable(bDraggable) {
     cType = EMapObjectType::MARKER;
     label = "";
-    cLeafletId = (int)this;
+
+    size_t this_value = reinterpret_cast<size_t>(this);
+    cLeafletId = this_value;
+    cLeafletId = std::abs(cLeafletId); // Make sure it is positive
 }
 
 wxString wxMapMarker::GetJavaScriptAdd(wxString map) const {
