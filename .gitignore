@@ -400,3 +400,6 @@ FodyWeavers.xsd
 exports
 out
 build
+
+# Compilation database
+compile_commands.json
