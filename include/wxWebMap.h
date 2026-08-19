@@ -8,12 +8,12 @@
 
 #pragma once
 
+#include <list>
 #include <webmap_exports.h>
 #include <wx/webview.h>
 #include <wx/window.h>
 #include <wxMapMarker.h>
 #include <wxMapUtil.h>
-#include <list>
 
 // Used to store region of interest coordinates
 struct lat_lng_coords {
@@ -24,8 +24,8 @@ struct lat_lng_coords {
 // Region of interest
 struct roi_rectangle {
     lat_lng_coords Rectangle[4];
-    //todo: add the use of this in ParseRectangleEvent.
-    //in order to use it, we need to get a leaflet id back from the first roi we add from c++ to the webmap
+    // todo: add the use of this in ParseRectangleEvent.
+    // in order to use it, we need to get a leaflet id back from the first roi we add from c++ to the webmap
     int LeafletID;
 };
 
@@ -41,7 +41,7 @@ enum class ICONIC_WEBMAP_EXPORT WebMapEventIDS {
  * @brief A window displaying a map from a map source, such as WMS.
  *
  * \c wxWebMap uses a wxWebView to display map and execute javascripts. \c Leafletjs is used for handling the maps internally.
-*/
+ */
 class ICONIC_WEBMAP_EXPORT wxWebMap : public wxWindow {
 public:
     /**
@@ -58,22 +58,22 @@ public:
      * @param style Window style
      * @param name Window name
      * @return a wxWebMap
-    */
+     */
     static wxWebMap* Create(wxWindow* parent,
-                            wxWindowID id,
-                            wxString const& basemapHtmlFileName = wxEmptyString,
-                            const wxPoint& pos = wxDefaultPosition,
-                            const wxSize& size = wxDefaultSize,
-                            const wxString& backend = wxASCII_STR(wxWebViewBackendDefault),
-                            long style = 0,
-                            const wxString& name = wxASCII_STR(wxWebViewNameStr));
+        wxWindowID id,
+        wxString const& basemapHtmlFileName = wxEmptyString,
+        const wxPoint& pos = wxDefaultPosition,
+        const wxSize& size = wxDefaultSize,
+        const wxString& backend = wxASCII_STR(wxWebViewBackendDefault),
+        long style = 0,
+        const wxString& name = wxASCII_STR(wxWebViewNameStr));
 
     /**
      * @brief Get the aggregated wxWebView.
      *
      * Can be used to e.g. run scripts with wxWebView::RunScript
      * @return the aggregated wxWebView.
-    */
+     */
     virtual wxWebView* GetWebView() = 0;
 
     /**
@@ -81,8 +81,8 @@ public:
      * @param o Map object
      * @param result If not null, it will contain the Leafletjs identity number as a astring
      * @return True on success
-    */
-    virtual bool AddMapObject(pwxMapObject o, wxString *result=nullptr) = 0;
+     */
+    virtual bool AddMapObject(pwxMapObject o, wxString* result = nullptr) = 0;
 
     virtual bool DeleteMapObject(pwxMapObject o) = 0;
 
@@ -92,13 +92,13 @@ public:
      * This must match the name in the html template map. Currently both template and name use "map" as map name
      * @param name name of map
      * @todo Enable multiple map names
-    */
+     */
     virtual void SetMapName(wxString const& name) = 0;
 
     /**
      * @brief Return list with map objects
      * @return list with map objects
-    */
+     */
     virtual std::list<pwxMapObject>& GetMapObjects() = 0;
 
     /**
@@ -106,30 +106,30 @@ public:
      * Handle mouse clicks to draw polygon in when in draw mode.
      * @param e Mouse event
      * @todo Bind() OnLeftMouseClick with this event handler. Not likely to work directly since clicks are in aggregated web view, not in this window. Use wxOverlay?
-    */
-    virtual void OnLeftMouseClick(wxMouseEvent& WXUNUSED(e)) {}
+     */
+    virtual void OnLeftMouseClick(wxMouseEvent& WXUNUSED(e)) { }
 
     /**
      * @brief Use case 4.2. Handle map object selected.
      * @param e Map event
      * @todo Implement
      * @sa wxMapEvent
-    */
-    virtual void OnMapObjectSelected(wxMapEvent& WXUNUSED(e)) {}
+     */
+    virtual void OnMapObjectSelected(wxMapEvent& WXUNUSED(e)) { }
 
     /**
      * @brief Use case 4.1. Set action on mouse events
      * @param mode Action mode
      * @todo Implement
-    */
-    virtual void SetAction(EActionMode WXUNUSED(mode)) {}
+     */
+    virtual void SetAction(EActionMode WXUNUSED(mode)) { }
 
     /**
      * @brief Use case 4.1. Add action. Probably multiple actions can be active simultaneously, e.g. draw and select
      * @param mode Action mode
      * @todo Implement. Perhaps add argument for which kind of event (e.g. wxEVT_LEFT_DOWN) the action is connected to.
-    */
-    virtual void AddAction(EActionMode WXUNUSED(mode)) {}
+     */
+    virtual void AddAction(EActionMode WXUNUSED(mode)) { }
 
     virtual pwxMapObject Find(wxString const& result) = 0;
 
@@ -139,11 +139,11 @@ public:
 
     virtual void AddPolygonToWebMap(roi_polygon& Polygon, bool UseAsRegionOfInterest) = 0;
 
-    virtual void SetEventListener(wxEvtHandler *EventListener) = 0;
+    virtual void SetEventListener(wxEvtHandler* EventListener) = 0;
 
 protected:
     /**
-    * @brief Empty constructor.
-    */
+     * @brief Empty constructor.
+     */
     wxWebMap();
 };

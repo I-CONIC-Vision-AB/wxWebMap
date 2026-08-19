@@ -1,19 +1,16 @@
-#include	<wxMapObject.h>
-#include    <wx/tokenzr.h>
-#include    <wx/log.h>
-#include    <wx/intl.h>
+#include <wx/intl.h>
+#include <wx/log.h>
+#include <wx/tokenzr.h>
+#include <wxMapObject.h>
 
 wxMapObject::wxMapObject() :
-    cLeafletId(-1) {}
+    cLeafletId(-1) { }
 
-wxString wxMapObject::GetRemoveString(wxString const& map)
-{
+wxString wxMapObject::GetRemoveString(wxString const& map) {
     return wxString::Format("mapobject_remove(%d, %s); \n", cLeafletId, map);
 }
 
-
-bool wxMapObject::ParseResult(wxString const& result, EMapObjectType& type, int& id)
-{
+bool wxMapObject::ParseResult(wxString const& result, EMapObjectType& type, int& id) {
     wxStringTokenizer parse(result, ",");
     int i = 0;
     bool bOk = true;
@@ -24,11 +21,9 @@ bool wxMapObject::ParseResult(wxString const& result, EMapObjectType& type, int&
             // Parse type:
             if (token.IsSameAs("MARKER")) {
                 type = EMapObjectType::MARKER;
-            }
-            else if (token.IsSameAs("POLYGON") || token.IsSameAs("POLYLINE")) {
+            } else if (token.IsSameAs("POLYGON") || token.IsSameAs("POLYLINE")) {
                 type = EMapObjectType::POLYGON;
-            }
-            else if (token.IsSameAs("IMAGE")) {
+            } else if (token.IsSameAs("IMAGE")) {
                 type = EMapObjectType::IMAGE;
             }
             break;
@@ -42,8 +37,7 @@ bool wxMapObject::ParseResult(wxString const& result, EMapObjectType& type, int&
                 bOk = false;
             }
             id = (int)lid;
-        }
-        break;
+        } break;
         }
         ++i;
     }
@@ -53,8 +47,12 @@ bool wxMapObject::ParseResult(wxString const& result, EMapObjectType& type, int&
 bool wxMapObject::operator==(const wxString& result) {
     EMapObjectType type;
     int id;
-    if (!ParseResult(result, type, id)) return false;
-    if (type != cType) return false;
+    if (!ParseResult(result, type, id)) {
+        return false;
+    }
+    if (type != cType) {
+        return false;
+    }
     if (cLeafletId > -1 && cLeafletId != id) {
         // There is an id set and it differs from the result id
         return false;

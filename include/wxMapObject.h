@@ -7,26 +7,26 @@
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include <webmap_exports.h>
-#include <wx/string.h>
-#include <wx/event.h>
 #include <memory>
+#include <webmap_exports.h>
+#include <wx/event.h>
+#include <wx/string.h>
 
 /**
  * @brief Map object type.
  * @sa wxMapObject
-*/
+ */
 enum class ICONIC_WEBMAP_EXPORT EMapObjectType {
-    MARKER,     //!< wxMapMarker
-    POLYGON,    //!< wxMapPolygon
-    IMAGE       //!< wxMapImage
+    MARKER,  //!< wxMapMarker
+    POLYGON, //!< wxMapPolygon
+    IMAGE    //!< wxMapImage
 };
 
 /**
  * @brief A generic map object.
  *
  * Corresponds to a leaflet object, such as a L.marker
-*/
+ */
 class ICONIC_WEBMAP_EXPORT wxMapObject {
 public:
     wxMapObject();
@@ -36,13 +36,13 @@ public:
      * @param map Map to add to
      * @return Java script to execute
      * @sa wxWebMap::AddMapObject
-    */
+     */
     virtual wxString GetJavaScriptAdd(wxString map) const = 0;
 
     /**
      * @brief Returns type of map object
      * @return type of map object
-    */
+     */
     virtual EMapObjectType GetType() const {
         return cType;
     }
@@ -61,11 +61,11 @@ public:
 
     /**
      * @brief Compare this object with a javascript result string.
-     * 
+     *
      * Used to identify which object has been added.
      * @param result javascript result string
      * @return True if same type. (more criteria in subclasses)
-    */
+     */
     virtual bool operator==(const wxString& result);
 
 protected:
@@ -80,7 +80,7 @@ typedef std::shared_ptr<wxMapObject> pwxMapObject; //!< Smart pointer to a map o
  *
  * @todo Implement. Not sure if wxMapEvent is needed?
  * @sa wxWebMap::OnMapObjectSelected
-*/
+ */
 class ICONIC_WEBMAP_EXPORT wxMapEvent : public wxEvent {
 public:
     /**
@@ -88,12 +88,9 @@ public:
      * @param winid Window id
      * @param commandType Command type
      * @param pObject wxMapObject
-    */
-    wxMapEvent(int winid = 0, wxEventType commandType = wxEVT_NULL, pwxMapObject pObject = pwxMapObject()) : wxEvent(winid, commandType), cpObject(pObject) {}
-    virtual ~wxMapEvent() {}
+     */
+    wxMapEvent(int winid = 0, wxEventType commandType = wxEVT_NULL, pwxMapObject pObject = pwxMapObject()) : wxEvent(winid, commandType), cpObject(pObject) { }
+    virtual ~wxMapEvent() { }
 
     pwxMapObject cpObject;
 };
-
-
-

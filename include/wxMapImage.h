@@ -6,13 +6,13 @@
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include <wxMapObject.h>
 #include <memory>
+#include <wxMapObject.h>
 
 /**
  * @brief Image
  * @todo Implement
-*/
+ */
 class ICONIC_WEBMAP_EXPORT wxMapImage : public wxMapObject {
 public:
     /**
@@ -20,7 +20,7 @@ public:
      * @param imageUrl
      * @param latLon
      * @todo Implement
-    */
+     */
     wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon, wxString imageUrl);
 
     /**
@@ -29,8 +29,8 @@ public:
      * @param latitude
      * @param longitude
      * @todo Implement with lower prio
-    */
-    //wxMapImage(wxImage const& image, float latitude, float longitude);
+     */
+    // wxMapImage(wxImage const& image, float latitude, float longitude);
 
     /**
      * @brief Use case 2.6
@@ -42,8 +42,8 @@ public:
      * - Bottom left corner of image is shown at position \c vPoints[3].
      * @param image Image
      * @param vPoints Polygon
-    */
-    //wxMapImage(wxImage const& image, std::vector<wxMapPoint>& vPoints);
+     */
+    // wxMapImage(wxImage const& image, std::vector<wxMapPoint>& vPoints);
 
     /**
      * @brief Use case 2.7
@@ -55,21 +55,21 @@ public:
      * - Bottom left corner of image is shown at position \c (bb[0],bb[1]+bb[3])=(bb.x,bb.y+bb.h)
      * @param image Image
      * @param bb Bounding box
-    */
-    //wxMapImage(wxImage const& image, wxMapRect& bb);
+     */
+    // wxMapImage(wxImage const& image, wxMapRect& bb);
 
     /**
      * @brief Use case 2.4 (low prio)
      * @param imageUrl
-    */
-    //wxMapImage(wxString const& imageUrl);
+     */
+    // wxMapImage(wxString const& imageUrl);
 
     /**
      * @brief Use case 2.5 (low prio)
      * @param imageUrl
      * @param polygon
-    */
-    //wxMapImage(wxString const& imageUrl, std::vector<wxMapPoint> const& polygon);
+     */
+    // wxMapImage(wxString const& imageUrl, std::vector<wxMapPoint> const& polygon);
 
     /**
      * @brief Returns the script to add this object to a map
@@ -77,9 +77,8 @@ public:
      * @return Java script to execute
      * @sa wxWebMap::AddMapObject
      * @todo Implement
-    */
+     */
     virtual wxString GetJavaScriptAdd(wxString map) const;
-
 
     bool ParseResult(const wxString& result, EMapObjectType& type, int& id, wxString& url);
     bool operator==(const wxString& result);
@@ -91,8 +90,6 @@ public:
     double cRightLat;
     double cRightLon;
     wxString cUrl;
-
-
 };
 
 typedef std::shared_ptr<wxMapImage> pwxMapImage; //!< Smart pointer to an image.

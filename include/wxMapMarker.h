@@ -7,12 +7,12 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include <wxMapObject.h>
 #include <memory>
+#include <wxMapObject.h>
 
 /**
  * @brief A marker object
-*/
+ */
 class ICONIC_WEBMAP_EXPORT wxMapMarker : public wxMapObject {
 public:
     /**
@@ -20,7 +20,7 @@ public:
      * @param lat Latitude
      * @param lon Longitude
      * @param bDraggable Draggable
-    */
+     */
     wxMapMarker(double lat, double lon, bool bDraggable = false);
 
     /**
@@ -29,7 +29,7 @@ public:
      * See \c js/wxMapMarker.js.
      * @param map Map name
      * @return script to run to add this object
-    */
+     */
     virtual wxString GetJavaScriptAdd(wxString map) const;
 
     /**
@@ -38,7 +38,7 @@ public:
      * @param lon Longitude
      * @param bDraggable Draggable
      * @return a marker
-    */
+     */
     static std::shared_ptr<wxMapMarker> Create(double lat, double lon, bool bDraggable = false);
 
     bool ParseResult(wxString const& result, EMapObjectType& type, int& id, double lat, double lon);

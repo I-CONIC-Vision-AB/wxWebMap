@@ -1,14 +1,13 @@
-#include	<wxMapHtml.h>
-#include    <wx/log.h>
-#include    <wx/ffile.h>
-#include    <wx/sstream.h>
-#include    <wx/fs_mem.h>
+#include <wx/ffile.h>
+#include <wx/fs_mem.h>
+#include <wx/log.h>
+#include <wx/sstream.h>
+#include <wxMapHtml.h>
 
 wxMapHtml::wxMapHtml(wxString const& baseMapHtmlFileName, bool bUseMemoryFS) :
     wxXmlDocument(baseMapHtmlFileName),
     cFileName(baseMapHtmlFileName),
-    cbUseMemoryFS(bUseMemoryFS)
-{
+    cbUseMemoryFS(bUseMemoryFS) {
     if (!IsOk()) {
         wxLogError(_("Could not parse %s"), baseMapHtmlFileName);
         return;
@@ -17,8 +16,7 @@ wxMapHtml::wxMapHtml(wxString const& baseMapHtmlFileName, bool bUseMemoryFS) :
     AddLeafletJavaScripts();
 }
 
-wxMapHtml::~wxMapHtml()
-{
+wxMapHtml::~wxMapHtml() {
     if (cOutputFileName.Exists() && cOutputFileName.GetPath().IsSameAs(wxFileName::GetTempDir())) {
         // Delete temporary file
         if (!wxRemoveFile(cOutputFileName.GetFullPath())) {
@@ -27,15 +25,13 @@ wxMapHtml::~wxMapHtml()
     }
 }
 
-wxXmlNode* wxMapHtml::GetBodyNode()
-{
-    bool bRecurse = false; // html and body are top nodes
+wxXmlNode* wxMapHtml::GetBodyNode() {
+    bool bRecurse = false;                                             // html and body are top nodes
     wxXmlNode* htmlNode = Find(wxString("html"), GetRoot(), bRecurse); // html is root
-    return Find(wxString("body"), htmlNode->GetChildren(), bRecurse); // body is immediate child of html
+    return Find(wxString("body"), htmlNode->GetChildren(), bRecurse);  // body is immediate child of html
 }
 
-bool wxMapHtml::AddLeafletJavaScripts()
-{
+bool wxMapHtml::AddLeafletJavaScripts() {
     wxXmlNode* p = GetDocumentNode();
     wxString name = p->GetName();
     wxXmlNode* bodyNode = GetBodyNode();
@@ -45,7 +41,7 @@ bool wxMapHtml::AddLeafletJavaScripts()
     }
 
     // Check if there already is a javascript node
-    wxXmlAttribute *attr = new wxXmlAttribute("type","text/javascript");
+    wxXmlAttribute* attr = new wxXmlAttribute("type", "text/javascript");
     wxXmlNode* scriptNode = Find(wxString("script"), bodyNode->GetChildren(), false, attr);
     if (!scriptNode) {
         // No script node so create and add one
@@ -56,14 +52,14 @@ bool wxMapHtml::AddLeafletJavaScripts()
 
     wxFileName fn(cFileName);
     wxString htmlName = fn.GetFullName();
-    fn.RemoveLastDir();                 // Go to parent of current html folder
-    fn.AppendDir("js");                 // js folder (same level as html folder)
+    fn.RemoveLastDir(); // Go to parent of current html folder
+    fn.AppendDir("js"); // js folder (same level as html folder)
 
     // "wxMapMarker.js" is one example, more to be added.
     // These examples should be read only templates.
     // User should be able to configure own versions, e.g.add 'map.setView([lat,lon]);' in add_marker so that the map centers on the added marker
     // Owner configured templates do not require recompilation of wxWebMap or any other C++ code.
-    std::vector<wxString> vsJavaScript = { "wxMapPolygon.js", "wxMapMarker.js" };
+    std::vector<wxString> vsJavaScript = {"wxMapPolygon.js", "wxMapMarker.js"};
     for (int i = 0; i < 2; ++i) {
         fn.SetFullName(vsJavaScript[i]);
         wxString filename = fn.GetFullPath();
@@ -113,18 +109,15 @@ bool wxMapHtml::AddLeafletJavaScripts()
     return true;
 }
 
-wxString wxMapHtml::GetMemoryFileName() const
-{
+wxString wxMapHtml::GetMemoryFileName() const {
     return cMemoryFileName;
 }
 
-wxFileName wxMapHtml::GetLocalFileName() const
-{
+wxFileName wxMapHtml::GetLocalFileName() const {
     return cOutputFileName;
 }
 
-wxXmlNode* wxMapHtml::Find(wxString const& s, wxXmlNode* startNode, bool bIncludeChildren, wxXmlAttribute* attr)
-{
+wxXmlNode* wxMapHtml::Find(wxString const& s, wxXmlNode* startNode, bool bIncludeChildren, wxXmlAttribute* attr) {
     while (startNode) {
         if (startNode->GetName().IsSameAs(s, false)) {
             if (attr && startNode->GetAttribute(attr->GetName()).IsSameAs(attr->GetValue())) {

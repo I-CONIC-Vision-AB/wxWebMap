@@ -1,17 +1,18 @@
 #pragma once
 
-#include <wxWebMap.h>
-#include <wxMapHtml.h>
 #include <list>
 #include <memory>
+#include <wxMapHtml.h>
+#include <wxWebMap.h>
 
 class wxWebMapImpl : public wxWebMap {
 public:
-    static wxWebMap* Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, 
+    static wxWebMap* Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size,
         const wxString& backend, long style, const wxString& name);
 
     void OnScriptResult(wxWebViewEvent& evt);
     virtual void SetEventListener(wxEvtHandler* Listener) override;
+
 protected:
     wxWebMapImpl();
 
@@ -27,15 +28,14 @@ protected:
     void AddRectangleToWebMap(float MinX, float MaxX, float MinY, float MaxY, bool UseAsRegionOfInterest);
     void AddPolygonToWebMap(roi_polygon& Polygon, bool UseAsRegionOfInterest);
     void ParseRectangleEvent(wxWebViewEvent& evt);
-    //ID is used for determining if we want to write(1), or clear(0)
+    // ID is used for determining if we want to write(1), or clear(0)
     void BroadcastROIChange(int ID);
 
     wxString cMapName;
     wxWebView* cpWebView;
     std::list<pwxMapObject> clMapObjects;
     std::shared_ptr<wxMapHtml> cpMapHtml;
-    //May be saved to the project file as a region of interest
+    // May be saved to the project file as a region of interest
     roi_rectangle LastSavedRectangle = {};
     wxEvtHandler* EventListener = nullptr;
 };
-

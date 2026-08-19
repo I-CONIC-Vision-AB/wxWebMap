@@ -1,7 +1,7 @@
-#include <wxMapImage.h>
-#include <wx/tokenzr.h>
-#include <wx/log.h>
 #include <wx/intl.h>
+#include <wx/log.h>
+#include <wx/tokenzr.h>
+#include <wxMapImage.h>
 #include <wxMapObject.h>
 
 wxMapImage::wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon, wxString imageUrl) :
@@ -9,19 +9,16 @@ wxMapImage::wxMapImage(double upperLeftLat, double upperLeftlon, double lowerRig
     cLeftLon(upperLeftlon),
     cRightLat(lowerRightLat),
     cRightLon(lowerRightLon),
-    cUrl(imageUrl)
-{
+    cUrl(imageUrl) {
     cUrl.Replace('\\', '/');
     cType = EMapObjectType::IMAGE;
 }
 
-wxString wxMapImage::GetJavaScriptAdd(wxString map) const
-{
+wxString wxMapImage::GetJavaScriptAdd(wxString map) const {
     return "image_add('" + cUrl + wxString::Format("',%.6lf,%.6lf,%.6lf,%.6lf,%s", cLeftLat, cLeftLon, cRightLat, cRightLon, map) + "); \n";
 }
 
-pwxMapImage wxMapImage::Create(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon, wxString imageUrl)
-{
+pwxMapImage wxMapImage::Create(double upperLeftLat, double upperLeftlon, double lowerRightLat, double lowerRightLon, wxString imageUrl) {
     return std::make_shared<wxMapImage>(upperLeftLat, upperLeftlon, lowerRightLat, lowerRightLon, imageUrl);
 }
 
@@ -38,11 +35,9 @@ bool wxMapImage::ParseResult(const wxString& result, EMapObjectType& type, int& 
             // Parse type:
             if (token.IsSameAs("MARKER")) {
                 type = EMapObjectType::MARKER;
-            }
-            else if (token.IsSameAs("POLYGON")) {
+            } else if (token.IsSameAs("POLYGON")) {
                 type = EMapObjectType::POLYGON;
-            }
-            else if (token.IsSameAs("IMAGE")) {
+            } else if (token.IsSameAs("IMAGE")) {
                 type = EMapObjectType::IMAGE;
             }
             break;
@@ -56,8 +51,7 @@ bool wxMapImage::ParseResult(const wxString& result, EMapObjectType& type, int& 
                 bOk = false;
             }
             id = (int)lid;
-        }
-        break;
+        } break;
         case 2:
         case 3:
         case 4:
@@ -66,12 +60,10 @@ bool wxMapImage::ParseResult(const wxString& result, EMapObjectType& type, int& 
                 wxLogError(_("Could not parse result as coordinate: %s"), token);
                 bOk = false;
             }
-        }
-              break;
+        } break;
         case 6: {
             url = token;
-        }
-              break;
+        } break;
         }
         ++i;
     }
@@ -81,15 +73,20 @@ bool wxMapImage::ParseResult(const wxString& result, EMapObjectType& type, int& 
 bool wxMapImage::operator==(const wxString& result) {
     EMapObjectType type;
     int id;
-//    double latmin, lonmin, latmax, lonmax;
+    //    double latmin, lonmin, latmax, lonmax;
     wxString url;
-    if (!ParseResult(result, type, id, url)) return false;
-    if (type != cType) return false;
+    if (!ParseResult(result, type, id, url)) {
+        return false;
+    }
+    if (type != cType) {
+        return false;
+    }
     if (cLeafletId > -1 && cLeafletId != id) {
         // There is an id set and it differs from the result id
         return false;
     }
-    if (!cUrl.IsSameAs(url)) return false;
+    if (!cUrl.IsSameAs(url)) {
+        return false;
+    }
     return true;
 }
-

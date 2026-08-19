@@ -1,35 +1,31 @@
 #include <detail/wxWebMapImpl.h>
-#include <wxMapHtml.h>
-#include <wx/log.h>
-#include <wx/intl.h>
-#include <wx/sizer.h>
+#include <sstream>
 #include <wx/filename.h>
 #include <wx/fs_mem.h>
+#include <wx/intl.h>
+#include <wx/log.h>
+#include <wx/sizer.h>
 #include <wx/tokenzr.h>
-#include <sstream>
+#include <wxMapHtml.h>
 
 wxWebMap::wxWebMap() :
-    wxWindow()
-{
+    wxWindow() {
 }
 
-wxWebMap* wxWebMap::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
-{
+wxWebMap* wxWebMap::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name) {
     return wxWebMapImpl::Create(parent, id, basemapHtmlFileName, pos, size, backend, style, name);
 }
 
 wxWebMapImpl::wxWebMapImpl() :
     wxWebMap(),
     cMapName("map"),
-    cpWebView(nullptr)
-{    
+    cpWebView(nullptr) {
     auto f = &wxWebMapImpl::OnScriptResult;
     Bind(wxEVT_WEBVIEW_SCRIPT_RESULT, f, this);
 }
 
-wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name)
-{
-    bool bUseMemoryFS = false;//(backend != wxWebViewBackendEdge);
+wxWebMap* wxWebMapImpl::Create(wxWindow* parent, wxWindowID id, wxString const& basemapHtmlFileName, const wxPoint& pos, const wxSize& size, const wxString& backend, long style, const wxString& name) {
+    bool bUseMemoryFS = false; //(backend != wxWebViewBackendEdge);
     wxString url = basemapHtmlFileName;
     wxWebMapImpl* p = new wxWebMapImpl();
     p->cpMapHtml = std::make_shared<wxMapHtml>(basemapHtmlFileName, bUseMemoryFS);
@@ -82,7 +78,6 @@ void wxWebMapImpl::OnScriptResult(wxWebViewEvent& evt) {
         return;
     }
 
-
     wxString result = evt.GetString();
     long val = 0;
     result.ToLong(&val);
@@ -93,13 +88,11 @@ void wxWebMapImpl::SetEventListener(wxEvtHandler* Listener) {
     this->EventListener = Listener;
 }
 
-wxWebView* wxWebMapImpl::GetWebView()
-{
+wxWebView* wxWebMapImpl::GetWebView() {
     return cpWebView;
 }
 
-bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* WXUNUSED(result))
-{
+bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* WXUNUSED(result)) {
     if (std::find(clMapObjects.begin(), clMapObjects.end(), o) == clMapObjects.end()) {
         // We run java script async because otherwise wxYield is called which may trigger unwanted events before we get our result
         clMapObjects.push_back(o);
@@ -112,8 +105,7 @@ bool wxWebMapImpl::AddMapObject(pwxMapObject o, wxString* WXUNUSED(result))
     return true;
 }
 
-bool wxWebMapImpl::DeleteMapObject(pwxMapObject o)
-{
+bool wxWebMapImpl::DeleteMapObject(pwxMapObject o) {
     wxString javascript = o->GetRemoveString(cMapName);
     cpWebView->RunScript(javascript);
     GetMapObjects().remove(o);
@@ -121,13 +113,11 @@ bool wxWebMapImpl::DeleteMapObject(pwxMapObject o)
     return true;
 }
 
-void wxWebMapImpl::SetMapName(wxString const& name)
-{
+void wxWebMapImpl::SetMapName(wxString const& name) {
     cMapName = name;
 }
 
-std::list<pwxMapObject>& wxWebMapImpl::GetMapObjects()
-{
+std::list<pwxMapObject>& wxWebMapImpl::GetMapObjects() {
     return clMapObjects;
 }
 
@@ -135,7 +125,7 @@ pwxMapObject wxWebMapImpl::Find(wxString const& result) {
     int id;
     EMapObjectType type;
     wxMapObject::ParseResult(result, type, id);
-    for(auto pMapObject : clMapObjects) {
+    for (auto pMapObject : clMapObjects) {
         if (*pMapObject == result) {
             return pMapObject;
         }
@@ -151,14 +141,14 @@ bool wxWebMapImpl::QueryLastSavedRectangle(roi_rectangle& Out) {
         Out = LastSavedRectangle;
         Result = true;
     }
-    return(Result);
+    return (Result);
 }
 
 void wxWebMapImpl::AddPolygonToWebMap(roi_polygon& Polygon, bool UseAsRegionOfInterest) {
     std::stringstream In = {};
     In << "L.polygon([";
     for (int PointIndex = 0; PointIndex < Polygon.Points.size(); ++PointIndex) {
-        lat_lng_coords *Point = &Polygon.Points[PointIndex];
+        lat_lng_coords* Point = &Polygon.Points[PointIndex];
         In << "[" << Point->lat << "," << Point->lng << "]";
         if (PointIndex != Polygon.Points.size() - 1) {
             In << ",";
@@ -183,10 +173,10 @@ void wxWebMapImpl::AddRectangleToWebMap(float MinX, float MaxX, float MinY, floa
 
     if (UseAsRegionOfInterest) {
         roi_rectangle ROI = {};
-        ROI.Rectangle[0] = { MinX, MinY };
-        ROI.Rectangle[1] = { MaxX, MinY };
-        ROI.Rectangle[2] = { MaxX, MaxY };
-        ROI.Rectangle[3] = { MinX, MaxY };
+        ROI.Rectangle[0] = {MinX, MinY};
+        ROI.Rectangle[1] = {MaxX, MinY};
+        ROI.Rectangle[2] = {MaxX, MaxY};
+        ROI.Rectangle[3] = {MinX, MaxY};
         LastSavedRectangle = ROI;
     }
 }
@@ -198,7 +188,7 @@ void wxWebMapImpl::ParseRectangleEvent(wxWebViewEvent& evt) {
     if (EventString.StartsWith(CreateRectangleHeader)) {
         int RectangleVertexIndex = 0;
         wxStringTokenizer Tokenizer(EventString, "(");
-        //The string we parse looks like this:
+        // The string we parse looks like this:
         //"Create: Rectangle 266 LatLng(FloatValueLat, FloatValueLng),LatLng(FloatValueLat, FloatValueLng),LatLng(FloatValueLat, FloatValueLng),LatLng(FloatValueLat, FloatValueLng)"
         wxString InitToken = Tokenizer.GetNextToken();
         int IDStart = CreateRectangleHeader.size() + 1;
@@ -218,15 +208,15 @@ void wxWebMapImpl::ParseRectangleEvent(wxWebViewEvent& evt) {
         }
         BroadcastROIChange(1);
     } else if (EventString.StartsWith(RemoveRectangleHeader)) {
-        //wxStringTokenizer Tokenizer(EventString, "(");
-        //wxString InitToken = Tokenizer.GetNextToken();
-        //int IDStart = RemoveRectangleHeader.size() + 1;
-        //int IDEnd = InitToken.size() - 7;
-        //wxString LeafletIDString = InitToken.SubString(IDStart, IDEnd);
-        //int LeafletID = std::stoi(LeafletIDString.ToStdString());
-        //if (LastSavedRectangle.LeafletID == LeafletID) {
-        //    LastSavedRectangle = {};
-        //}
+        // wxStringTokenizer Tokenizer(EventString, "(");
+        // wxString InitToken = Tokenizer.GetNextToken();
+        // int IDStart = RemoveRectangleHeader.size() + 1;
+        // int IDEnd = InitToken.size() - 7;
+        // wxString LeafletIDString = InitToken.SubString(IDStart, IDEnd);
+        // int LeafletID = std::stoi(LeafletIDString.ToStdString());
+        // if (LastSavedRectangle.LeafletID == LeafletID) {
+        //     LastSavedRectangle = {};
+        // }
 
         LastSavedRectangle = {};
         BroadcastROIChange(0);
@@ -235,7 +225,7 @@ void wxWebMapImpl::ParseRectangleEvent(wxWebViewEvent& evt) {
 
 void wxWebMapImpl::BroadcastROIChange(int ID) {
     if (EventListener) {
-        wxCommandEvent Event = { };
+        wxCommandEvent Event = {};
         Event.SetEventType((int)WebMapEventIDS::ID_ROI_WAS_UPDATED);
         Event.SetId(ID);
         wxPostEvent(EventListener, Event);

@@ -1,20 +1,18 @@
-#include	<wxMapMarker.h>
-#include    <wx/tokenzr.h>
-#include    <wx/log.h>
-#include    <wx/intl.h>
+#include <wx/intl.h>
+#include <wx/log.h>
+#include <wx/tokenzr.h>
+#include <wxMapMarker.h>
 
 wxMapMarker::wxMapMarker(double lat, double lon, bool bDraggable) :
     cLat(lat),
     cLon(lon),
-    cbDraggable(bDraggable)
-{
+    cbDraggable(bDraggable) {
     cType = EMapObjectType::MARKER;
     label = "";
     cLeafletId = (int)this;
 }
 
-wxString wxMapMarker::GetJavaScriptAdd(wxString map) const
-{
+wxString wxMapMarker::GetJavaScriptAdd(wxString map) const {
     if (!cbDraggable) {
         return wxString::Format("marker_add(%.6lf,%.6lf,\"%s\",%s); \n", cLat, cLon, label, map);
     } else {
@@ -22,13 +20,11 @@ wxString wxMapMarker::GetJavaScriptAdd(wxString map) const
     }
 }
 
-pwxMapMarker wxMapMarker::Create(double lat, double lon, bool bDraggable)
-{
+pwxMapMarker wxMapMarker::Create(double lat, double lon, bool bDraggable) {
     return std::make_shared<wxMapMarker>(lat, lon, bDraggable);
 }
 
-bool wxMapMarker::ParseResult(wxString const& result, EMapObjectType& type, int& id, double lat, double lon)
-{
+bool wxMapMarker::ParseResult(wxString const& result, EMapObjectType& type, int& id, double lat, double lon) {
     wxStringTokenizer parse(result, ",");
     int i = 0;
     bool bOk = true;
@@ -39,11 +35,9 @@ bool wxMapMarker::ParseResult(wxString const& result, EMapObjectType& type, int&
             // Parse type:
             if (token.IsSameAs("MARKER")) {
                 type = EMapObjectType::MARKER;
-            }
-            else if (token.IsSameAs("POLYGON")) {
+            } else if (token.IsSameAs("POLYGON")) {
                 type = EMapObjectType::POLYGON;
-            }
-            else if (token.IsSameAs("IMAGE")) {
+            } else if (token.IsSameAs("IMAGE")) {
                 type = EMapObjectType::IMAGE;
             }
             break;
@@ -57,36 +51,38 @@ bool wxMapMarker::ParseResult(wxString const& result, EMapObjectType& type, int&
                 bOk = false;
             }
             id = (int)lid;
-        }
-        break;
+        } break;
         case 2: {
             if (!token.ToDouble(&lat)) {
                 wxLogError(_("Could not parse result as lat: %s"), token);
                 bOk = false;
             }
-        }
-              break;
+        } break;
         case 3: {
             if (!token.ToDouble(&lon)) {
                 wxLogError(_("Could not parse result as lon: %s"), token);
                 bOk = false;
             }
-        }
-              break;
+        } break;
         }
         ++i;
     }
     return bOk;
-
 }
 
 bool wxMapMarker::operator==(const wxString& result) {
     EMapObjectType type;
     int id;
-    double lat=0.0, lon=0.0;
-    if (!ParseResult(result, type, id, lat, lon)) return false;
-    if (type != cType) return false;
-    if (std::fabs(lat - cLat) < 1.0e-9 && std::fabs(lon - cLon) < 1.0e-9) return true;
-    else return false;
+    double lat = 0.0, lon = 0.0;
+    if (!ParseResult(result, type, id, lat, lon)) {
+        return false;
+    }
+    if (type != cType) {
+        return false;
+    }
+    if (std::fabs(lat - cLat) < 1.0e-9 && std::fabs(lon - cLon) < 1.0e-9) {
+        return true;
+    } else {
+        return false;
+    }
 }
-
